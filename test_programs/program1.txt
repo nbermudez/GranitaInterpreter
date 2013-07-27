@@ -1,0 +1,5 @@
+int main(){
+  int x;
+  double y, a;
+  cin << x +1;
+}
