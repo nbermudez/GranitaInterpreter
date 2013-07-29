@@ -94,9 +94,9 @@ public class Lexer {
     }
 
     public Token nextToken() {
-        Token result = new Token(Token.TokenType.ERROR, "");
+        Token result = new Token(Token.TokenType.EOF, "");
         int cs = getSymbol();
-        while ((cs != -1) && (Character.isWhitespace((char) cs))) {
+        while ((cs != EOF) && (Character.isWhitespace((char) cs))) {
             if (cs == 10) {
                 this.lineNumber += 1;
             }
@@ -270,7 +270,7 @@ public class Lexer {
             case '\"':
                 result.lexeme += (char) cs;
                 cs = getSymbol();
-                while (cs != '\"') {
+                while (cs != '"') {
                     if (cs == EOF) {
                         result.lexeme = ("Lexer error: \" expected: got EOF in line " + this.lineNumber);
                         result.type = Token.TokenType.ERROR;

@@ -1,0 +1,32 @@
+class _My_Class {
+	int var_int1 = 10;
+	int var_int2, var_int3;
+	int var_int4, var_int5[5], var_int6;
+	bool arr[1], not_arr, arr2[0x5];
+	
+	int function1(){
+		return 0XFFFF;
+	}
+	
+	int function2(int x, bool y, int _){
+		return function1();
+	}
+	
+	int function3(int __){
+		if (__>0){
+			if (__<100){
+				return function1() + __;
+			}else{
+				return __ - function2(__+1, false, 0x1);
+			}
+		}
+		return (0x100 - 10)/__ + (100%__);
+	}
+	
+	bool function4(bool __){
+		return false || true && false && ((rot 1)>>2) <= 5;
+	}
+	
+	void main(){
+	}
+}

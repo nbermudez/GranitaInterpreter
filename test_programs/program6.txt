@@ -1,0 +1,7 @@
+class _My_Class {
+	int x;
+	bool y;
+	
+	int x[1], y2,z;
+	int _ = 10;
+}
