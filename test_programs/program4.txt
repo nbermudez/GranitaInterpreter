@@ -1,23 +1,26 @@
-void main(){
-	int x = 10;
-	int __, ___,____;
-	int y;
-	y = x << 1;
+class t{
 	bool my_true = true;
-	bool _tmp = my_true || (x == 1);
+	bool _tmp = false;
 	
-	int _[10];
-	
-	_[___] = __;
-	_[__] = __;
-	
-	x = "\nhola mundo\n"; //ojo preguntarle al inge sobre comillas dentro de la cadena.
-	/* esto es un comentario y no deberia de importar
-	el comentario sigue aki
-	y aki
-	y aki \n \t int for while [10]
-	*/
-	
-	int after_comment;
-	
+	void main(){
+		int x;
+		int _;
+		int __, ___,____;
+		int y;
+		int after_comment;
+		x = 10;
+		y = x << 1;	
+		
+		
+		_[___] = __;
+		_[__] = __;
+		
+		x = 'a'; //ojo preguntarle al inge sobre comillas dentro de la cadena.
+		/* esto es un comentario y no deberia de importar
+		el comentario sigue aki
+		y aki
+		y aki \n \t int for while [10]
+		*/	
+		
+	}
 }

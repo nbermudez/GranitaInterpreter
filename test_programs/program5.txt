@@ -24,7 +24,7 @@ class _My_Class {
 	}
 	
 	bool function4(bool __){
-		return false || true && false && ((rot 1)>>2) <= 5;
+		return false || true && false && ((2+ 1)>>2) <= 5;
 	}
 	
 	void main(){

@@ -18,8 +18,8 @@ public class GranitaInterpreter {
     public static void main(String[] args) {
         // TODO code application logic here
         try {
-            Parser parser = new Parser("C:/Users/Alejandro/Documents/GitHub/GranitaInterpreter/test_programs/program4.txt");
-            parser.parse();
+            Lexer lexer = new Lexer("C:/Users/Alejandro/Documents/GitHub/GranitaInterpreter/test_programs/program5.txt");
+            System.out.println(lexer.toString());
         } catch (IOException ex) {
             System.out.println("IO Error");
         }
