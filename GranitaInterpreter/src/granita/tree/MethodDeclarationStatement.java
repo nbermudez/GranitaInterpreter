@@ -10,7 +10,10 @@ import granitainterpreter.GranitaException;
  *
  * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
  */
-public abstract class Statement
-{
-    abstract public void execute() throws GranitaException;
+public class MethodDeclarationStatement extends Statement {
+
+    @Override
+    public void execute() throws GranitaException {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 }

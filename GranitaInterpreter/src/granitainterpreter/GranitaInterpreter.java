@@ -4,8 +4,6 @@
  */
 package granitainterpreter;
 
-import java.io.IOException;
-
 /**
  *
  * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
@@ -16,12 +14,15 @@ public class GranitaInterpreter {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
         try {
-            Lexer lexer = new Lexer("C:/Users/Alejandro/Documents/GitHub/GranitaInterpreter/test_programs/program5.txt");
+            Lexer lexer = new Lexer("C:/Users/Alejandro/Documents/GitHub/GranitaInterpreter/test_programs/program7.txt");
             System.out.println(lexer.toString());
-        } catch (IOException ex) {
-            System.out.println("IO Error");
+            
+            Parser parser = new Parser(lexer);
+            //parser.parse();
+            System.out.println("Analisis Sintactico exitoso");
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 }

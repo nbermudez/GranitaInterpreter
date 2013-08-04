@@ -23,7 +23,7 @@ public class Lexer {
     
     //<editor-fold defaultstate="collapsed" desc="Instance Attributes">
     private final int EOF = -1;
-    private int lineNumber = 0;
+    private int lineNumber = 1;
     private RandomAccessFile memoryMappedFile = null;
     private MappedByteBuffer in = null;
     private HashMap<String, Token> keywords;
@@ -244,7 +244,7 @@ public class Lexer {
                         if (cs == '\\') {
                             result.lexeme += (char) cs;
                             cs = getSymbol();
-                            if (!isEscapedValid(cs) && cs == '\"' && cs == '\'') {
+                            if (!isEscapedValid(cs) && cs != '\"' && cs != '\'') {
                                 return errorToken("Lexer error: invalid escaped character in line " + this.lineNumber, true);
                             }
                         }
@@ -350,6 +350,7 @@ public class Lexer {
         do {
             tk = this.nextToken();
             if (tk.type == Token.TokenType.ERROR) {
+                all += tk.lexeme;
                 break;
             } else {
                 all += tk.toString() + "\n";

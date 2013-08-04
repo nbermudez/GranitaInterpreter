@@ -1,0 +1,14 @@
+class nombre ___(int h,string s)
+{
+     bool b = n;
+     int h_s_r = 1;
+     for(int i, i <= 5,i+1)
+     {
+	b = h_s_r - r + 4 * 5 / 3;
+     }
+     if(b > h_s_r)
+     {
+	print "hola \\ ";
+	print "imprimir \a \t aqui \" \n";
+     }
+}

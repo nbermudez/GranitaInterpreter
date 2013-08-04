@@ -2,15 +2,15 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package granita.tree;
-
-import granitainterpreter.GranitaException;
+package granitainterpreter;
 
 /**
  *
  * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
  */
-public abstract class Statement
-{
-    abstract public void execute() throws GranitaException;
+public class GranitaException extends Exception {
+
+    public GranitaException(String message) {
+        super(message);
+    }
 }

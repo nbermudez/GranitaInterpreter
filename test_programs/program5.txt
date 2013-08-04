@@ -4,7 +4,7 @@ class _My_Class {
 	int var_int4, var_int5[5], var_int6;
 	bool arr[1], not_arr, arr2[0x5];
 	
-	int function1(){
+	int function1("cadena \ " "){
 		return 0XFFFF;
 	}
 	
