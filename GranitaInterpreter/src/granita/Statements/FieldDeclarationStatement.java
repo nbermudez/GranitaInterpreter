@@ -2,8 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package granita.tree;
+package granita.Statements;
 
+import granita.Statements.Statement;
 import granitainterpreter.GranitaException;
 import java.util.ArrayList;
 
@@ -18,9 +19,5 @@ public class FieldDeclarationStatement extends Statement{
     public FieldDeclarationStatement() {
     }    
     
-    @Override
-    public void execute() throws GranitaException {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
     
 }

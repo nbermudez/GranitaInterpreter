@@ -1,8 +1,9 @@
-class nombre ___(int h,string s)
+class nombre___
 {
-     bool b = n;
+     bool b = 1;
      int h_s_r = 1;
-     for(int i, i <= 5,i+1)
+	 void method(){
+     for(i; 5;i=6)
      {
 	b = h_s_r - r + 4 * 5 / 3;
      }
@@ -11,4 +12,5 @@ class nombre ___(int h,string s)
 	print "hola \\ ";
 	print "imprimir \a \t aqui \" \n";
      }
+	 }
 }

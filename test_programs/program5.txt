@@ -4,7 +4,7 @@ class _My_Class {
 	int var_int4, var_int5[5], var_int6;
 	bool arr[1], not_arr, arr2[0x5];
 	
-	int function1("cadena \ " "){
+	int function1(){
 		return 0XFFFF;
 	}
 	
@@ -21,6 +21,7 @@ class _My_Class {
 			}
 		}
 		return (0x100 - 10)/__ + (100%__);
+		return 1+--21;
 	}
 	
 	bool function4(bool __){
@@ -28,5 +29,6 @@ class _My_Class {
 	}
 	
 	void main(){
+		x = read a[2],b[a+1],c;
 	}
 }

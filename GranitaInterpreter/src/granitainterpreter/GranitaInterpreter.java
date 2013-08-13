@@ -15,14 +15,15 @@ public class GranitaInterpreter {
      */
     public static void main(String[] args) {
         try {
-            Lexer lexer = new Lexer("C:/Users/Alejandro/Documents/GitHub/GranitaInterpreter/test_programs/program7.txt");
-            System.out.println(lexer.toString());
+            Lexer lexer = new Lexer("C:/Users/Alejandro/Documents/GitHub/GranitaInterpreter/test_programs/program5.txt");
+            //System.out.println(lexer.toString());
             
-            Parser parser = new Parser(lexer);
-            //parser.parse();
+            NewParser parser = new NewParser(lexer);
+            parser.parse();
             System.out.println("Analisis Sintactico exitoso");
         } catch (Exception ex) {
             ex.printStackTrace();
+            //System.out.println(ex.getMessage());
         }
     }
 }

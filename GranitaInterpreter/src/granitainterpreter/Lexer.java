@@ -115,7 +115,12 @@ public class Lexer {
         }
         return new Token(Token.TokenType.ERROR, message);
     }
-    //</editor-fold>    
+    //</editor-fold>  
+    
+    
+    public int lineNumber(){
+        return this.lineNumber;
+    }
 
     public Token nextToken() {
         Token result = new Token(Token.TokenType.ERROR, "");
@@ -160,6 +165,8 @@ public class Lexer {
                             cs = getSymbol();
                         }
                         continue;
+                    }else{
+                        ungetSymbol(cs);
                     }
                     return Token.TK_OP_DIV;
                 case '%':

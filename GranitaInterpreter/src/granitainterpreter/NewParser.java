@@ -10,7 +10,7 @@ import java.io.IOException;
  *
  * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
  */
-public class Parser {
+public class NewParser {
 
     //<editor-fold defaultstate="collapsed" desc="Instance attributes">
     private Token currentToken;
@@ -18,11 +18,11 @@ public class Parser {
     //</editor-fold>    
 
     //<editor-fold defaultstate="collapsed" desc="Constructors">
-    public Parser(String path) throws IOException {
+    public NewParser(String path) throws IOException {
         lexer = new Lexer(path);
     }
 
-    public Parser(Lexer lexer) {
+    public NewParser(Lexer lexer) {
         this.lexer = lexer;
     }
     //</editor-fold>    
@@ -32,21 +32,23 @@ public class Parser {
         statements();
     }
 
-    private void statements() throws GranitaException {
-        if (currentToken != Token.TK_KW_CLASS){
-            throw new GranitaException("Expected class but found "+ currentToken.lexeme);
+    private void statements() throws GranitaException {        
+        if (currentToken != Token.TK_KW_CLASS) {
+            throw new GranitaException("Expected class but found " + currentToken.lexeme
+                    + " in line " + this.lexer.lineNumber());
         }
         while (currentToken.type == Token.TokenType.KW_CLASS) {
             P();
         }
-        Match(Token.TK_EOF, "end of file");
+        match(Token.TK_EOF, "end of file");
     }
 
-    private void Match(Token comp, String expected) throws GranitaException {
+    private void match(Token comp, String expected) throws GranitaException {
         if (currentToken.equals(comp)) {
             currentToken = lexer.nextToken();
         } else {
-            throw new GranitaException("Expected " + expected + " but found " + currentToken.lexeme);
+            throw new GranitaException("Expected " + expected + " but found " + currentToken.lexeme
+                    + " in line " + this.lexer.lineNumber());
         }
     }
 
@@ -55,11 +57,11 @@ public class Parser {
      * P stands for Program. P -> class id { DECL_L }
      */
     private void P() throws GranitaException {
-        Match(Token.TK_KW_CLASS, "class");
-        Match(Token.TK_IDENTIFIER, "identifier");
-        Match(Token.TK_LEFT_CURLY_BRACKET, "{");
+        match(Token.TK_KW_CLASS, "class");
+        match(Token.TK_IDENTIFIER, "identifier");
+        match(Token.TK_LEFT_CURLY_BRACKET, "{");
         DECL_L();
-        Match(Token.TK_RIGHT_CURLY_BRACKET, "}");
+        match(Token.TK_RIGHT_CURLY_BRACKET, "}");
     }
 
     /**
@@ -67,22 +69,31 @@ public class Parser {
      * DECL_Lp)) |void id MD DECL_Lp
      */
     private void DECL_L() throws GranitaException {
+        String id;
         if (currentToken == Token.TK_KW_VOID) {
             currentToken = lexer.nextToken();
-            Match(Token.TK_IDENTIFIER, "identifier");
-            MD();
+            id = currentToken.lexeme;
+            match(Token.TK_IDENTIFIER, "identifier");
+            MD("void", id);
             DECL_Lp();
         } else if (is_type(currentToken)) {
+            String type;
+            if (currentToken == Token.TK_KW_BOOL) {
+                type = "bool";
+            } else {
+                type = "int";
+            }
             currentToken = lexer.nextToken();
-            Match(Token.TK_IDENTIFIER, "identifier");
+            id = currentToken.lexeme;
+            match(Token.TK_IDENTIFIER, "identifier");
             if (currentToken == Token.TK_LEFT_PARENTHESIS) {
-                MD();
+                MD(type, id);
                 DECL_Lp();
             } else if (currentToken == Token.TK_SEMICOLON
                     || currentToken == Token.TK_COLON
                     || currentToken == Token.TK_LEFT_BRACKET
                     || currentToken == Token.TK_OP_EQ) {
-                FD();
+                FD(type, id);
                 DECL_L();
             }
         } else { /* Nada por epsilon */ }
@@ -93,69 +104,90 @@ public class Parser {
      * DECL_Lp | e
      */
     private void DECL_Lp() throws GranitaException {
+        String type;
         if (is_type(currentToken) || currentToken == Token.TK_KW_VOID) {
-            currentToken = lexer.nextToken();
-            Match(Token.TK_IDENTIFIER, "identifier");
-            MD();
-            DECL_Lp();
-        } else { /* Nada por epsilon */ }
+            type = get_type(currentToken);
+        } else {
+            return;
+        }
+        currentToken = lexer.nextToken();
+        String id = currentToken.lexeme;
+        match(Token.TK_IDENTIFIER, "identifier");
+        MD(type, id);
+        DECL_Lp();
     }
 
     /**
      * MD stands for Method Declaration. MD -> '(' (type id (, type id)* | e )
      * ')' BLOCK
      */
-    private void MD() throws GranitaException {
-        Match(Token.TK_LEFT_PARENTHESIS, "(");
+    private void MD(String type, String id) throws GranitaException {
+        match(Token.TK_LEFT_PARENTHESIS, "(");
+        String paramType, paramId;
         if (is_type(currentToken)) {
+            paramType = get_type(currentToken);
+
             currentToken = lexer.nextToken();
-            Match(Token.TK_IDENTIFIER, "identifier");
+            paramId = currentToken.lexeme;
+
+            match(Token.TK_IDENTIFIER, "identifier");
             while (currentToken == Token.TK_COLON) {
                 currentToken = lexer.nextToken();
                 if (is_type(currentToken)) {
+                    paramType = get_type(currentToken);
+
                     currentToken = lexer.nextToken();
-                    Match(Token.TK_IDENTIFIER, "identifier");
+                    paramId = currentToken.lexeme;
+
+                    match(Token.TK_IDENTIFIER, "identifier");
                 } else {
-                    throw new GranitaException("Expected argument after , but found " + currentToken.lexeme);
+                    throw new GranitaException("Expected argument after , but found "
+                            + currentToken.lexeme + " in line " + this.lexer.lineNumber());
                 }
             }
         } else { /*Nada por el epsilon*/ }
-        Match(Token.TK_RIGHT_PARENTHESIS, ")");
+        match(Token.TK_RIGHT_PARENTHESIS, ")");
         BLOCK();
     }
 
     /**
      * FD stands for Field Declaration.
      */
-    private void FD() throws GranitaException {
+    private void FD(String type, String id) throws GranitaException {
         if (currentToken == Token.TK_SEMICOLON) {
             currentToken = lexer.nextToken();
         } else if (currentToken == Token.TK_OP_EQ) {
             currentToken = lexer.nextToken();
             CONSTANT();
-            Match(Token.TK_SEMICOLON, ";");
+            match(Token.TK_SEMICOLON, ";");
         } else if (currentToken == Token.TK_LEFT_BRACKET) {
             currentToken = lexer.nextToken();
-            Match(Token.TK_INT_CONSTANT, "integer");
-            Match(Token.TK_RIGHT_BRACKET, "]");
-            FD_L();            
+            String arraySize = currentToken.lexeme;
+
+            match(Token.TK_INT_CONSTANT, "integer");
+            match(Token.TK_RIGHT_BRACKET, "]");
+            FD_L(type);
         } else if (currentToken == Token.TK_COLON) {
-            FD_L();
+            FD_L(type);
         }
     }
 
-    private void FD_L() throws GranitaException {
+    private void FD_L(String fieldType) throws GranitaException {
+        String fieldId;
         while (currentToken == Token.TK_COLON) {
             currentToken = lexer.nextToken();
-            System.out.println(currentToken.lexeme);
-            Match(Token.TK_IDENTIFIER, "identifier");
+
+            fieldId = currentToken.lexeme;
+            match(Token.TK_IDENTIFIER, "identifier");
             if (currentToken == Token.TK_LEFT_BRACKET) {
                 currentToken = lexer.nextToken();
-                Match(Token.TK_INT_CONSTANT, "integer");
-                Match(Token.TK_RIGHT_BRACKET, "]");
+                String arraySize = currentToken.lexeme;
+
+                match(Token.TK_INT_CONSTANT, "integer");
+                match(Token.TK_RIGHT_BRACKET, "]");
             }
         }
-        Match(Token.TK_SEMICOLON, ";");
+        match(Token.TK_SEMICOLON, ";");
     }
 
     private void CONSTANT() throws GranitaException {
@@ -169,29 +201,35 @@ public class Parser {
      * -> '{' VD* STNT* '}'
      */
     private void BLOCK() throws GranitaException {
-        Match(Token.TK_LEFT_CURLY_BRACKET, "{");
+        match(Token.TK_LEFT_CURLY_BRACKET, "{");
         while (is_type(currentToken)) {
             VD();
         }
-        while (is_start_of_statement(currentToken)){
-            System.out.println(currentToken.lexeme);
+        while (is_start_of_statement(currentToken)) {
             STNT();
         }
-        Match(Token.TK_RIGHT_CURLY_BRACKET, "}");
+        match(Token.TK_RIGHT_CURLY_BRACKET, "}");
     }
 
     /**
      * VD stands for Variable declaration. VD -> type id (, id)* ;
      */
     private void VD() throws GranitaException {
+        String type, id;
         if (is_type(currentToken)) {
+            type = get_type(currentToken);
+
             currentToken = lexer.nextToken();
-            Match(Token.TK_IDENTIFIER, "identifier");
+            id = currentToken.lexeme;
+
+            match(Token.TK_IDENTIFIER, "identifier");
             while (currentToken == Token.TK_COLON) {
                 currentToken = lexer.nextToken();
-                Match(Token.TK_IDENTIFIER, "identifier");
+                id = currentToken.lexeme;
+
+                match(Token.TK_IDENTIFIER, "identifier");
             }
-            Match(Token.TK_SEMICOLON, ";");
+            match(Token.TK_SEMICOLON, ";");
         }
     }
 
@@ -200,81 +238,91 @@ public class Parser {
             BLOCK();
         } else if (currentToken == Token.TK_KW_CONTINUE || currentToken == Token.TK_KW_BREAK) {
             currentToken = lexer.nextToken();
-            Match(Token.TK_SEMICOLON, ";");
+            match(Token.TK_SEMICOLON, ";");
         } else if (currentToken == Token.TK_KW_RETURN) {
             currentToken = lexer.nextToken();
             if (is_start_of_expr(currentToken)) {
                 EXPR();
             } else { /*Nada por el epsilon*/ }
-            Match(Token.TK_SEMICOLON, ";");
+            match(Token.TK_SEMICOLON, ";");
         } else if (currentToken == Token.TK_KW_FOR) {
             currentToken = lexer.nextToken();
-            Match(Token.TK_LEFT_PARENTHESIS, "(");
+            match(Token.TK_LEFT_PARENTHESIS, "(");
             EXPR();
             while (currentToken == Token.TK_COLON) {
                 currentToken = lexer.nextToken();
                 EXPR();
             }
-            Match(Token.TK_SEMICOLON, ";");
+            match(Token.TK_SEMICOLON, ";");
             EXPR();
-            Match(Token.TK_SEMICOLON, ";");
-            Match(Token.TK_IDENTIFIER, "identifier");
-            ASSIGN();
+            match(Token.TK_SEMICOLON, ";");
+
+            String id = currentToken.lexeme;
+            match(Token.TK_IDENTIFIER, "identifier");
+
+            ASSIGN(id);
             while (currentToken == Token.TK_COLON) {
                 currentToken = lexer.nextToken();
-                Match(Token.TK_IDENTIFIER, "identifier");
-                ASSIGN();
+                id = currentToken.lexeme;
+
+                match(Token.TK_IDENTIFIER, "identifier");
+                ASSIGN(id);
             }
-            Match(Token.TK_RIGHT_PARENTHESIS, ")");
+            match(Token.TK_RIGHT_PARENTHESIS, ")");
             BLOCK();
         } else if (currentToken == Token.TK_KW_WHILE) {
             currentToken = lexer.nextToken();
-            Match(Token.TK_LEFT_PARENTHESIS, "(");
+            match(Token.TK_LEFT_PARENTHESIS, "(");
             EXPR();
-            Match(Token.TK_RIGHT_PARENTHESIS, ")");
+            match(Token.TK_RIGHT_PARENTHESIS, ")");
             BLOCK();
         } else if (currentToken == Token.TK_KW_IF) {
             currentToken = lexer.nextToken();
-            Match(Token.TK_LEFT_PARENTHESIS, "(");
+            match(Token.TK_LEFT_PARENTHESIS, "(");
             EXPR();
-            Match(Token.TK_RIGHT_PARENTHESIS, ")");
+            match(Token.TK_RIGHT_PARENTHESIS, ")");
             BLOCK();
             if (currentToken == Token.TK_KW_ELSE) {
                 currentToken = lexer.nextToken();
                 BLOCK();
             } else { /*Nada por el epsilon*/ }
         } else if (currentToken.equals(Token.TK_IDENTIFIER)) {
+            String id = currentToken.lexeme;
             currentToken = lexer.nextToken();
             if (currentToken == Token.TK_OP_EQ || currentToken == Token.TK_LEFT_BRACKET) {
-                ASSIGN();
+                ASSIGN(id);
             } else if (currentToken == Token.TK_LEFT_PARENTHESIS) {
-                MC();
+                MC(id);
             }
-            Match(Token.TK_SEMICOLON, ";");
+            match(Token.TK_SEMICOLON, ";");
         } else if (currentToken == Token.TK_KW_PRINT || currentToken == Token.TK_KW_READ) {
             SMC();
-            Match(Token.TK_SEMICOLON, ";");
+            match(Token.TK_SEMICOLON, ";");
         } else {
-            throw new GranitaException("Expected a statement but found " + currentToken.lexeme);
+            throw new GranitaException("Expected a statement but found " + currentToken.lexeme
+                    + " in line " + this.lexer.lineNumber());
         }
     }
 
-    private void ASSIGN() throws GranitaException {
+    private void ASSIGN(String id) throws GranitaException {
         if (currentToken == Token.TK_OP_EQ) {
             currentToken = lexer.nextToken();
             EXPR();
         } else if (currentToken == Token.TK_LEFT_BRACKET) {
             currentToken = lexer.nextToken();
             EXPR();
-            Match(Token.TK_RIGHT_BRACKET, "]");
-            Match(Token.TK_OP_EQ, "=");
+            match(Token.TK_RIGHT_BRACKET, "]");
+            match(Token.TK_OP_EQ, "=");
             EXPR();
         } else {
-            throw new GranitaException("Expected assignment but found " + currentToken.lexeme);
+            throw new GranitaException("Expected assignment but found " + currentToken.lexeme
+                    + " in line " + this.lexer.lineNumber());
         }
     }
 
     private void EXPR() throws GranitaException {
+        E();
+        /*
         if (currentToken == Token.TK_OP_SUB || currentToken == Token.TK_OP_NOT) {
             currentToken = lexer.nextToken();
             EXPR();
@@ -283,22 +331,25 @@ public class Parser {
         } else if (is_constant(currentToken)) {
             CONSTANT();
         } else if (currentToken.equals(Token.TK_IDENTIFIER)) {
+            String id = currentToken.lexeme;
+
             currentToken = lexer.nextToken();
             if (currentToken == Token.TK_LEFT_BRACKET) {
                 currentToken = lexer.nextToken();
                 EXPR();
-                Match(Token.TK_RIGHT_BRACKET, "]");
+                match(Token.TK_RIGHT_BRACKET, "]");
             } else if (currentToken == Token.TK_LEFT_PARENTHESIS) {
-                MC();
-            } else { /* Nada por el epsilon */ }
+                MC(id);
+            } else { // Nada por el epsilon / }
         } else if (currentToken == Token.TK_LEFT_PARENTHESIS) {
             currentToken = lexer.nextToken();
             EXPR();
-            Match(Token.TK_RIGHT_PARENTHESIS, ")");
+            match(Token.TK_RIGHT_PARENTHESIS, ")");
         } else {
-            throw new GranitaException("Expected expression but found " + currentToken.lexeme);
+            throw new GranitaException("Expected expression but found " + currentToken.lexeme
+                    + " in line " + this.lexer.lineNumber());
         }
-        EXPRp();
+        EXPRp();*/
     }
 
     private void EXPRp() throws GranitaException {
@@ -323,30 +374,43 @@ public class Parser {
             }
         } else if (currentToken == Token.TK_KW_READ) {
             currentToken = lexer.nextToken();
-            Match(Token.TK_IDENTIFIER, "identifier");
+            String id = currentToken.lexeme;
+
+            match(Token.TK_IDENTIFIER, "identifier");
             if (currentToken == Token.TK_LEFT_BRACKET) {
                 currentToken = lexer.nextToken();
                 EXPR();
-                Match(Token.TK_RIGHT_BRACKET, "]");
+                match(Token.TK_RIGHT_BRACKET, "]");
             } else { /* Nada por el epsilon */ }
+            while (currentToken == Token.TK_COLON) {
+                currentToken = lexer.nextToken();                
+                id = currentToken.lexeme;
+                match(Token.TK_IDENTIFIER, "identifier");
+                if (currentToken == Token.TK_LEFT_BRACKET) {
+                    currentToken = lexer.nextToken();
+                    E();
+                    match(Token.TK_RIGHT_BRACKET, "]");
+                }
+            }
         } else {
-            throw new GranitaException("Expected print or read function but found " + currentToken.lexeme);
+            throw new GranitaException("Expected print or read function but found " + currentToken.lexeme
+                    + " in line " + this.lexer.lineNumber());
         }
     }
 
     /**
      * MC stands for Method Call.
      */
-    private void MC() throws GranitaException {
-        Match(Token.TK_LEFT_PARENTHESIS, "(");
-        if (is_start_of_expr(currentToken)){
+    private void MC(String id) throws GranitaException {
+        match(Token.TK_LEFT_PARENTHESIS, "(");
+        if (is_start_of_expr(currentToken)) {
             EXPR();
-            while (currentToken == Token.TK_COLON){
+            while (currentToken == Token.TK_COLON) {
                 currentToken = lexer.nextToken();
                 EXPR();
             }
         }
-        Match(Token.TK_RIGHT_PARENTHESIS, ")");
+        match(Token.TK_RIGHT_PARENTHESIS, ")");
     }
 
     /**
@@ -356,13 +420,152 @@ public class Parser {
         if (is_start_of_expr(currentToken)) {
             EXPR();
         } else {
-            Match(Token.TK_STRING_CONSTANT, "string constant");
+            match(Token.TK_STRING_CONSTANT, "string constant");
         }
     }
 
-    //</editor-fold>    
+    //</editor-fold>  
+    
+    //<editor-fold defaultstate="collapsed" desc="Expressions with precendence">
+    private void E() throws GranitaException {
+        F();
+        Ep();
+    }
+
+    private void F() throws GranitaException {
+        G();
+        Fp();
+    }
+
+    private void Ep() throws GranitaException {
+        if (currentToken == Token.TK_OP_OR) {
+            currentToken = lexer.nextToken();
+            F();
+            Ep();
+        }
+    }
+
+    private void G() throws GranitaException {
+        H();
+        Gp();
+    }
+
+    private void Fp() throws GranitaException {
+        if (currentToken == Token.TK_OP_AND) {
+            currentToken = lexer.nextToken();
+            G();
+            Fp();
+        }
+    }
+
+    private void H() throws GranitaException {
+        I();
+        Hp();
+    }
+
+    private void Gp() throws GranitaException {
+        if (currentToken == Token.TK_REL_NEQ || currentToken == Token.TK_REL_EQ) {
+            currentToken = lexer.nextToken();
+            H();
+            Gp();
+        }
+    }
+
+    private void I() throws GranitaException {
+        J();
+        Ip();
+    }
+    
+    private void Hp() throws GranitaException{
+        if (currentToken == Token.TK_REL_GT || currentToken == Token.TK_REL_GTE
+                || currentToken == Token.TK_REL_LT 
+                || currentToken == Token.TK_REL_LTE){
+            currentToken = lexer.nextToken();
+            I();
+            Hp();
+        }
+    }
+    
+    private void J() throws GranitaException{
+        K();
+        Jp();
+    }
+    
+    private void Ip() throws GranitaException{
+        if (currentToken == Token.TK_OP_LEFT_SHIFT ||
+                currentToken == Token.TK_OP_RIGHT_SHIFT ||
+                currentToken == Token.TK_KW_ROT){
+            currentToken = lexer.nextToken();
+            J();
+            Ip();
+        }
+    }
+    
+    private void K() throws GranitaException{
+        M();
+        Kp();
+    }
+    
+    private void Jp() throws GranitaException{
+        if (currentToken == Token.TK_OP_ADD || currentToken == Token.TK_OP_SUB){
+            currentToken = lexer.nextToken();
+            K();
+            Jp();
+        }
+    }
+    
+    private void Kp() throws GranitaException{
+        if (currentToken == Token.TK_OP_MOD || currentToken == Token.TK_OP_DIV
+                || currentToken == Token.TK_OP_MULT){
+            currentToken = lexer.nextToken();
+            M();
+            Kp();
+        }
+    }
+    
+    private void M() throws GranitaException{
+        if (currentToken == Token.TK_LEFT_PARENTHESIS){
+            currentToken = lexer.nextToken();
+            E();
+            match(Token.TK_RIGHT_PARENTHESIS, ")");
+        }else if (currentToken == Token.TK_OP_NOT || currentToken == Token.TK_OP_SUB){
+            currentToken = lexer.nextToken();
+            E();
+        }else if (currentToken == Token.TK_KW_READ || currentToken == Token.TK_KW_PRINT){
+            SMC();
+        }else if (currentToken.equals(Token.TK_IDENTIFIER)){
+            String id = currentToken.lexeme;
+            currentToken = lexer.nextToken();
+            if (currentToken == Token.TK_LEFT_PARENTHESIS){
+                MC(id);
+            }else if (currentToken == Token.TK_LEFT_BRACKET) {
+                currentToken = lexer.nextToken();
+                E();
+                match(Token.TK_RIGHT_BRACKET, "]");
+            }
+        }else if (is_constant(currentToken)){
+            CONSTANT();
+        }else {
+            throw new GranitaException("Expected expression but found " + currentToken.lexeme
+                    + " in line " + this.lexer.lineNumber());
+        }
+    }   
+
+    //</editor-fold>
     
     //<editor-fold defaultstate="collapsed" desc="Helper functions">
+    private String get_type(Token current) {
+        if (is_type(current)) {
+            return null;
+        } else if (current == Token.TK_KW_BOOL) {
+            return "bool";
+        } else if (current == Token.TK_KW_INT) {
+            return "int";
+        } else {
+            return "void";
+        }
+    }
+
     private boolean is_constant(Token current) {
         if (current.type == Token.TokenType.CHAR_CONSTANT
                 || current.type == Token.TokenType.INT_CONSTANT
@@ -449,18 +652,18 @@ public class Parser {
         }
         return false;
     }
-    
-    private boolean is_start_of_statement(Token current){
-        if (current.equals(Token.TK_IDENTIFIER) 
-                || current == Token.TK_KW_IF 
+
+    private boolean is_start_of_statement(Token current) {
+        if (current.equals(Token.TK_IDENTIFIER)
+                || current == Token.TK_KW_IF
                 || current == Token.TK_KW_WHILE
                 || current == Token.TK_KW_FOR
                 || current == Token.TK_KW_RETURN
                 || current == Token.TK_KW_BREAK
                 || current == Token.TK_KW_CONTINUE
                 || current == Token.TK_LEFT_CURLY_BRACKET
-                || current == Token.TK_KW_PRINT 
-                || current == Token.TK_KW_READ){
+                || current == Token.TK_KW_PRINT
+                || current == Token.TK_KW_READ) {
             return true;
         }
         return false;
