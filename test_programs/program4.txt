@@ -16,8 +16,6 @@ void main(){
 	el comentario sigue aki
 	y aki
 	y aki \n \t int for while [10]
-	*/
-	
-	int after_comment;
+	*/ int after_comment;
 	
 }

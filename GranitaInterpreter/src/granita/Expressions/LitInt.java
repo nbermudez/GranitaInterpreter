@@ -12,13 +12,13 @@ public class LitInt extends Expression {
     int value;
     
     public LitInt(int value, int line){
+        super(line);
         this.value = value;
-        this.line = line;
     }
     
     public LitInt(String value, int line){
+        super(line);
         this.value = Integer.parseInt(value);
-        this.line = line;
     }
 
     public int getValue() {

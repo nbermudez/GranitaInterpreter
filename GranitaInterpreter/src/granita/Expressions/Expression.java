@@ -11,5 +11,8 @@ import granitainterpreter.AstNode;
  * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
  */
 public abstract class Expression extends AstNode{
-    
+
+    public Expression(int line) {
+        super(line);
+    }
 }

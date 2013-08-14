@@ -18,12 +18,15 @@ public class ForStatement extends Statement {
     AstNode conditional;
     ArrayList<AstNode> assigns;
 
-    public ForStatement() {
+    public ForStatement(int line) {
+        super(line);
         this.expressions = new ArrayList<AstNode>();
         this.assigns = new ArrayList<AstNode>();
     }
 
-    public ForStatement(AstNode block, ArrayList<AstNode> expressions, AstNode conditional, ArrayList<AstNode> assigns) {
+    public ForStatement(AstNode block, ArrayList<AstNode> expressions, 
+            AstNode conditional, ArrayList<AstNode> assigns, int line) {
+        super(line);
         this.block = block;
         this.expressions = expressions;
         this.conditional = conditional;

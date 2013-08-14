@@ -15,10 +15,13 @@ public class IfStatement extends Statement{
     AstNode conditional;
     AstNode trueBlock, falseBlock;
     
-    public IfStatement(){
+    public IfStatement(int line){
+        super(line);
     }
     
-    public IfStatement(AstNode conditional, AstNode trueBlock, AstNode falseBlock){
+    public IfStatement(AstNode conditional, AstNode trueBlock, 
+            AstNode falseBlock, int line){
+        super(line);
         this.conditional = conditional;
         this.trueBlock = trueBlock;
         this.falseBlock = falseBlock;

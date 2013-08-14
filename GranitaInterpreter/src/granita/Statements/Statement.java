@@ -12,5 +12,8 @@ import granitainterpreter.GranitaException;
  * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
  */
 public abstract class Statement extends AstNode {
-    //abstract public void execute() throws GranitaException;
+
+    public Statement(int line) {
+        super(line);
+    }    
 }

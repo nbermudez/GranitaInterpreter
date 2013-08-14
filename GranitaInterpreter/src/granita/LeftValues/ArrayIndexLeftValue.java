@@ -9,5 +9,9 @@ package granita.LeftValues;
  * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
  */
 public class ArrayIndexLeftValue extends LeftValue{
+
+    public ArrayIndexLeftValue(int line) {
+        super(line);
+    }
     
 }

@@ -16,7 +16,8 @@ public class MethodDeclarationStatement extends Statement {
     ArrayList<AstNode> parameters;
     AstNode block;
     
-    public MethodDeclarationStatement(String type, String identifier){
+    public MethodDeclarationStatement(String type, String identifier, int line){
+        super(line);
         this.type = type;
         this.identifier = identifier;
         this.parameters = new ArrayList<AstNode>();

@@ -16,7 +16,8 @@ public class FieldDeclarationStatement extends Statement{
 
     public ArrayList<Statement> declarations;
 
-    public FieldDeclarationStatement() {
+    public FieldDeclarationStatement(int line) {
+        super(line);
     }    
     
     

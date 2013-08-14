@@ -15,11 +15,12 @@ public class WhileStatement extends Statement{
     AstNode exp;
     AstNode block;
     
-    public WhileStatement(){
-    
+    public WhileStatement(int line){
+        super(line);
     }
     
-    public WhileStatement(AstNode exp, AstNode block){
+    public WhileStatement(AstNode exp, AstNode block, int line){
+        super(line);
         this.exp = exp;
         this.block = block;
     }

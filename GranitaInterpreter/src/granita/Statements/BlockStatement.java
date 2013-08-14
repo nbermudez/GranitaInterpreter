@@ -14,7 +14,8 @@ import java.util.ArrayList;
 public class BlockStatement extends Statement{
     ArrayList<AstNode> statements;
     
-    public BlockStatement(){
+    public BlockStatement(int line){
+        super(line);
         this.statements = new ArrayList<AstNode>();
     }
 

@@ -16,7 +16,8 @@ public class ClassStatement extends Statement{
     public ArrayList<AstNode> fieldDecls;
     public ArrayList<AstNode> methodDecls;
     
-    public ClassStatement(){
+    public ClassStatement(int line){
+        super(line);
         fieldDecls = new ArrayList<AstNode>();
         methodDecls = new ArrayList<AstNode>();
     }

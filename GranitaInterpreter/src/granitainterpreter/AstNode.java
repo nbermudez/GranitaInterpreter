@@ -14,4 +14,8 @@ public abstract class AstNode {
     int getLine(){
         return line;
     }
+    
+    public AstNode(int line){
+        this.line = line;
+    }
 }
