@@ -4,8 +4,26 @@
  */
 package granitainterpreter;
 
+import granita.Expressions.Add;
+import granita.Expressions.And;
+import granita.Expressions.Div;
+import granita.Expressions.Eq;
+import granita.Expressions.Expression;
+import granita.Expressions.GreaterThan;
+import granita.Expressions.GreaterThanEq;
+import granita.Expressions.LessThan;
+import granita.Expressions.LessThanEq;
 import granita.Expressions.LitBool;
 import granita.Expressions.LitInt;
+import granita.Expressions.Mod;
+import granita.Expressions.Mult;
+import granita.Expressions.NotEq;
+import granita.Expressions.Or;
+import granita.Expressions.Rot;
+import granita.Expressions.ShiftLeft;
+import granita.Expressions.ShiftRight;
+import granita.Expressions.Sub;
+import granita.Functions.Parameter;
 import granita.Statements.BlockStatement;
 import granita.Statements.BreakStatement;
 import granita.Statements.ClassStatement;
@@ -149,6 +167,9 @@ public class ParserTree {
 
             currentToken = lexer.nextToken();
             paramId = currentToken.lexeme;
+            
+            Parameter param = new Parameter(paramType, paramId, lexer.lineNumber());
+            mds.addParameter(param);
 
             match(Token.TK_IDENTIFIER, "identifier");
             
@@ -159,6 +180,9 @@ public class ParserTree {
 
                     currentToken = lexer.nextToken();
                     paramId = currentToken.lexeme;
+                    
+                    param = new Parameter(paramType, paramId, lexer.lineNumber());
+                    mds.addParameter(param);
 
                     match(Token.TK_IDENTIFIER, "identifier");
                 } else {
@@ -213,7 +237,7 @@ public class ParserTree {
         match(Token.TK_SEMICOLON, ";");
     }
 
-    private AstNode CONSTANT() throws GranitaException {
+    private Expression CONSTANT() throws GranitaException {
         if (currentToken.equals(Token.TK_CHAR_CONSTANT) 
                 || currentToken.equals(Token.TK_INT_CONSTANT)){
             LitInt integer = new LitInt(currentToken.lexeme, lexer.lineNumber());
@@ -444,123 +468,142 @@ public class ParserTree {
     //</editor-fold>  
     
     //<editor-fold defaultstate="collapsed" desc="Expressions with precendence">
-    private AstNode E() throws GranitaException {
-        F();
-        Ep();
-        return null;
+    private Expression E() throws GranitaException {
+        Expression left = F(), right;
+        while (currentToken == Token.TK_OP_OR){
+            currentToken = lexer.nextToken();
+            right = F();
+            left = new Or(left, right, lexer.lineNumber());
+        }
+        return left;
     }
 
-    private void F() throws GranitaException {
-        G();
-        Fp();
+    private Expression F() throws GranitaException {
+        Expression left = G(), right;
+        while (currentToken == Token.TK_OP_AND) {
+            currentToken = lexer.nextToken();
+            right = G();
+            left = new And(left, right, lexer.lineNumber());
+        }
+        return left;
     }
 
-    private void Ep() throws GranitaException {
-        if (currentToken == Token.TK_OP_OR) {
-            currentToken = lexer.nextToken();
-            F();
-            Ep();
+    private Expression G() throws GranitaException {
+        Expression left = H(), right;
+        while (currentToken == Token.TK_REL_NEQ || currentToken == Token.TK_REL_EQ) {
+            if (currentToken == Token.TK_REL_NEQ){
+                currentToken = lexer.nextToken();
+                right = H();
+                left = new NotEq(left, right, lexer.lineNumber());
+            }else{
+                currentToken = lexer.nextToken();
+                right = H();
+                left = new Eq(left, right, lexer.lineNumber());
+            }            
         }
+        return left;
     }
 
-    private void G() throws GranitaException {
-        H();
-        Gp();
+    private Expression H() throws GranitaException {
+        Expression left = I(), right;
+        while (currentToken == Token.TK_REL_GT || currentToken == Token.TK_REL_GTE
+                || currentToken == Token.TK_REL_LT || currentToken == Token.TK_REL_LTE){
+            
+            Token tmp = currentToken;
+            currentToken = lexer.nextToken();
+            
+            right = I();
+            if (tmp == Token.TK_REL_GT){
+                left = new GreaterThan(left, right, lexer.lineNumber());
+            }else if (tmp == Token.TK_REL_GTE){
+                left = new GreaterThanEq(left, right, lexer.lineNumber());
+            }else if (tmp == Token.TK_REL_LT){
+                left = new LessThan(left, right, lexer.lineNumber());
+            }else if (tmp == Token.TK_REL_LTE){
+                left = new LessThanEq(left, right, lexer.lineNumber());
+            }else{
+                break;
+            }
+        }
+        return left;
     }
 
-    private void Fp() throws GranitaException {
-        if (currentToken == Token.TK_OP_AND) {
+    private Expression I() throws GranitaException {
+        Expression left = J(), right;
+        while (currentToken == Token.TK_OP_LEFT_SHIFT || currentToken == Token.TK_OP_RIGHT_SHIFT 
+                || currentToken == Token.TK_KW_ROT){
+            Token tmp = currentToken;
             currentToken = lexer.nextToken();
-            G();
-            Fp();
+            
+            right = J();
+            if (tmp == Token.TK_OP_LEFT_SHIFT){
+                left = new ShiftLeft(left, right, lexer.lineNumber());
+            }else if (tmp == Token.TK_OP_RIGHT_SHIFT){
+                left = new ShiftRight(left, right, lexer.lineNumber());
+            }else if (tmp == Token.TK_KW_ROT){
+                left = new Rot(left, right, lexer.lineNumber());
+            }
         }
+        return left;
     }
-
-    private void H() throws GranitaException {
-        I();
-        Hp();
-    }
-
-    private void Gp() throws GranitaException {
-        if (currentToken == Token.TK_REL_NEQ || currentToken == Token.TK_REL_EQ) {
+    
+    private Expression J() throws GranitaException{
+        Expression left = K(), right;
+        while (currentToken == Token.TK_OP_MOD){
             currentToken = lexer.nextToken();
-            H();
-            Gp();
+            
+            right = K();
+            left = new Mod(left, right, lexer.lineNumber());
         }
-    }
-
-    private void I() throws GranitaException {
-        J();
-        Ip();
+        return left;
     }
     
-    private void Hp() throws GranitaException{
-        if (currentToken == Token.TK_REL_GT || currentToken == Token.TK_REL_GTE
-                || currentToken == Token.TK_REL_LT 
-                || currentToken == Token.TK_REL_LTE){
-            currentToken = lexer.nextToken();
-            I();
-            Hp();
+    private Expression K() throws GranitaException{
+        Expression left = L(), right;
+        while (currentToken == Token.TK_OP_ADD || currentToken == Token.TK_OP_SUB){
+            if (currentToken == Token.TK_OP_ADD){
+                currentToken = lexer.nextToken();
+                
+                right = L();
+                left = new Add(left, right, lexer.lineNumber());
+            }else {
+                currentToken = lexer.nextToken();
+                
+                right = L();
+                left = new Sub(left, right, lexer.lineNumber());
+            }
         }
+        return left;
     }
     
-    private void J() throws GranitaException{
-        K();
-        Jp();
-    }
-    
-    private void Ip() throws GranitaException{
-        if (currentToken == Token.TK_OP_LEFT_SHIFT ||
-                currentToken == Token.TK_OP_RIGHT_SHIFT ||
-                currentToken == Token.TK_KW_ROT){
-            currentToken = lexer.nextToken();
-            J();
-            Ip();
+    private Expression L() throws GranitaException {
+        Expression left = M(), right;
+        while (currentToken == Token.TK_OP_DIV || currentToken == Token.TK_OP_MULT){
+            if (currentToken == Token.TK_OP_DIV){
+                currentToken = lexer.nextToken();
+                right = M();
+                
+                left = new Div(left, right, lexer.lineNumber());
+            }else {
+                currentToken = lexer.nextToken();
+                right = M();
+                
+                left = new Mult(left, right, lexer.lineNumber());
+            }
+            
         }
+        return left;
     }
     
-    private void K() throws GranitaException{
-        L();
-        Kp();
-    }
-    
-    private void L() throws GranitaException {
-        M();
-        Lp();
-    }
-    
-    private void Lp() throws GranitaException {
-        if (currentToken == Token.TK_OP_DIV || currentToken == Token.TK_OP_MULT){
-            currentToken = lexer.nextToken();
-            M();
-            Lp();
-        }
-    }
-    
-    private void Jp() throws GranitaException{
-        if (currentToken == Token.TK_OP_MOD){
-            currentToken = lexer.nextToken();
-            K();
-            Jp();
-        }
-    }
-    
-    private void Kp() throws GranitaException{
-        if (currentToken == Token.TK_OP_ADD || currentToken == Token.TK_OP_SUB){
-            currentToken = lexer.nextToken();
-            M();
-            Kp();
-        }
-    }
-    
-    private void M() throws GranitaException{
+    private Expression M() throws GranitaException{
+        Expression result = null;
         if (currentToken == Token.TK_LEFT_PARENTHESIS){
             currentToken = lexer.nextToken();
-            E();
+            result = E();
             match(Token.TK_RIGHT_PARENTHESIS, ")");
         }else if (currentToken == Token.TK_OP_NOT || currentToken == Token.TK_OP_SUB){
             currentToken = lexer.nextToken();
-            E();
+            result = E();
         }else if (currentToken == Token.TK_KW_READ || currentToken == Token.TK_KW_PRINT){
             SMC();
         }else if (currentToken.equals(Token.TK_IDENTIFIER)){
@@ -574,25 +617,26 @@ public class ParserTree {
                 match(Token.TK_RIGHT_BRACKET, "]");
             }
         }else if (is_constant(currentToken)){
-            CONSTANT();
+            result = CONSTANT();
         }else {
             throw new GranitaException("Expected expression but found " + currentToken.lexeme
                     + " in line " + this.lexer.lineNumber());
         }
+        return result;
     }   
 
     //</editor-fold>
     
     //<editor-fold defaultstate="collapsed" desc="Helper functions">
     private String get_type(Token current) {
-        if (is_type(current)) {
-            return null;
-        } else if (current == Token.TK_KW_BOOL) {
+        if (current == Token.TK_KW_BOOL) {
             return "bool";
         } else if (current == Token.TK_KW_INT) {
             return "int";
-        } else {
+        } else if (current == Token.TK_KW_VOID){
             return "void";
+        }else {
+            return null;
         }
     }
 

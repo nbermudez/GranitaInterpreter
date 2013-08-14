@@ -18,7 +18,11 @@ public class LitInt extends Expression {
     
     public LitInt(String value, int line){
         super(line);
-        this.value = Integer.parseInt(value);
+        if (value.contains("X") || value.contains("x")){
+            this.value = Integer.parseInt(value.substring(value.replace("X", "x").indexOf("x")+1), 16);
+        }else{
+            this.value = Integer.parseInt(value);
+        }
     }
 
     public int getValue() {

@@ -55,5 +55,9 @@ public class MethodDeclarationStatement extends Statement {
         this.block = block;
     }
     
+    public void addParameter(AstNode param){
+        this.parameters.add(param);
+    }
+    
     
 }

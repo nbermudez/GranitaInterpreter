@@ -18,7 +18,7 @@ public class GranitaInterpreter {
             Lexer lexer = new Lexer("C:/Users/Alejandro/Documents/GitHub/GranitaInterpreter/test_programs/program5.txt");
             //System.out.println(lexer.toString());
             
-            NewParser parser = new NewParser(lexer);
+            ParserTree parser = new ParserTree(lexer);
             parser.parse();
             System.out.println("Analisis Sintactico exitoso");
         } catch (Exception ex) {
