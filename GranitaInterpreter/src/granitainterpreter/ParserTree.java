@@ -24,13 +24,19 @@ import granita.Expressions.ShiftLeft;
 import granita.Expressions.ShiftRight;
 import granita.Expressions.Sub;
 import granita.Functions.Parameter;
+import granita.LeftValues.ArrayIndexLeftValue;
+import granita.LeftValues.LeftValue;
+import granita.LeftValues.SimpleValue;
+import granita.Statements.AssignStatement;
 import granita.Statements.BlockStatement;
 import granita.Statements.BreakStatement;
 import granita.Statements.ClassStatement;
 import granita.Statements.ContinueStatement;
+import granita.Statements.ForStatement;
 import granita.Statements.IfStatement;
 import granita.Statements.MethodDeclarationStatement;
 import granita.Statements.ReturnStatement;
+import granita.Statements.Statement;
 import granita.Statements.WhileStatement;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -45,6 +51,7 @@ public class ParserTree {
     private Token currentToken;
     private Lexer lexer;
     private ClassStatement currentClass;
+    private boolean insideLoop = false;
     //</editor-fold>    
 
     //<editor-fold defaultstate="collapsed" desc="Constructors">
@@ -57,13 +64,13 @@ public class ParserTree {
     }
     //</editor-fold>    
 
-    public void parse() throws GranitaException {
+    public ArrayList<Statement> parse() throws GranitaException {
         currentToken = lexer.nextToken();
-        statements();
+        return statements();
     }
 
-    private ArrayList<AstNode> statements() throws GranitaException { 
-        ArrayList<AstNode> programs = new ArrayList<AstNode>();
+    private ArrayList<Statement> statements() throws GranitaException { 
+        ArrayList<Statement> programs = new ArrayList<Statement>();
         if (currentToken != Token.TK_KW_CLASS) {
             throw new GranitaException("Expected class but found " + currentToken.lexeme
                     + " in line " + this.lexer.lineNumber());
@@ -88,7 +95,7 @@ public class ParserTree {
     /**
      * P stands for Program. P -> class id { DECL_L }
      */
-    private AstNode P() throws GranitaException {
+    private Statement P() throws GranitaException {
         currentClass = new ClassStatement(lexer.lineNumber());
         
         match(Token.TK_KW_CLASS, "class");
@@ -157,7 +164,7 @@ public class ParserTree {
      * MD stands for Method Declaration. MD -> '(' (type id (, type id)* | e )
      * ')' BLOCK
      */
-    private AstNode MD(String type, String id) throws GranitaException {
+    private Statement MD(String type, String id) throws GranitaException {
         MethodDeclarationStatement mds = new MethodDeclarationStatement(type, id, lexer.lineNumber());
         
         match(Token.TK_LEFT_PARENTHESIS, "(");
@@ -199,12 +206,12 @@ public class ParserTree {
     /**
      * FD stands for Field Declaration.
      */
-    private AstNode FD(String type, String id) throws GranitaException {
+    private Statement FD(String type, String id) throws GranitaException {
         if (currentToken == Token.TK_SEMICOLON) {
             currentToken = lexer.nextToken();
         } else if (currentToken == Token.TK_OP_EQ) {
             currentToken = lexer.nextToken();
-            AstNode constant = CONSTANT();
+            Expression constant = CONSTANT();
             match(Token.TK_SEMICOLON, ";");
         } else if (currentToken == Token.TK_LEFT_BRACKET) {
             currentToken = lexer.nextToken();
@@ -256,7 +263,7 @@ public class ParserTree {
      * BLOCK represents a list of statements enclosed in curly brackets. BLOCK
      * -> '{' VD* STNT* '}'
      */
-    private AstNode BLOCK() throws GranitaException {
+    private Statement BLOCK() throws GranitaException {
         BlockStatement block = new BlockStatement(lexer.lineNumber());
         match(Token.TK_LEFT_CURLY_BRACKET, "{");
         while (is_type(currentToken)) {
@@ -273,7 +280,7 @@ public class ParserTree {
     /**
      * VD stands for Variable declaration. VD -> type id (, id)* ;
      */
-    private AstNode VD() throws GranitaException {
+    private Statement VD() throws GranitaException {
         String type, id;
         if (is_type(currentToken)) {
             type = get_type(currentToken);
@@ -293,69 +300,79 @@ public class ParserTree {
         return null;
     }
 
-    private AstNode STNT() throws GranitaException {
+    private Statement STNT() throws GranitaException {
         if (currentToken == Token.TK_LEFT_CURLY_BRACKET) {
             return BLOCK();
         } else if (currentToken == Token.TK_KW_CONTINUE) {
-            AstNode c = new ContinueStatement(false, lexer.lineNumber());
-            currentToken = lexer.nextToken();            
+            Statement c = new ContinueStatement(false, lexer.lineNumber());
+            currentToken = lexer.nextToken();
             match(Token.TK_SEMICOLON, ";");
             
             return c;
         } else if (currentToken == Token.TK_KW_BREAK){
-            AstNode b = new BreakStatement(false, lexer.lineNumber());
-            currentToken = lexer.nextToken();            
+            Statement b = new BreakStatement(insideLoop, lexer.lineNumber());
+            currentToken = lexer.nextToken();
             match(Token.TK_SEMICOLON, ";");
             
             return b;
         }else if (currentToken == Token.TK_KW_RETURN) {
             currentToken = lexer.nextToken();
-            AstNode exp = null;
+            Expression exp = null;
             if (is_start_of_expr(currentToken)) {
                 exp = EXPR();
             } else { /*Nada por el epsilon*/ }            
             match(Token.TK_SEMICOLON, ";");
             
-            AstNode re = new ReturnStatement(false, exp, lexer.lineNumber());
+            Statement re = new ReturnStatement(insideLoop, exp, lexer.lineNumber());
             return re;
         } else if (currentToken == Token.TK_KW_FOR) {
+            ArrayList<Expression> inits = new ArrayList<Expression>();
+            ArrayList<Statement> incrs = new ArrayList<Statement>();
+            Expression termination;
+            insideLoop = true;
             currentToken = lexer.nextToken();
             match(Token.TK_LEFT_PARENTHESIS, "(");
-            EXPR();
+            inits.add(EXPR());
+            
             while (currentToken == Token.TK_COLON) {
                 currentToken = lexer.nextToken();
-                EXPR();
+                inits.add(EXPR());
             }
             match(Token.TK_SEMICOLON, ";");
-            EXPR();
+            termination = EXPR();
             match(Token.TK_SEMICOLON, ";");
 
             String id = currentToken.lexeme;
             match(Token.TK_IDENTIFIER, "identifier");
 
-            ASSIGN(id);
+            incrs.add(ASSIGN(id));
             while (currentToken == Token.TK_COLON) {
                 currentToken = lexer.nextToken();
                 id = currentToken.lexeme;
 
                 match(Token.TK_IDENTIFIER, "identifier");
-                ASSIGN(id);
+                incrs.add(ASSIGN(id));
             }
             match(Token.TK_RIGHT_PARENTHESIS, ")");
-            BLOCK();
+            Statement block = BLOCK();
+            insideLoop = false;
+            Statement fo = new ForStatement(block, inits, termination, incrs, lexer.lineNumber());
+            return fo;
         } else if (currentToken == Token.TK_KW_WHILE) {
+            insideLoop = true;
             currentToken = lexer.nextToken();
             match(Token.TK_LEFT_PARENTHESIS, "(");
-            AstNode condition = EXPR();
+            Expression condition = EXPR();
             match(Token.TK_RIGHT_PARENTHESIS, ")");
-            AstNode block = BLOCK();
+            Statement block = BLOCK();
+            insideLoop = false;
             return new WhileStatement(condition, block, lexer.lineNumber());
         } else if (currentToken == Token.TK_KW_IF) {
             currentToken = lexer.nextToken();
             match(Token.TK_LEFT_PARENTHESIS, "(");
-            AstNode conditional = EXPR();
+            Expression conditional = EXPR();
             match(Token.TK_RIGHT_PARENTHESIS, ")");
-            AstNode trueBlock = BLOCK(), falseBlock = null;
+            Statement trueBlock = BLOCK(), falseBlock = null;
             if (currentToken == Token.TK_KW_ELSE) {
                 currentToken = lexer.nextToken();
                 falseBlock = BLOCK();
@@ -364,40 +381,53 @@ public class ParserTree {
         } else if (currentToken.equals(Token.TK_IDENTIFIER)) {
             String id = currentToken.lexeme;
             currentToken = lexer.nextToken();
+            Statement node = null;
             if (currentToken == Token.TK_OP_EQ || currentToken == Token.TK_LEFT_BRACKET) {
-                ASSIGN(id);
+                node = ASSIGN(id);                
             } else if (currentToken == Token.TK_LEFT_PARENTHESIS) {
-                MC(id);
+                node = MC(id);
             }
             match(Token.TK_SEMICOLON, ";");
+            return node;
         } else if (currentToken == Token.TK_KW_PRINT || currentToken == Token.TK_KW_READ) {
-            AstNode smc = SMC();
+            Statement smc = SMC();
             match(Token.TK_SEMICOLON, ";");
             return smc;
         } else {
             throw new GranitaException("Expected a statement but found " + currentToken.lexeme
                     + " in line " + this.lexer.lineNumber());
         }
-        return null;
     }
 
-    private void ASSIGN(String id) throws GranitaException {
+    private Statement ASSIGN(String id) throws GranitaException {
         if (currentToken == Token.TK_OP_EQ) {
             currentToken = lexer.nextToken();
-            EXPR();
+            
+            LeftValue left = new SimpleValue(id, lexer.lineNumber());
+            Expression value = EXPR();
+            
+            Statement assign = new AssignStatement(left, value, lexer.lineNumber());
+            return assign;
         } else if (currentToken == Token.TK_LEFT_BRACKET) {
             currentToken = lexer.nextToken();
-            EXPR();
+            
+            Expression index = EXPR();
+            
             match(Token.TK_RIGHT_BRACKET, "]");
             match(Token.TK_OP_EQ, "=");
-            EXPR();
+            
+            Expression value = EXPR();
+            
+            ArrayIndexLeftValue left = new ArrayIndexLeftValue(id, index, lexer.lineNumber());
+            Statement assign = new AssignStatement(left, value, lexer.lineNumber());
+            return assign;
         } else {
             throw new GranitaException("Expected assignment but found " + currentToken.lexeme
                     + " in line " + this.lexer.lineNumber());
         }
     }
 
-    private AstNode EXPR() throws GranitaException {
+    private Expression EXPR() throws GranitaException {
         return E();
     }
 
@@ -405,7 +435,7 @@ public class ParserTree {
      * SMC stands for Special Method Call. SMC -> print ARG (, ARG)* |read id
      * ([EXPR] | e)
      */
-    private AstNode SMC() throws GranitaException {
+    private Statement SMC() throws GranitaException {
         if (currentToken == Token.TK_KW_PRINT) {
             currentToken = lexer.nextToken();
             ARG();
@@ -442,7 +472,7 @@ public class ParserTree {
     /**
      * MC stands for Method Call.
      */
-    private void MC(String id) throws GranitaException {
+    private Statement MC(String id) throws GranitaException {
         match(Token.TK_LEFT_PARENTHESIS, "(");
         if (is_start_of_expr(currentToken)) {
             EXPR();
@@ -452,6 +482,7 @@ public class ParserTree {
             }
         }
         match(Token.TK_RIGHT_PARENTHESIS, ")");
+        return null;
     }
 
     /**
@@ -595,7 +626,7 @@ public class ParserTree {
         return left;
     }
     
-    private Expression M() throws GranitaException{
+    private Expression M() throws GranitaException {
         Expression result = null;
         if (currentToken == Token.TK_LEFT_PARENTHESIS){
             currentToken = lexer.nextToken();
@@ -613,8 +644,12 @@ public class ParserTree {
                 MC(id);
             }else if (currentToken == Token.TK_LEFT_BRACKET) {
                 currentToken = lexer.nextToken();
-                E();
+                Expression index = EXPR();
                 match(Token.TK_RIGHT_BRACKET, "]");
+                
+                result = new ArrayIndexLeftValue(id, index, lexer.lineNumber());                
+            }else {
+                result = new SimpleValue(id, lexer.lineNumber());
             }
         }else if (is_constant(currentToken)){
             result = CONSTANT();

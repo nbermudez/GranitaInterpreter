@@ -4,15 +4,14 @@
  */
 package granita.Expressions;
 
-import granitainterpreter.AstNode;
-
 /**
  *
  * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
  */
-public abstract class Expression extends AstNode{
-
+public abstract class Expression {
+    int line;
+    
     public Expression(int line) {
-        super(line);
+        this.line = line;
     }
 }

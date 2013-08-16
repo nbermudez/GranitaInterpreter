@@ -4,6 +4,9 @@
  */
 package granitainterpreter;
 
+import granita.Statements.Statement;
+import java.util.ArrayList;
+
 /**
  *
  * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
@@ -19,8 +22,8 @@ public class GranitaInterpreter {
             //System.out.println(lexer.toString());
             
             ParserTree parser = new ParserTree(lexer);
-            parser.parse();
-            System.out.println("Analisis Sintactico exitoso");
+            ArrayList<Statement> trees = parser.parse();
+            System.out.println("Syntactic Analysis Successful");
         } catch (Exception ex) {
             ex.printStackTrace();
             //System.out.println(ex.getMessage());

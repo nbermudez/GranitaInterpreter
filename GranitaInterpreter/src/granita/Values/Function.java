@@ -4,7 +4,7 @@
  */
 package granita.Values;
 
-import granita.Types.Type;
+import granita.Semantic.Types.Type;
 import java.util.Hashtable;
 
 /**

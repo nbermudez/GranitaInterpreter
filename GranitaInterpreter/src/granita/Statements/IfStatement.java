@@ -4,7 +4,7 @@
  */
 package granita.Statements;
 
-import granitainterpreter.AstNode;
+import granita.Expressions.Expression;
 
 /**
  *
@@ -12,30 +12,30 @@ import granitainterpreter.AstNode;
  */
 public class IfStatement extends Statement{
     
-    AstNode conditional;
-    AstNode trueBlock, falseBlock;
+    Expression conditional;
+    Statement trueBlock, falseBlock;
     
     public IfStatement(int line){
         super(line);
     }
     
-    public IfStatement(AstNode conditional, AstNode trueBlock, 
-            AstNode falseBlock, int line){
+    public IfStatement(Expression conditional, Statement trueBlock, 
+            Statement falseBlock, int line){
         super(line);
         this.conditional = conditional;
         this.trueBlock = trueBlock;
         this.falseBlock = falseBlock;
     }
 
-    public void setConditional(AstNode conditional) {
+    public void setConditional(Expression conditional) {
         this.conditional = conditional;
     }
 
-    public void setTrueBlock(AstNode trueBlock) {
+    public void setTrueBlock(Statement trueBlock) {
         this.trueBlock = trueBlock;
     }
 
-    public void setFalseBlock(AstNode falseBlock) {
+    public void setFalseBlock(Statement falseBlock) {
         this.falseBlock = falseBlock;
     }    
     

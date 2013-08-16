@@ -4,7 +4,6 @@
  */
 package granita.Statements;
 
-import granitainterpreter.AstNode;
 import java.util.ArrayList;
 
 /**
@@ -12,22 +11,22 @@ import java.util.ArrayList;
  * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
  */
 public class BlockStatement extends Statement{
-    ArrayList<AstNode> statements;
+    ArrayList<Statement> statements;
     
     public BlockStatement(int line){
         super(line);
-        this.statements = new ArrayList<AstNode>();
+        this.statements = new ArrayList<Statement>();
     }
 
-    public ArrayList<AstNode> getStatements() {
+    public ArrayList<Statement> getStatements() {
         return statements;
     }
 
-    public void setStatements(ArrayList<AstNode> statements) {
+    public void setStatements(ArrayList<Statement> statements) {
         this.statements = statements;
     }      
     
-    public void addStatement(AstNode stmt){
+    public void addStatement(Statement stmt){
         this.statements.add(stmt);
     }
 }

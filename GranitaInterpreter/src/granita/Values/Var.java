@@ -5,7 +5,7 @@
 package granita.Values;
 
 import granita.Expressions.Expression;
-import granita.Types.Type;
+import granita.Semantic.Types.Type;
 
 /**
  *

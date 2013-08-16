@@ -4,7 +4,7 @@
  */
 package granita.Statements;
 
-import granitainterpreter.AstNode;
+import granita.Expressions.Expression;
 import java.util.ArrayList;
 
 /**
@@ -13,39 +13,35 @@ import java.util.ArrayList;
  */
 public class ForStatement extends Statement {
 
-    AstNode block;
-    ArrayList<AstNode> expressions;
-    AstNode conditional;
-    ArrayList<AstNode> assigns;
+    Statement block;
+    ArrayList<Expression> initializations;
+    Expression termination; 
+    ArrayList<Statement> increments; 
 
     public ForStatement(int line) {
         super(line);
-        this.expressions = new ArrayList<AstNode>();
-        this.assigns = new ArrayList<AstNode>();
+        this.initializations = new ArrayList<Expression>();
+        this.increments = new ArrayList<Statement>();
     }
 
-    public ForStatement(AstNode block, ArrayList<AstNode> expressions, 
-            AstNode conditional, ArrayList<AstNode> assigns, int line) {
+    public ForStatement(Statement block, ArrayList<Expression> initializations, 
+            Expression termination, ArrayList<Statement> increments, int line) {
         super(line);
         this.block = block;
-        this.expressions = expressions;
-        this.conditional = conditional;
-        this.assigns = assigns;
+        this.initializations = initializations;
+        this.termination = termination;
+        this.increments = increments;
     }
 
-    public void setBlock(AstNode st) {
+    public void setBlock(Statement st) {
         this.block = st;
     }
 
-    public void addExpression(AstNode exp) {
-        this.expressions.add(exp);
+    public void addExpression(Expression exp) {
+        this.initializations.add(exp);
     }
 
-    public void addAssign(AstNode assign) {
-        this.assigns.add(assign);
-    }
-
-    public void setConditional(AstNode conditional) {
-        this.conditional = conditional;
+    public void addAssign(Statement assign) {
+        this.increments.add(assign);
     }
 }

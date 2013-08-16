@@ -2,14 +2,16 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package granita.Types;
+package granita.Statements;
 
 /**
  *
  * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
  */
-public abstract class Type {
-    
-    public abstract boolean equivalent(Type t);
+public class MethodCallStatement extends Statement {
+
+    public MethodCallStatement(int line) {
+        super(line);
+    }
     
 }

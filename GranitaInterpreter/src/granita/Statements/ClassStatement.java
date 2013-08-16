@@ -4,7 +4,6 @@
  */
 package granita.Statements;
 
-import granitainterpreter.AstNode;
 import java.util.ArrayList;
 
 /**
@@ -13,20 +12,20 @@ import java.util.ArrayList;
  */
 public class ClassStatement extends Statement{
     
-    public ArrayList<AstNode> fieldDecls;
-    public ArrayList<AstNode> methodDecls;
+    public ArrayList<Statement> fieldDecls;
+    public ArrayList<Statement> methodDecls;
     
     public ClassStatement(int line){
         super(line);
-        fieldDecls = new ArrayList<AstNode>();
-        methodDecls = new ArrayList<AstNode>();
+        fieldDecls = new ArrayList<Statement>();
+        methodDecls = new ArrayList<Statement>();
     }
     
-    public void addFieldDeclaration(AstNode fieldDec){
+    public void addFieldDeclaration(Statement fieldDec){
         this.fieldDecls.add(fieldDec);
     }
     
-    public void addMethodDeclaration(AstNode method){
+    public void addMethodDeclaration(Statement method){
         this.methodDecls.add(method);
     }
     

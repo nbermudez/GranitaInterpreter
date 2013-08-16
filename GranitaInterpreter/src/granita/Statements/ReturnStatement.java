@@ -4,7 +4,7 @@
  */
 package granita.Statements;
 
-import granitainterpreter.AstNode;
+import granita.Expressions.Expression;
 
 /**
  *
@@ -12,9 +12,9 @@ import granitainterpreter.AstNode;
  */
 public class ReturnStatement extends Statement {
     boolean isInsideFunction;
-    AstNode returnExpression;
+    Expression returnExpression;
 
-    public ReturnStatement(boolean isInsideFunction, AstNode returnExpression, int line) {
+    public ReturnStatement(boolean isInsideFunction, Expression returnExpression, int line) {
         super(line);
         this.isInsideFunction = isInsideFunction;
         this.returnExpression = returnExpression;

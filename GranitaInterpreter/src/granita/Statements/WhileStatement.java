@@ -4,7 +4,7 @@
  */
 package granita.Statements;
 
-import granitainterpreter.AstNode;
+import granita.Expressions.Expression;
 
 /**
  *
@@ -12,20 +12,20 @@ import granitainterpreter.AstNode;
  */
 public class WhileStatement extends Statement{
     
-    AstNode exp;
-    AstNode block;
+    Expression exp;
+    Statement block;
     
     public WhileStatement(int line){
         super(line);
     }
     
-    public WhileStatement(AstNode exp, AstNode block, int line){
+    public WhileStatement(Expression exp, Statement block, int line){
         super(line);
         this.exp = exp;
         this.block = block;
     }
     
-    public void setExpression(AstNode exp){
+    public void setExpression(Expression exp){
         this.exp = exp;
     }
     

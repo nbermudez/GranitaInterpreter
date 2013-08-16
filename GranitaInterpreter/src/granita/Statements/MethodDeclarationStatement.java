@@ -4,7 +4,6 @@
  */
 package granita.Statements;
 
-import granitainterpreter.AstNode;
 import java.util.ArrayList;
 
 /**
@@ -13,14 +12,14 @@ import java.util.ArrayList;
  */
 public class MethodDeclarationStatement extends Statement {
     String type, identifier;
-    ArrayList<AstNode> parameters;
-    AstNode block;
+    ArrayList<Statement> parameters;
+    Statement block;
     
     public MethodDeclarationStatement(String type, String identifier, int line){
         super(line);
         this.type = type;
         this.identifier = identifier;
-        this.parameters = new ArrayList<AstNode>();
+        this.parameters = new ArrayList<Statement>();
     }
 
     public String getType() {
@@ -39,23 +38,23 @@ public class MethodDeclarationStatement extends Statement {
         this.identifier = identifier;
     }
 
-    public ArrayList<AstNode> getParameters() {
+    public ArrayList<Statement> getParameters() {
         return parameters;
     }
 
-    public void setParameters(ArrayList<AstNode> parameters) {
+    public void setParameters(ArrayList<Statement> parameters) {
         this.parameters = parameters;
     }
 
-    public AstNode getBlock() {
+    public Statement getBlock() {
         return block;
     }
 
-    public void setBlock(AstNode block) {
+    public void setBlock(Statement block) {
         this.block = block;
     }
     
-    public void addParameter(AstNode param){
+    public void addParameter(Statement param){
         this.parameters.add(param);
     }
     
