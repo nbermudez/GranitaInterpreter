@@ -41,4 +41,8 @@ public class AssignStatement extends Statement {
         this.value = value;
     }
     
+    @Override
+    public String toString() {
+        return left.toString() + " = " + value.toString() + ";";
+    }
 }

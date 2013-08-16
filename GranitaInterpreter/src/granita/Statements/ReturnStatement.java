@@ -27,6 +27,16 @@ public class ReturnStatement extends Statement {
     public void setIsInsideFunction(boolean isInsideFunction) {
         this.isInsideFunction = isInsideFunction;
     }
+
+    @Override
+    public String toString() {
+        String ret = "return";
+        if (returnExpression != null){
+            ret += " " + returnExpression.toString();
+        }
+        ret += ";";
+        return ret;
+    }
     
     
 }

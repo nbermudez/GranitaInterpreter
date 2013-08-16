@@ -2,20 +2,23 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package granita.Expressions;
+package granita.FieldItems;
+
 
 /**
  *
  * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
  */
-public class Or extends BinaryExpression {
+public class SimpleField extends Field {
 
-    public Or(Expression left, Expression right, int line) {
-        super(left, right, line);
+    public SimpleField(String fieldName, int line) {
+        super(fieldName, line);
+        this.fieldName = fieldName;
     }
-    
+
     @Override
     public String toString() {
-        return left.toString() + " || " + right.toString();
+        return fieldName;
     }
+    
 }

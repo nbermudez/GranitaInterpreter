@@ -22,5 +22,11 @@ public class ContinueStatement extends Statement {
 
     public void setIsInsideLoop(boolean isInsideLoop) {
         this.isInsideLoop = isInsideLoop;
-    }    
+    } 
+
+    @Override
+    public String toString() {
+        return "continue;";
+    }
+    
 }

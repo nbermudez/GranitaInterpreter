@@ -57,6 +57,19 @@ public class MethodDeclarationStatement extends Statement {
     public void addParameter(Statement param){
         this.parameters.add(param);
     }
-    
+
+    @Override
+    public String toString() {
+        String method = type + " " + identifier + "(";
+        for (int i = 0; i< parameters.size() - 1 ; i++){
+            method += parameters.get(i).toString() + ",";
+        }
+        if (parameters.size()>0){
+            method += parameters.get(parameters.size() - 1).toString();
+        }
+        method += ")";
+        method += block.toString();
+        return method;
+    }
     
 }

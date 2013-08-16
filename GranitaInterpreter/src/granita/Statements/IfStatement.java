@@ -38,5 +38,17 @@ public class IfStatement extends Statement{
     public void setFalseBlock(Statement falseBlock) {
         this.falseBlock = falseBlock;
     }    
-    
+
+    @Override
+    public String toString() {
+        String i = "if (";
+        i += conditional.toString();
+        i += ")\n";
+        i += trueBlock.toString();
+        if (falseBlock != null){
+            i += "else";
+            i += falseBlock.toString();
+        }
+        return i;
+    }
 }

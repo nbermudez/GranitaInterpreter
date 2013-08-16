@@ -14,4 +14,8 @@ public class LessThanEq extends BinaryExpression {
         super(left, right, line);
     }
     
+    @Override
+    public String toString() {
+        return left.toString() + " <= " + right.toString();
+    }
 }

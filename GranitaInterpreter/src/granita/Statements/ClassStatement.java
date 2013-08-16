@@ -12,13 +12,15 @@ import java.util.ArrayList;
  */
 public class ClassStatement extends Statement{
     
-    public ArrayList<Statement> fieldDecls;
-    public ArrayList<Statement> methodDecls;
+    private ArrayList<Statement> fieldDecls;
+    private ArrayList<Statement> methodDecls;
+    private String id;
     
-    public ClassStatement(int line){
+    public ClassStatement(String id, int line){
         super(line);
         fieldDecls = new ArrayList<Statement>();
         methodDecls = new ArrayList<Statement>();
+        this.id = id;
     }
     
     public void addFieldDeclaration(Statement fieldDec){
@@ -29,4 +31,18 @@ public class ClassStatement extends Statement{
         this.methodDecls.add(method);
     }
     
+    @Override
+    public String toString() {
+        String cl = "class " + id + "{\n";
+        for (Statement s: fieldDecls){
+            if (s != null){
+                cl += "\t" + s.toString() + ";\n";
+            }
+        }
+        for (Statement s: methodDecls){
+            cl += "\t" +s.toString() + "\n";
+        }
+        cl += "}";
+        return cl;
+    }
 }

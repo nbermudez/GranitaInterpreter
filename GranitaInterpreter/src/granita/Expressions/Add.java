@@ -13,5 +13,9 @@ public class Add extends BinaryExpression {
     public Add(Expression left, Expression right, int line) {
         super(left, right, line);
     }
-    
+
+    @Override
+    public String toString() {
+        return left.toString() + " + " + right.toString();
+    }
 }

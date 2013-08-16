@@ -44,4 +44,21 @@ public class ForStatement extends Statement {
     public void addAssign(Statement assign) {
         this.increments.add(assign);
     }
+    
+    @Override
+    public String toString() {
+        String f = "for(";
+        for (int i = 0; i< initializations.size() - 1 ; i++){
+            f += initializations.get(i).toString() + ",";
+        }
+        f += initializations.get(initializations.size() - 1).toString() + ";";
+        f += termination.toString() + ";";
+        for (int i = 0; i< increments.size() - 1 ; i++){
+            f += increments.get(i).toString() + ",";
+        }
+        f += increments.get(increments.size() - 1).toString() + ";";
+        f += ")\n";
+        f += block.toString();
+        return f;
+    }
 }

@@ -1,5 +1,6 @@
 class _My_Class {
-	int var_int1 = 10;
+	int var_char = 'a';
+	int var_int1;
 	int var_int2, var_int3;
 	int var_int4, var_int5[5], var_int6;
 	bool arr[1], not_arr, arr2[0x5];
@@ -31,6 +32,6 @@ class _My_Class {
 	}
 	
 	void main(){
-		x = read a[2],b[a+1],c;
+		read a[2],b[a+1],c;
 	}
 }

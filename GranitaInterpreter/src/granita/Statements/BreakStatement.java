@@ -24,4 +24,8 @@ public class BreakStatement extends Statement {
         this.isInsideLoop = isInsideLoop;
     }    
     
+    @Override
+    public String toString() {
+        return "break";
+    }
 }

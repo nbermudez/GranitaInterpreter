@@ -27,5 +27,10 @@ public class SimpleValue extends LeftValue{
     public void setId(String id) {
         this.id = id;
     }
+
+    @Override
+    public String toString() {
+        return id;
+    }
     
 }

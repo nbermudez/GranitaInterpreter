@@ -14,4 +14,8 @@ public class Rot extends BinaryExpression {
         super(left, right, line);
     }
     
+    @Override
+    public String toString() {
+        return left.toString() + " rot " + right.toString();
+    }
 }

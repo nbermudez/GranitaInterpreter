@@ -29,4 +29,14 @@ public class BlockStatement extends Statement{
     public void addStatement(Statement stmt){
         this.statements.add(stmt);
     }
+    
+    @Override
+    public String toString() {
+        String b = "{\n";
+        for(Statement s : statements){
+            b = b + "\t" +s.toString() + "\n";
+        }
+        b = b + "\t}";
+        return b;
+    }
 }

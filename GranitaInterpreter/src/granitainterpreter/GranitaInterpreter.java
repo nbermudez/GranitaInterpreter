@@ -18,11 +18,13 @@ public class GranitaInterpreter {
      */
     public static void main(String[] args) {
         try {
-            Lexer lexer = new Lexer("C:/Users/Alejandro/Documents/GitHub/GranitaInterpreter/test_programs/program5.txt");
+            String path = "C:/Users/Alejandro/Documents/GitHub/GranitaInterpreter/test_programs/";
+            Lexer lexer = new Lexer(path + "program5.txt");
             //System.out.println(lexer.toString());
             
             ParserTree parser = new ParserTree(lexer);
             ArrayList<Statement> trees = parser.parse();
+            System.out.println( trees.get(0).toString());
             System.out.println("Syntactic Analysis Successful");
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -30,3 +32,4 @@ public class GranitaInterpreter {
         }
     }
 }
+

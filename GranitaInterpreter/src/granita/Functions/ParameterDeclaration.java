@@ -12,17 +12,22 @@ import granita.Statements.Statement;
  *
  * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
  */
-public class Parameter extends Statement {
+public class ParameterDeclaration extends Statement {
     String type, name;
     
-    public Parameter(int line) {
+    public ParameterDeclaration(int line) {
         super(line);
     }
     
-    public Parameter(String type, String name, int line) {
+    public ParameterDeclaration(String type, String name, int line) {
         super(line);
         this.type = type;
         this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return type + " " + name;
     }
     
 }

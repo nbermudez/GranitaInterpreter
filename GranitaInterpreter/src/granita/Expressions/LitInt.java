@@ -20,6 +20,8 @@ public class LitInt extends Expression {
         super(line);
         if (value.contains("X") || value.contains("x")){
             this.value = Integer.parseInt(value.substring(value.replace("X", "x").indexOf("x")+1), 16);
+        }else if (value.length()>2 && !Character.isDigit(value.charAt(1))){
+            this.value = value.charAt(1);
         }else{
             this.value = Integer.parseInt(value);
         }
@@ -33,4 +35,8 @@ public class LitInt extends Expression {
         this.value = value;
     }    
     
+    @Override
+    public String toString() {
+        return Integer.toString(value);
+    }
 }

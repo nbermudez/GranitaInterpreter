@@ -4,14 +4,40 @@
  */
 package granita.Statements;
 
+import granita.Expressions.Expression;
+import java.util.ArrayList;
+
 /**
  *
  * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
  */
 public class MethodCallStatement extends Statement {
+    
+    ArrayList<Expression> params;
+    String id;
 
     public MethodCallStatement(int line) {
         super(line);
     }
+
+    public MethodCallStatement(String id, ArrayList<Expression> params, int line) {
+        super(line);
+        this.params = params;
+        this.id = id;
+    }
     
+    @Override
+    public String toString() {
+        String t = id + "(";
+        
+        for (int i = 0; i< params.size() - 1; i++ ){
+            t = t + params.get(i).toString() + ",";
+        }
+        if (params.size()>0){
+            t = t + params.get(params.size() - 1).toString();
+        }
+        
+        t = t + ");";
+        return t;
+    }
 }

@@ -32,4 +32,15 @@ public class WhileStatement extends Statement{
     public void setBlock(Statement block){
         this.block = block;
     }
+
+    @Override
+    public String toString() {
+        String w = "while (";
+        w += exp.toString();
+        w += ")";
+        w += block.toString();
+        
+        return w;
+    }
+    
 }

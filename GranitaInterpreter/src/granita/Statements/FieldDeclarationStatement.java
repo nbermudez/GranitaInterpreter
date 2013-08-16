@@ -4,6 +4,7 @@
  */
 package granita.Statements;
 
+import granita.FieldItems.Field;
 import java.util.ArrayList;
 
 /**
@@ -12,11 +13,26 @@ import java.util.ArrayList;
  */
 public class FieldDeclarationStatement extends Statement{
 
-    public ArrayList<Statement> declarations;
+    private ArrayList<Field> declarations;
+    String type;
 
-    public FieldDeclarationStatement(int line) {
+    public FieldDeclarationStatement(String type, int line) {
         super(line);
-    }    
+        this.type = type;
+        this.declarations = new ArrayList<Field>();
+    }
     
+    public void addDeclaration(Field st){
+        this.declarations.add(st);
+    }
     
+    @Override
+    public String toString() {
+        String fd = type + " ";
+        for (int i = 0; i< declarations.size() - 1 ; i++){
+            fd += declarations.get(i).toString() + ",";
+        }
+        fd += declarations.get(declarations.size() - 1).toString();
+        return fd;
+    }
 }

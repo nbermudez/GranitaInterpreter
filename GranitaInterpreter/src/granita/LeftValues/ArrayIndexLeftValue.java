@@ -40,5 +40,11 @@ public class ArrayIndexLeftValue extends LeftValue{
     public void setIndex(Expression index) {
         this.index = index;
     }
+
+    @Override
+    public String toString() {
+        return id + "[" + index.toString() +"]";
+    }
+    
     
 }

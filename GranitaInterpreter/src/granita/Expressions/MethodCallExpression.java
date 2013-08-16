@@ -4,7 +4,6 @@
  */
 package granita.Expressions;
 
-import granita.Statements.Statement;
 import java.util.ArrayList;
 
 /**
@@ -13,10 +12,31 @@ import java.util.ArrayList;
  */
 public class MethodCallExpression extends Expression {
     
-    ArrayList<Statement> arguments;
+    ArrayList<Expression> arguments;
+    String id;
     
     public MethodCallExpression(int line) {
         super(line);
     }
+
+    public MethodCallExpression(String id, ArrayList<Expression> arguments, int line) {
+        super(line);
+        this.arguments = arguments;
+        this.id = id;
+    }
     
+    @Override
+    public String toString() {
+        String t = id + "(";
+        
+        for (int i = 0; i< arguments.size() - 1; i++ ){
+            t = t + arguments.get(i).toString() + ",";
+        }
+        if (arguments.size()>0){
+            t = t + arguments.get(arguments.size() - 1).toString();
+        }
+        
+        t = t + ")";
+        return t;
+    }
 }
