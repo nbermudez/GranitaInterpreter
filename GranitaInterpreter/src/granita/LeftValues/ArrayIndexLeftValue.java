@@ -5,6 +5,8 @@
 package granita.LeftValues;
 
 import granita.Expressions.Expression;
+import granita.Semantic.Types.Type;
+import granitainterpreter.GranitaException;
 
 /**
  *
@@ -44,6 +46,11 @@ public class ArrayIndexLeftValue extends LeftValue{
     @Override
     public String toString() {
         return id + "[" + index.toString() +"]";
+    }
+
+    @Override
+    public Type validateSemantics() throws GranitaException {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
     
     

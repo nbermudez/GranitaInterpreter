@@ -5,6 +5,7 @@
 package granita.Statements;
 
 import granita.Expressions.Expression;
+import granitainterpreter.GranitaException;
 
 /**
  *
@@ -25,6 +26,11 @@ public class InitializedFieldDeclarationStatement extends Statement {
     @Override
     public String toString() {
         return type + " " + fieldName + " = " + initValue.toString();
+    }
+
+    @Override
+    public void validateSemantics() throws GranitaException {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
     
 }

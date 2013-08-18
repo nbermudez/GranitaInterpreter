@@ -4,6 +4,8 @@
  */
 package granita.Statements;
 
+import granita.Functions.ParameterDeclaration;
+import granitainterpreter.GranitaException;
 import java.util.ArrayList;
 
 /**
@@ -12,14 +14,14 @@ import java.util.ArrayList;
  */
 public class MethodDeclarationStatement extends Statement {
     String type, identifier;
-    ArrayList<Statement> parameters;
+    ArrayList<ParameterDeclaration> parameters;
     Statement block;
     
     public MethodDeclarationStatement(String type, String identifier, int line){
         super(line);
         this.type = type;
         this.identifier = identifier;
-        this.parameters = new ArrayList<Statement>();
+        this.parameters = new ArrayList<ParameterDeclaration>();
     }
 
     public String getType() {
@@ -38,11 +40,11 @@ public class MethodDeclarationStatement extends Statement {
         this.identifier = identifier;
     }
 
-    public ArrayList<Statement> getParameters() {
+    public ArrayList<ParameterDeclaration> getParameters() {
         return parameters;
     }
 
-    public void setParameters(ArrayList<Statement> parameters) {
+    public void setParameters(ArrayList<ParameterDeclaration> parameters) {
         this.parameters = parameters;
     }
 
@@ -54,7 +56,7 @@ public class MethodDeclarationStatement extends Statement {
         this.block = block;
     }
     
-    public void addParameter(Statement param){
+    public void addParameter(ParameterDeclaration param){
         this.parameters.add(param);
     }
 
@@ -70,6 +72,11 @@ public class MethodDeclarationStatement extends Statement {
         method += ")";
         method += block.toString();
         return method;
+    }
+
+    @Override
+    public void validateSemantics() throws GranitaException {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
     
 }

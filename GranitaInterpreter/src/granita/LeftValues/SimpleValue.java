@@ -4,6 +4,9 @@
  */
 package granita.LeftValues;
 
+import granita.Semantic.Types.Type;
+import granitainterpreter.GranitaException;
+
 /**
  *
  * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
@@ -31,6 +34,11 @@ public class SimpleValue extends LeftValue{
     @Override
     public String toString() {
         return id;
+    }
+
+    @Override
+    public Type validateSemantics() throws GranitaException {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
     
 }

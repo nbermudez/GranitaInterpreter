@@ -5,6 +5,7 @@
 package granita.Statements;
 
 import granita.Expressions.Expression;
+import granitainterpreter.GranitaException;
 import java.util.ArrayList;
 
 /**
@@ -37,7 +38,12 @@ public class MethodCallStatement extends Statement {
             t = t + params.get(params.size() - 1).toString();
         }
         
-        t = t + ");";
+        t = t + ")";
         return t;
+    }
+
+    @Override
+    public void validateSemantics() throws GranitaException {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

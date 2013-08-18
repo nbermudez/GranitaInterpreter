@@ -6,6 +6,8 @@ package granita.Statements;
 
 import granita.Expressions.Expression;
 import granita.LeftValues.LeftValue;
+import granita.Semantic.Types.Type;
+import granitainterpreter.GranitaException;
 
 /**
  *
@@ -43,6 +45,18 @@ public class AssignStatement extends Statement {
     
     @Override
     public String toString() {
-        return left.toString() + " = " + value.toString() + ";";
+        return left.toString() + " = " + value.toString();
     }
+
+    @Override
+    public void validateSemantics() throws GranitaException {
+        Type LHS = left.validateSemantics();
+        Type RHS = value.validateSemantics();
+        
+        if (!LHS.equivalent(RHS)){
+            throw new GranitaException("Cannot assign " + RHS.toString() + " to " + 
+                    LHS.toString() + " variable.");
+        }
+    }
+    
 }

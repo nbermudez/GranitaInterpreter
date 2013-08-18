@@ -4,6 +4,10 @@
  */
 package granita.Expressions;
 
+import granita.Semantic.Types.IntType;
+import granita.Semantic.Types.Type;
+import granitainterpreter.GranitaException;
+
 /**
  *
  * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
@@ -38,5 +42,10 @@ public class LitInt extends Expression {
     @Override
     public String toString() {
         return Integer.toString(value);
+    }
+
+    @Override
+    public Type validateSemantics() throws GranitaException {
+        return new IntType();
     }
 }

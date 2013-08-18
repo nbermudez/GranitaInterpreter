@@ -8,26 +8,16 @@ package granita.Semantic.Types;
  *
  * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
  */
-public class BoolType extends Type{
-    
-    boolean value;
-
-    public boolean isValue() {
-        return value;
-    }
-
-    public void setValue(boolean value) {
-        this.value = value;
-    }
+public class StringType extends Type {
 
     @Override
     public boolean equivalent(Type t) {
-        return t instanceof BoolType;
+        return t instanceof StringType;
     }
 
     @Override
     public String toString() {
-        return "boolean";
+        return "string";
     }
     
 }

@@ -25,10 +25,13 @@ import granita.Expressions.Rot;
 import granita.Expressions.ShiftLeft;
 import granita.Expressions.ShiftRight;
 import granita.Expressions.Sub;
+import granita.Expressions.UnaryMinus;
+import granita.Expressions.UnaryNot;
 import granita.FieldItems.ArrayField;
 import granita.FieldItems.SimpleField;
 import granita.Functions.Argument;
 import granita.Functions.ParameterDeclaration;
+import granita.Functions.VarDeclaration;
 import granita.LeftValues.ArrayIndexLeftValue;
 import granita.LeftValues.LeftValue;
 import granita.LeftValues.SimpleValue;
@@ -323,24 +326,29 @@ public class ParserTree {
     /**
      * VD stands for Variable declaration. VD -> type id (, id)* ;
      */
-    private Statement VD() throws GranitaException {
+    private VarDeclaration VD() throws GranitaException {
         String type, id;
+        ArrayList<String> vars = new ArrayList<String>();
         if (is_type(currentToken)) {
             type = get_type(currentToken);
 
             currentToken = lexer.nextToken();
             id = currentToken.lexeme;
+            vars.add(id);
 
             match(Token.TK_IDENTIFIER, "identifier");
             while (currentToken == Token.TK_COLON) {
                 currentToken = lexer.nextToken();
                 id = currentToken.lexeme;
+                vars.add(id);
 
                 match(Token.TK_IDENTIFIER, "identifier");
             }
             match(Token.TK_SEMICOLON, ";");
+            return new VarDeclaration(type, vars, lexer.lineNumber());
         }
-        return null;
+        throw new GranitaException("Expected a variable declaration but found " 
+                + currentToken.lexeme + " in line " + lexer.lineNumber());
     }
 
     private Statement STNT() throws GranitaException {
@@ -482,7 +490,7 @@ public class ParserTree {
     private Statement SMC() throws GranitaException {
         if (currentToken == Token.TK_KW_PRINT) {
             currentToken = lexer.nextToken();
-            ArrayList<Expression> args = new ArrayList<Expression>();
+            ArrayList<Argument> args = new ArrayList<Argument>();
             args.add(ARG());
             while (currentToken == Token.TK_COLON) {
                 currentToken = lexer.nextToken();
@@ -566,17 +574,19 @@ public class ParserTree {
     /**
      * ARG stands for Argument. ARG -> stringConstant |EXPR
      */
-    private Expression ARG() throws GranitaException {
+    private Argument ARG() throws GranitaException {
+        Expression value;
         if (is_start_of_expr(currentToken)) {
-            return EXPR();
+            value = EXPR();
         } else {
-            LitString value = new LitString(currentToken.lexeme, lexer.lineNumber());
+            value = new LitString(currentToken.lexeme, lexer.lineNumber());
             match(Token.TK_STRING_CONSTANT, "string constant");
-            return value;
         }
+        return new Argument(value, lexer.lineNumber());
     }
 
     //</editor-fold>  
+    
     //<editor-fold defaultstate="collapsed" desc="Expressions with precendence">
     private Expression E() throws GranitaException {
         Expression left = F(), right;
@@ -711,10 +721,13 @@ public class ParserTree {
             currentToken = lexer.nextToken();
             result = E();
             match(Token.TK_RIGHT_PARENTHESIS, ")");
-        } else if (currentToken == Token.TK_OP_NOT || currentToken == Token.TK_OP_SUB) {
+        } else if (currentToken == Token.TK_OP_NOT) {
             currentToken = lexer.nextToken();
-            result = E();
-        } else if (currentToken == Token.TK_KW_READ || currentToken == Token.TK_KW_PRINT) {
+            result = new UnaryNot(E(), lexer.lineNumber());
+        } else if (currentToken == Token.TK_OP_SUB){
+            currentToken = lexer.nextToken();
+            result = new UnaryMinus(E(), lexer.lineNumber());
+        }else if (currentToken == Token.TK_KW_READ || currentToken == Token.TK_KW_PRINT) {
             //SMC();
             throw new GranitaException("Expected expression but found " + currentToken.lexeme
                     + " in line " + this.lexer.lineNumber());

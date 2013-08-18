@@ -4,9 +4,11 @@
  */
 package granitainterpreter;
 
+import granita.Statements.Statement;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.print.DocFlavor;
@@ -54,7 +56,6 @@ public class MainWindow extends javax.swing.JFrame {
         jMenuItem2.setText("jMenuItem2");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(800, 600));
 
         jScrollPane1.setPreferredSize(new java.awt.Dimension(800, 420));
 
@@ -98,6 +99,11 @@ public class MainWindow extends javax.swing.JFrame {
         jMenu2.add(jMenuItem3);
 
         jMenuItem4.setText("Parse");
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem4ActionPerformed(evt);
+            }
+        });
         jMenu2.add(jMenuItem4);
 
         jMenuItem5.setText("Run");
@@ -142,6 +148,16 @@ public class MainWindow extends javax.swing.JFrame {
         // TODO add your handling code here:
         this.compilerOutput.setText(lexer.toString());
     }//GEN-LAST:event_jMenuItem3ActionPerformed
+
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+        try {
+            ParserTree parser = new ParserTree(lexer);
+            ArrayList<Statement> trees = parser.parse();
+            this.compilerOutput.setText(trees.get(0).toString());
+        } catch (GranitaException ex) {
+            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     /**
      * @param args the command line arguments

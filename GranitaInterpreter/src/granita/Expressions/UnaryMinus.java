@@ -12,27 +12,28 @@ import granitainterpreter.GranitaException;
  *
  * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
  */
-public class Sub extends BinaryExpression {
+public class UnaryMinus extends Expression {
+    Expression value;
 
-    public Sub(Expression left, Expression right, int line) {
-        super(left, right, line);
+    public UnaryMinus(Expression value, int line) {
+        super(line);
+        this.value = value;
+    }
+
+    @Override
+    public String toString() {
+        return "-" + value.toString();
     }
     
     @Override
-    public String toString() {
-        return left.toString() + " - " + right.toString();
-    }    
-    
-    @Override
     public Type validateSemantics() throws GranitaException {
-        Type LHS = left.validateSemantics();
-        Type RHS = right.validateSemantics();
+        Type tvalue = value.validateSemantics();
         
-        if (LHS instanceof IntType && RHS instanceof IntType){
-            return LHS;
+        if (tvalue instanceof IntType){
+            return tvalue;
         }else{
             throw new GranitaException("Operator - cannot be applied to " + 
-                    LHS.toString() + " and " + RHS.toString() + " in line " + line);
+                    tvalue.toString() + " in line " + line);
         }
     }
 }

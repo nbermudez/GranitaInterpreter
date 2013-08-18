@@ -5,6 +5,7 @@
 package granita.Statements;
 
 import granita.Expressions.Expression;
+import granitainterpreter.GranitaException;
 
 /**
  *
@@ -41,6 +42,11 @@ public class WhileStatement extends Statement{
         w += block.toString();
         
         return w;
+    }
+
+    @Override
+    public void validateSemantics() throws GranitaException {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
     
 }

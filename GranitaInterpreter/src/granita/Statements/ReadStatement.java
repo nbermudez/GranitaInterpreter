@@ -5,6 +5,7 @@
 package granita.Statements;
 
 import granita.LeftValues.LeftValue;
+import granitainterpreter.GranitaException;
 import java.util.ArrayList;
 
 /**
@@ -31,7 +32,7 @@ public class ReadStatement extends Statement {
         for (int i = 0; i< leftValues.size() - 1 ; i++){
             read += leftValues.get(i).toString() + ",";
         }
-        read += leftValues.get(leftValues.size() - 1).toString() + ";";
+        read += leftValues.get(leftValues.size() - 1).toString();
         return read;
     }
 
@@ -41,6 +42,11 @@ public class ReadStatement extends Statement {
 
     public void setLeftValues(ArrayList<LeftValue> leftValues) {
         this.leftValues = leftValues;
+    }
+
+    @Override
+    public void validateSemantics() throws GranitaException {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
     
 }

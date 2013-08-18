@@ -4,6 +4,7 @@
  */
 package granita.Statements;
 
+import granitainterpreter.GranitaException;
 import java.util.ArrayList;
 
 /**
@@ -34,9 +35,23 @@ public class BlockStatement extends Statement{
     public String toString() {
         String b = "{\n";
         for(Statement s : statements){
-            b = b + "\t" +s.toString() + "\n";
+            if (s instanceof BlockStatement ||
+                    s instanceof ForStatement ||
+                    s instanceof WhileStatement ||
+                    s instanceof IfStatement){
+                b = b + "\t" +s.toString() + "\n";
+            }else{
+                b = b + "\t" +s.toString() + ";\n";
+            }
         }
         b = b + "\t}";
         return b;
+    }
+
+    @Override
+    public void validateSemantics() throws GranitaException {
+        for (Statement st : statements){
+            st.validateSemantics();
+        }
     }
 }

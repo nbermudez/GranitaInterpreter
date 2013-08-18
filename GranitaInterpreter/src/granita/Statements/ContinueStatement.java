@@ -4,6 +4,8 @@
  */
 package granita.Statements;
 
+import granitainterpreter.GranitaException;
+
 /**
  *
  * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
@@ -27,6 +29,11 @@ public class ContinueStatement extends Statement {
     @Override
     public String toString() {
         return "continue;";
+    }
+
+    @Override
+    public void validateSemantics() throws GranitaException {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
     
 }

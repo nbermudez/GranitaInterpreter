@@ -5,6 +5,9 @@
 package granita.Statements;
 
 import granita.Expressions.Expression;
+import granita.Semantic.Types.Type;
+import granita.Semantic.Types.VoidType;
+import granitainterpreter.GranitaException;
 
 /**
  *
@@ -34,8 +37,17 @@ public class ReturnStatement extends Statement {
         if (returnExpression != null){
             ret += " " + returnExpression.toString();
         }
-        ret += ";";
         return ret;
+    }
+
+    @Override
+    public void validateSemantics() throws GranitaException {
+        if (returnExpression != null){
+            Type ret = returnExpression.validateSemantics();
+            if (ret instanceof VoidType){
+                throw new GranitaException("return value cannot be void in line " + line);
+            }
+        }
     }
     
     

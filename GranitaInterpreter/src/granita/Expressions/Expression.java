@@ -4,6 +4,9 @@
  */
 package granita.Expressions;
 
+import granita.Semantic.Types.Type;
+import granitainterpreter.GranitaException;
+
 /**
  *
  * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
@@ -14,4 +17,6 @@ public abstract class Expression {
     public Expression(int line) {
         this.line = line;
     }
+    
+    public abstract Type validateSemantics() throws GranitaException;
 }

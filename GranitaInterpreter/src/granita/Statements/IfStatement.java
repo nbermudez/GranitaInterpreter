@@ -5,6 +5,7 @@
 package granita.Statements;
 
 import granita.Expressions.Expression;
+import granitainterpreter.GranitaException;
 
 /**
  *
@@ -50,5 +51,14 @@ public class IfStatement extends Statement{
             i += falseBlock.toString();
         }
         return i;
+    }
+
+    @Override
+    public void validateSemantics() throws GranitaException {
+        conditional.validateSemantics();
+        trueBlock.validateSemantics();
+        if (falseBlock != null){
+            falseBlock.validateSemantics();
+        }
     }
 }

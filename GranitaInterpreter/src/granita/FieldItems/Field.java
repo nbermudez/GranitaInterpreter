@@ -5,6 +5,7 @@
 package granita.FieldItems;
 
 import granita.Statements.Statement;
+import granitainterpreter.GranitaException;
 
 /**
  *
@@ -16,6 +17,11 @@ public class Field extends Statement {
     public Field(String fieldName, int line) {
         super(line);
         this.fieldName = fieldName;
+    }
+
+    @Override
+    public void validateSemantics() throws GranitaException {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
     
 }

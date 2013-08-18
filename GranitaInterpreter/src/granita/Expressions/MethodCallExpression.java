@@ -4,6 +4,8 @@
  */
 package granita.Expressions;
 
+import granita.Semantic.Types.Type;
+import granitainterpreter.GranitaException;
 import java.util.ArrayList;
 
 /**
@@ -38,5 +40,10 @@ public class MethodCallExpression extends Expression {
         
         t = t + ")";
         return t;
+    }
+
+    @Override
+    public Type validateSemantics() throws GranitaException {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

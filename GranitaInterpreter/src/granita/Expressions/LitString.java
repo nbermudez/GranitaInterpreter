@@ -4,6 +4,10 @@
  */
 package granita.Expressions;
 
+import granita.Semantic.Types.StringType;
+import granita.Semantic.Types.Type;
+import granitainterpreter.GranitaException;
+
 /**
  *
  * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
@@ -27,5 +31,10 @@ public class LitString extends Expression {
     @Override
     public String toString() {
         return value;
+    }
+
+    @Override
+    public Type validateSemantics() throws GranitaException {
+        return new StringType();
     }
 }

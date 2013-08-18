@@ -12,34 +12,28 @@ import granitainterpreter.GranitaException;
  *
  * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
  */
-public class LitBool extends Expression {
-    boolean value;
-    
-    public LitBool(boolean value, int line){
+public class UnaryNot extends Expression {
+    Expression value;
+
+    public UnaryNot(Expression value, int line) {
         super(line);
         this.value = value;
     }
-    
-    public LitBool(String value, int line){
-        super(line);
-        this.value = Boolean.parseBoolean(value);
-    }
 
-    public boolean isValue() {
-        return value;
-    }
-
-    public void setValue(boolean value) {
-        this.value = value;
-    }
-    
     @Override
     public String toString() {
-        return Boolean.toString(value);
+        return "!" + value.toString();
     }
-
+    
     @Override
     public Type validateSemantics() throws GranitaException {
-        return new BoolType();
+        Type tvalue = value.validateSemantics();
+        
+        if (tvalue instanceof BoolType){
+            return tvalue;
+        }else{
+            throw new GranitaException("Operator ! cannot be applied to " + 
+                    tvalue.toString() + " in line " + line);
+        }
     }
 }

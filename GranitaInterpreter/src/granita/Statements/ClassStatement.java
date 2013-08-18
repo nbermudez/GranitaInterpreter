@@ -4,6 +4,7 @@
  */
 package granita.Statements;
 
+import granitainterpreter.GranitaException;
 import java.util.ArrayList;
 
 /**
@@ -44,5 +45,16 @@ public class ClassStatement extends Statement{
         }
         cl += "}";
         return cl;
+    }
+
+    @Override
+    public void validateSemantics() throws GranitaException {
+        for (Statement st : fieldDecls){
+            st.validateSemantics();
+        }
+        
+        for (Statement st : methodDecls){
+            st.validateSemantics();
+        }
     }
 }

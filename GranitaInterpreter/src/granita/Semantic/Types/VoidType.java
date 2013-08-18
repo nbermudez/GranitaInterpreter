@@ -14,5 +14,10 @@ public class VoidType extends Type{
     public boolean equivalent(Type t) {
         return t instanceof VoidType;
     }
+
+    @Override
+    public String toString() {
+        return "void";
+    }
     
 }

@@ -5,6 +5,7 @@
 package granita.Statements;
 
 import granita.Expressions.Expression;
+import granitainterpreter.GranitaException;
 import java.util.ArrayList;
 
 /**
@@ -56,9 +57,21 @@ public class ForStatement extends Statement {
         for (int i = 0; i< increments.size() - 1 ; i++){
             f += increments.get(i).toString() + ",";
         }
-        f += increments.get(increments.size() - 1).toString() + ";";
+        f += increments.get(increments.size() - 1).toString();
         f += ")\n";
         f += block.toString();
         return f;
+    }
+
+    @Override
+    public void validateSemantics() throws GranitaException {
+        for (Expression exp : initializations){
+            exp.validateSemantics();
+        }
+        termination.validateSemantics();
+        for (Statement exp : increments){
+            exp.validateSemantics();
+        }
+        block.validateSemantics();
     }
 }

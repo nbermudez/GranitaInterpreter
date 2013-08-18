@@ -14,6 +14,8 @@ class _My_Class {
 	}
 	
 	int function3(int __){
+		int variable;
+		variable = !a;
 		if (__>0){
 			if (__<100){
 				return function1() + __;
@@ -22,6 +24,7 @@ class _My_Class {
 			}
 		}
 		function5();
+		print "hola mundo";
 		potato = 1+2*3/4%5 rot 6 && true || false >> 1 << 3;
 		return (0x100 - 10)/__ + (100%__);
 		return 1+--21;

@@ -5,6 +5,7 @@
 package granita.Statements;
 
 import granita.FieldItems.Field;
+import granitainterpreter.GranitaException;
 import java.util.ArrayList;
 
 /**
@@ -34,5 +35,10 @@ public class FieldDeclarationStatement extends Statement{
         }
         fd += declarations.get(declarations.size() - 1).toString();
         return fd;
+    }
+
+    @Override
+    public void validateSemantics() throws GranitaException {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }
