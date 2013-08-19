@@ -10,15 +10,15 @@ package granita.Semantic.Types;
  */
 public class IntType extends Type{
     
-    int value;
+    IntResult value;   
 
-    public int getValue() {
+    public IntResult getValue() {
         return value;
     }
 
-    public void setValue(int value) {
+    public void setValue(IntResult value) {
         this.value = value;
-    }    
+    }
 
     @Override
     public boolean equivalent(Type t) {
@@ -27,6 +27,17 @@ public class IntType extends Type{
 
     @Override
     public String toString() {
-        return "integer";
+        return "int";
+    }
+    
+    public static String text(){
+        return "int";
+    }
+
+    @Override
+    public void setValue(Object value) {
+        if (value instanceof IntResult){
+            this.value = (IntResult) value;
+        }
     }
 }

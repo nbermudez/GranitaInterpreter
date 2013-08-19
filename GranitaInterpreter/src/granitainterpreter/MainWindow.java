@@ -4,7 +4,9 @@
  */
 package granitainterpreter;
 
-import granita.Statements.Statement;
+import granita.Parser.ParserTree;
+import granita.Lexer.Lexer;
+import granita.Parser.Statements.Statement;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;

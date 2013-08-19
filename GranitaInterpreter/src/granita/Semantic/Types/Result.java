@@ -8,9 +8,6 @@ package granita.Semantic.Types;
  *
  * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
  */
-public abstract class Type {
+public abstract class Result {
     
-    public abstract boolean equivalent(Type t);
-    
-    public abstract void setValue(Object value);
 }

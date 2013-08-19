@@ -20,4 +20,12 @@ public class VoidType extends Type{
         return "void";
     }
     
+    public static String text(){
+        return "void";
+    }
+
+    @Override
+    public void setValue(Object value) {
+        throw new UnsupportedOperationException("Void type can't have a value");
+    }
 }
