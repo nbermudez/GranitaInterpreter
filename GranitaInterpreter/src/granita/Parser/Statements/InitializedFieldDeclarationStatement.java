@@ -5,6 +5,10 @@
 package granita.Parser.Statements;
 
 import granita.Parser.Expressions.Expression;
+import granita.Parser.FieldItems.Field;
+import granita.Semantic.SymbolTable.SymbolTableNode;
+import granita.Semantic.SymbolTable.SymbolTableTree;
+import granita.Semantic.SymbolTable.Variable;
 import granita.Semantic.Types.Type;
 import granitainterpreter.GranitaException;
 
@@ -32,8 +36,9 @@ public class InitializedFieldDeclarationStatement extends Statement {
 
     @Override
     public void validateSemantics() throws GranitaException {
-        System.out.println("Not supported yet.");
-        //throw new UnsupportedOperationException("Not supported yet.");
+        SymbolTableNode node = SymbolTableTree.getInstance().getRoot();
+        
+        node.addEntry(fieldName, new Variable(type, initValue));
     }
 
     public Expression getInitValue() {

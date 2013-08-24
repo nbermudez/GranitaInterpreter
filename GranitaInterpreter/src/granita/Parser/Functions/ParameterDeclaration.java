@@ -5,6 +5,9 @@
 package granita.Parser.Functions;
 
 import granita.Parser.Statements.Statement;
+import granita.Semantic.SymbolTable.SymbolTableNode;
+import granita.Semantic.SymbolTable.SymbolTableTree;
+import granita.Semantic.SymbolTable.Variable;
 import granita.Semantic.Types.Type;
 import granitainterpreter.GranitaException;
 
@@ -62,8 +65,8 @@ public class ParameterDeclaration extends Statement {
 
     @Override
     public void validateSemantics() throws GranitaException {
-        System.out.println("Not supported yet.");
-        //throw new UnsupportedOperationException("Not supported yet.");
+        SymbolTableNode current = SymbolTableTree.getInstance().getCurrentNode();
+        current.addEntry(name, new Variable(type, null));
     }
     
 }

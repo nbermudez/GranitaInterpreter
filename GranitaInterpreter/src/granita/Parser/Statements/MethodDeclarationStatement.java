@@ -5,6 +5,9 @@
 package granita.Parser.Statements;
 
 import granita.Parser.Functions.ParameterDeclaration;
+import granita.Semantic.SymbolTable.Function;
+import granita.Semantic.SymbolTable.SymbolTableNode;
+import granita.Semantic.SymbolTable.SymbolTableTree;
 import granita.Semantic.Types.Type;
 import granitainterpreter.GranitaException;
 import java.util.ArrayList;
@@ -78,10 +81,16 @@ public class MethodDeclarationStatement extends Statement {
 
     @Override
     public void validateSemantics() throws GranitaException {
+        SymbolTableNode root = SymbolTableTree.getInstance().getRoot();
+        root.addEntry(identifier, new Function(type));
+        
+        SymbolTableNode parent = SymbolTableTree.getInstance().getParentNode();
+        SymbolTableTree.getInstance().setCurrentNode(new SymbolTableNode(parent));
         for (ParameterDeclaration st : parameters){
             st.validateSemantics();
         }
         block.validateSemantics();
+        SymbolTableTree.getInstance().setCurrentNode(parent);
     }
     
 }

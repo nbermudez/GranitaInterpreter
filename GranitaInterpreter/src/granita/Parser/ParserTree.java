@@ -651,6 +651,7 @@ public class ParserTree {
     }
 
     //</editor-fold>  
+    
     //<editor-fold defaultstate="collapsed" desc="Expressions with precendence">
     private Expression E() throws GranitaException {
         Expression left = F(), right;
@@ -819,6 +820,7 @@ public class ParserTree {
     }
 
     //</editor-fold>
+    
     //<editor-fold defaultstate="collapsed" desc="Helper functions">
     private String get_type(Token current) {
         if (current == Token.TK_KW_BOOL) {

@@ -31,10 +31,9 @@ public class GranitaInterpreter {
             for (Statement tree : trees) {
                 //System.out.println(tree.toString());
                 System.out.println("Semantic analysis starting...");
-                SemanticAnalysis s = new SemanticAnalysis((ClassStatement) tree);
-                ClassStatement valid = s.analyze();
-                System.out.println("Semantic analysis finished!");
+                tree.validateSemantics();
             }
+            System.out.println("Semantic analysis finished!");
 
         } catch (Exception ex) {
             ex.printStackTrace();

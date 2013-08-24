@@ -5,6 +5,7 @@
 package granita.Parser.FieldItems;
 
 import granita.Parser.Expressions.LitInt;
+import granitainterpreter.GranitaException;
 
 /**
  *
@@ -19,9 +20,22 @@ public class ArrayField extends Field {
         this.size = size;
     }
 
+    public LitInt getSize() {
+        return size;
+    }
+
+    public void setSize(LitInt size) {
+        this.size = size;
+    }
+
     @Override
     public String toString() {
         return fieldName + "[" + size.toString() + "]";
+    }
+
+    @Override
+    public void validateSemantics() throws GranitaException {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
     
 }

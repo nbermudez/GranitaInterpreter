@@ -17,6 +17,14 @@ public abstract class Expression {
     public Expression(int line) {
         this.line = line;
     }
+
+    public int getLine() {
+        return line;
+    }
+
+    public void setLine(int line) {
+        this.line = line;
+    }
     
     public abstract Type validateSemantics() throws GranitaException;
 }

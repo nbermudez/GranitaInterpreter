@@ -5,7 +5,7 @@
 package granita.Parser.Expressions;
 
 import granita.Semantic.SymbolTable.Function;
-import granita.Semantic.SymbolTable.SymbolTable;
+import granita.Semantic.SymbolTable.SymbolTableTree;
 import granita.Semantic.Types.Type;
 import granitainterpreter.GranitaException;
 import java.util.ArrayList;
@@ -48,7 +48,7 @@ public class MethodCallExpression extends Expression {
     public Type validateSemantics() throws GranitaException {
         Type t = findInSymbolTable(this.id);
         if (t == null){
-            throw new GranitaException("Undefined method " + id + " in line " + line);
+            throw new GranitaException("undefined method " + id + " in line " + line);
         }else{
             for (Expression ex : arguments){
                 ex.validateSemantics();
@@ -58,7 +58,7 @@ public class MethodCallExpression extends Expression {
     }
     
     private Type findInSymbolTable(String name){
-        Function f = (Function) SymbolTable.getInstance().getEntry(name);
+        Function f = (Function) SymbolTableTree.getInstance().lookupFromCurrent(name);
         if (f != null){
             return f.getType();
         }

@@ -5,6 +5,9 @@
 package granita.Parser.LeftValues;
 
 import granita.Parser.Expressions.Expression;
+import granita.Semantic.SymbolTable.ArrayVariable;
+import granita.Semantic.SymbolTable.SymbolTableTree;
+import granita.Semantic.SymbolTable.SymbolTableValue;
 import granita.Semantic.Types.Type;
 import granitainterpreter.GranitaException;
 
@@ -43,6 +46,14 @@ public class ArrayIndexLeftValue extends LeftValue{
         this.index = index;
     }
 
+    public int getScopeId() {
+        return scopeId;
+    }
+
+    public void setScopeId(int scopeId) {
+        this.scopeId = scopeId;
+    }
+    
     @Override
     public String toString() {
         return id + "[" + index.toString() +"]";
@@ -50,7 +61,18 @@ public class ArrayIndexLeftValue extends LeftValue{
 
     @Override
     public Type validateSemantics() throws GranitaException {
-        throw new UnsupportedOperationException("Not supported yet.");
+        SymbolTableValue value = SymbolTableTree.getInstance().lookupFromCurrent(id);
+        if (value == null){
+            throw new GranitaException("undefined variable " + id + " in line "+
+                    this.getLine());
+        }else {
+            if (!(value instanceof ArrayVariable)){
+                throw new GranitaException("variable " + id + " is not an array; in line "+
+                    this.getLine());
+            }else {
+                return ((ArrayVariable) value).getType();
+            }
+        }
     }
     
     

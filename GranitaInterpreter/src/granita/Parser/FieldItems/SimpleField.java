@@ -4,6 +4,8 @@
  */
 package granita.Parser.FieldItems;
 
+import granitainterpreter.GranitaException;
+
 
 /**
  *
@@ -19,6 +21,11 @@ public class SimpleField extends Field {
     @Override
     public String toString() {
         return fieldName;
+    }
+
+    @Override
+    public void validateSemantics() throws GranitaException {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
     
 }

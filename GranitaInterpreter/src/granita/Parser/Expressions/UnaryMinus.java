@@ -22,12 +22,16 @@ public class UnaryMinus extends Expression {
 
     @Override
     public String toString() {
-        return "-" + value.toString();
+        return "(" + "-" + value.toString() + ")";
     }
     
     @Override
     public Type validateSemantics() throws GranitaException {
         Type tvalue = value.validateSemantics();
+        if (tvalue == null){
+            throw new GranitaException("undefined variable " + value.toString() +
+                    " in line " + line);
+        }
         
         if (tvalue instanceof IntType){
             return tvalue;

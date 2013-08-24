@@ -4,7 +4,12 @@
  */
 package granita.Parser.Statements;
 
+import granita.Parser.FieldItems.ArrayField;
 import granita.Parser.FieldItems.Field;
+import granita.Semantic.SymbolTable.ArrayVariable;
+import granita.Semantic.SymbolTable.SymbolTableNode;
+import granita.Semantic.SymbolTable.SymbolTableTree;
+import granita.Semantic.SymbolTable.Variable;
 import granita.Semantic.Types.Type;
 import granitainterpreter.GranitaException;
 import java.util.ArrayList;
@@ -56,7 +61,15 @@ public class FieldDeclarationStatement extends Statement{
 
     @Override
     public void validateSemantics() throws GranitaException {
-        System.out.println("Not supported yet.");
-        //throw new UnsupportedOperationException("Not supported yet.");
+        SymbolTableNode node = SymbolTableTree.getInstance().getRoot();
+        
+        for (Field f : this.declarations) {
+            if (f instanceof ArrayField){
+                ArrayField af = (ArrayField) f;
+                node.addEntry(f.getFieldName(), new ArrayVariable(type, af.getSize()));
+            }else {
+                node.addEntry(f.getFieldName(), new Variable(type, null));
+            }
+        }
     }
 }

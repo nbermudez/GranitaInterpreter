@@ -20,13 +20,21 @@ public class Mult extends BinaryExpression {
     
     @Override
     public String toString() {
-        return left.toString() + " * " + right.toString();
+        return "(" + left.toString() + " * " + right.toString() + ")";
     }
     
     @Override
     public Type validateSemantics() throws GranitaException {
         Type LHS = left.validateSemantics();
+        if (LHS == null){
+            throw new GranitaException("undefined variable " + left.toString() + 
+                    " in line " + line);
+        }
         Type RHS = right.validateSemantics();
+        if (RHS == null){
+            throw new GranitaException("undefined variable " + right.toString() + 
+                    " in line " + line);
+        }
         
         if (LHS instanceof IntType && RHS instanceof IntType){
             return LHS;

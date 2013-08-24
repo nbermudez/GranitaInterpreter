@@ -8,15 +8,25 @@ import granita.Parser.Expressions.Expression;
 import granita.Parser.FieldItems.Field;
 import granita.Parser.Functions.ParameterDeclaration;
 import granita.Parser.Functions.VarDeclaration;
+import granita.Parser.LeftValues.ArrayIndexLeftValue;
+import granita.Parser.LeftValues.SimpleValue;
+import granita.Parser.Statements.AssignStatement;
 import granita.Parser.Statements.BlockStatement;
+import granita.Parser.Statements.BreakStatement;
 import granita.Parser.Statements.ClassStatement;
+import granita.Parser.Statements.ContinueStatement;
 import granita.Parser.Statements.FieldDeclarationStatement;
+import granita.Parser.Statements.ForStatement;
+import granita.Parser.Statements.IfStatement;
 import granita.Parser.Statements.InitializedFieldDeclarationStatement;
+import granita.Parser.Statements.MethodCallStatement;
 import granita.Parser.Statements.MethodDeclarationStatement;
+import granita.Parser.Statements.PrintStatement;
+import granita.Parser.Statements.ReadStatement;
 import granita.Parser.Statements.ReturnStatement;
 import granita.Parser.Statements.Statement;
+import granita.Parser.Statements.WhileStatement;
 import granita.Semantic.SymbolTable.Function;
-import granita.Semantic.SymbolTable.SymbolTable;
 import granita.Semantic.SymbolTable.SymbolTableValue;
 import granita.Semantic.SymbolTable.Variable;
 import granita.Semantic.Types.Type;
@@ -31,6 +41,7 @@ public class SemanticAnalysis {
     //<editor-fold defaultstate="collapsed" desc="Instance Attributes">
 
     private ClassStatement program;
+    private final int GLOBAL_SCOPE = 0;
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Constructors">
@@ -38,7 +49,7 @@ public class SemanticAnalysis {
         this.program = program;
     }
     //</editor-fold>
-
+/*
     public ClassStatement analyze() throws GranitaException {
         validateMain();
         validateFieldDeclarations();
@@ -68,58 +79,156 @@ public class SemanticAnalysis {
         for (Statement st : this.program.getFieldDecls()) {
             if (st instanceof FieldDeclarationStatement) {
                 FieldDeclarationStatement fst = (FieldDeclarationStatement) st;
-                
-                for (Field f : fst.getDeclarations()){
+
+                for (Field f : fst.getDeclarations()) {
                     addFieldToGlobalSymbolTable(f.getFieldName(), fst.getType(), null);
                 }
             } else if (st instanceof InitializedFieldDeclarationStatement) {
                 InitializedFieldDeclarationStatement ist = (InitializedFieldDeclarationStatement) st;
-                
+
                 addFieldToGlobalSymbolTable(ist.getFieldName(), ist.getType(), ist.getInitValue());
             }
         }
     }
 
     private void validateMethodDeclarations() throws GranitaException {
-        for (Statement st : this.program.getMethodDecls()){
-            if (st instanceof MethodDeclarationStatement){
+        for (Statement st : this.program.getMethodDecls()) {
+            if (st instanceof MethodDeclarationStatement) {
                 MethodDeclarationStatement method = (MethodDeclarationStatement) st;
-                
+
                 HashMap<String, Variable> params = new HashMap<String, Variable>();
                 HashMap<String, Variable> localSymbolTable = new HashMap<String, Variable>();
-                
-                for (ParameterDeclaration param : method.getParameters()){
+
+                for (ParameterDeclaration param : method.getParameters()) {
                     Variable var = new Variable(param.getType(), null);
                     params.put(param.getName(), var);
                 }
-                
+
                 Function func = new Function(method.getType(), localSymbolTable, params);
                 addFunctionToGlobalSymbolTable(method.getIdentifier(), func);
-                
-                validateMethod(method.getIdentifier(), localSymbolTable, params);
             }
         }
+        
+        for (Statement st : this.program.getMethodDecls()) {
+            MethodDeclarationStatement mds = (MethodDeclarationStatement) st;
+            BlockStatement block = (BlockStatement) mds.getBlock();
+            
+            Function func = (Function) SymbolTable.getInstance().getEntry(mds.getIdentifier());
+            
+            for (Statement stmt : block.getStatements()) {
+                if (stmt instanceof AssignStatement) {
+                
+                } else if (stmt instanceof BlockStatement) {
+                
+                } else if (stmt instanceof BreakStatement) {
+                    BreakStatement bs = (BreakStatement) stmt;
+                    if (!bs.isIsInsideLoop()){
+                        throw new GranitaException("break must be inside a loop; in line "
+                                + bs.getLine());
+                    }
+                } else if (stmt instanceof ContinueStatement) {
+                    ContinueStatement bs = (ContinueStatement) stmt;
+                    if (!bs.isIsInsideLoop()){
+                        throw new GranitaException("continue must be inside a loop; in line "
+                                + bs.getLine());
+                    }
+                } else if (stmt instanceof ForStatement) {
+                
+                } else if (stmt instanceof IfStatement) {
+                
+                } else if (stmt instanceof MethodCallStatement) {
+                
+                } else if (stmt instanceof PrintStatement) {
+                
+                } else if (stmt instanceof ReadStatement) {
+                
+                } else if (stmt instanceof ReturnStatement) {
+                
+                } else if (stmt instanceof VarDeclaration) {
+                    VarDeclaration vd = (VarDeclaration) st;
+                    for (String varName : vd.getVarNames()) {
+                        Variable var = new Variable(vd.getType(), null);
+                    }
+                } else if (stmt instanceof WhileStatement) {
+                
+                }
+            }
+        }
+        
+        for (Statement st : this.program.getMethodDecls()) {
+            MethodDeclarationStatement mds = (MethodDeclarationStatement) st;
+            mds.getBlock().validateSemantics();
+        }
     }
-    
-    private void validateMethod(String methodName, HashMap<String, Variable> local, 
-            HashMap<String, Variable> params) throws GranitaException{
+
+    private void validateMethod(String methodName, HashMap<String, Variable> local,
+            HashMap<String, Variable> params) throws GranitaException {
         //semantica dentro de la funcion, en extremo complicado por los scopes
         BlockStatement block = getBlock(methodName);
-        for (Statement st : block.getStatements()){
-            if (st instanceof BlockStatement){
-                //aqui es lo complicado
-            } else if (st instanceof VarDeclaration) {
+        for (Statement st : block.getStatements()) {
+            if (st instanceof VarDeclaration) {
                 VarDeclaration vd = (VarDeclaration) st;
-                for (String varName : vd.getVarNames()){
+                for (String varName : vd.getVarNames()) {
                     Variable var = new Variable(vd.getType(), null);
                     local.put(varName, var);
                 }
+            } else if (st instanceof AssignStatement) {
+                //validateAssign((AssignStatement)st);
+            } else if (st instanceof BlockStatement) {
+                //esto será lo complicado
+            } else if (st instanceof BreakStatement) {
+            
+            } else if (st instanceof ContinueStatement) {
+            
+            } else if (st instanceof ForStatement) {
+            
+            } else if (st instanceof IfStatement) {
+            
+            } else if (st instanceof MethodCallStatement) {
+            
+            } else if (st instanceof PrintStatement) {
+            
+            } else if (st instanceof ReadStatement) {
+            
+            } else if (st instanceof ReturnStatement) {
+            
+            } else if (st instanceof WhileStatement) {
+            
             }
         }
     }
 
+    private void validateAssign(AssignStatement assign) throws GranitaException {
+        if (assign.getLeft() instanceof SimpleValue) {
+            SimpleValue sv = (SimpleValue) assign.getLeft();
+            if (sv.getScopeId() != GLOBAL_SCOPE){
+                SymbolTableValue value = SymbolTable.getInstance().getEntry(sv.getId());
+                if (value instanceof Function){
+                    throw new GranitaException("cannot assign a value to a function; in line "
+                            + assign.getLine());
+                } else if (value instanceof Variable){
+                    Variable var = (Variable) value;
+                    Type right = assign.getValue().validateSemantics();
+                    if (!var.getType().equivalent(right)){
+                        throw new GranitaException("cannot assign " + right + " to " 
+                                + var.getType() + " variable; in line " + assign.getLine());
+                    }
+                } else {
+                    throw new GranitaException("undefined variable " + sv.getId()
+                            + " in line " + assign.getLine());
+                }
+            }else {
+                throw new GranitaException("assignment are not allowed outside methods "
+                        + " in line " + assign.getLine());
+            }
+            
+        } else if (assign.getLeft() instanceof ArrayIndexLeftValue) {
+            ArrayIndexLeftValue alv = (ArrayIndexLeftValue) assign.getLeft();
+        }
+    }*/
+
     //<editor-fold defaultstate="collapsed" desc="Helper methods">
-    private void addFieldToGlobalSymbolTable(String fieldName,
+    /*private void addFieldToGlobalSymbolTable(String fieldName,
             Type type, Expression value) throws GranitaException {
 
         SymbolTableValue val = SymbolTable.getInstance().getEntry(fieldName);
@@ -176,5 +285,6 @@ public class SemanticAnalysis {
         }
         return null;
     }
+    * */
     //</editor-fold>
 }

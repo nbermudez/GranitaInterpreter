@@ -4,6 +4,8 @@
  */
 package granita.Parser.Statements;
 
+import granita.Semantic.SymbolTable.SymbolTableNode;
+import granita.Semantic.SymbolTable.SymbolTableTree;
 import granitainterpreter.GranitaException;
 import java.util.ArrayList;
 
@@ -73,9 +75,13 @@ public class ClassStatement extends Statement{
 
     @Override
     public void validateSemantics() throws GranitaException {
+        SymbolTableNode root = SymbolTableTree.getInstance().getRoot();
+        
         for (Statement st : fieldDecls){
             st.validateSemantics();
         }
+        
+        SymbolTableTree.getInstance().setParentNode(root);
         
         for (Statement st : methodDecls){
             st.validateSemantics();

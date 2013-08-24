@@ -16,6 +16,14 @@ public abstract class Statement {
     public Statement(int line) {
         this.line = line;
     }    
+
+    public int getLine() {
+        return line;
+    }
+
+    public void setLine(int line) {
+        this.line = line;
+    }    
     
     public abstract void validateSemantics() throws GranitaException;
 }

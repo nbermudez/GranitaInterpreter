@@ -4,6 +4,10 @@
  */
 package granita.Parser.LeftValues;
 
+import granita.Semantic.SymbolTable.SymbolTableNode;
+import granita.Semantic.SymbolTable.SymbolTableTree;
+import granita.Semantic.SymbolTable.SymbolTableValue;
+import granita.Semantic.SymbolTable.Variable;
 import granita.Semantic.Types.Type;
 import granitainterpreter.GranitaException;
 
@@ -31,6 +35,14 @@ public class SimpleValue extends LeftValue{
         this.id = id;
     }
 
+    public int getScopeId() {
+        return scopeId;
+    }
+
+    public void setScopeId(int scopeId) {
+        this.scopeId = scopeId;
+    }
+    
     @Override
     public String toString() {
         return id;
@@ -38,7 +50,14 @@ public class SimpleValue extends LeftValue{
 
     @Override
     public Type validateSemantics() throws GranitaException {
-        throw new UnsupportedOperationException("Not supported yet.");
+        SymbolTableNode n = SymbolTableTree.getInstance().getCurrentNode();
+        SymbolTableValue val = SymbolTableTree.getInstance().lookupFromCurrent(id);
+        if (val == null){
+            throw new GranitaException("undefined variable " + id + ", in line "+
+                    this.getLine());
+        }else{
+            return ((Variable)val).getType();
+        }
     }
     
 }

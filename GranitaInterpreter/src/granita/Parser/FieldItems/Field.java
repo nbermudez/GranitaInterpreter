@@ -5,13 +5,12 @@
 package granita.Parser.FieldItems;
 
 import granita.Parser.Statements.Statement;
-import granitainterpreter.GranitaException;
 
 /**
  *
  * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
  */
-public class Field extends Statement {
+public abstract class Field extends Statement {
     String fieldName;
 
     public Field(String fieldName, int line) {
@@ -25,11 +24,6 @@ public class Field extends Statement {
 
     public void setFieldName(String fieldName) {
         this.fieldName = fieldName;
-    }
-
-    @Override
-    public void validateSemantics() throws GranitaException {
-        throw new UnsupportedOperationException("Not supported yet.");
     }
     
 }
