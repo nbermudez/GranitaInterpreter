@@ -6,7 +6,10 @@ package granita.Parser.Statements;
 
 import granita.Semantic.SymbolTable.SymbolTableNode;
 import granita.Semantic.SymbolTable.SymbolTableTree;
+import granita.Semantic.Types.Type;
+import granitainterpreter.ErrorHandler;
 import granitainterpreter.GranitaException;
+import granitainterpreter.Utils;
 import java.util.ArrayList;
 
 /**
@@ -57,10 +60,46 @@ public class BlockStatement extends Statement {
     public void validateSemantics() throws GranitaException {
         SymbolTableNode parent = SymbolTableTree.getInstance().getParentNode();
         SymbolTableTree.getInstance().setCurrentNode(new SymbolTableNode(parent));
+        
+        boolean is = Utils.getInstance().isFirstBlockInMethod();
+        
         for (Statement st : statements) {
+            if (st instanceof BlockStatement) {
+                Utils.getInstance().setFirstBlockInMethod(false);
+            }
             st.validateSemantics();
+            Utils.getInstance().setFirstBlockInMethod(is);
         }
-        SymbolTableNode c = SymbolTableTree.getInstance().getCurrentNode();
         SymbolTableTree.getInstance().setCurrentNode(parent);
+        
+        boolean returnFound = false, continueFound = false, breakFound = false;
+        for (Statement statement : statements) {
+            if (returnFound || continueFound || breakFound) {
+                ErrorHandler.handle("unreachable statement: line " + statement.getLine());
+                break;
+            } else if (statement instanceof ReturnStatement) {
+                returnFound = true;
+            } else if (statement instanceof ContinueStatement) {
+                continueFound = true;
+            } else if (statement instanceof BreakStatement) {
+                breakFound = true;
+            }
+        }
+    }
+
+    @Override
+    public Type hasReturn(Type methodType) throws GranitaException {
+        for (Statement statement : statements) {
+            if (statement instanceof ReturnStatement) {
+                return ((ReturnStatement) statement).returnExpression.validateSemantics();
+            }
+        }
+        for (Statement statement : statements) {
+            Type t = statement.hasReturn(methodType);
+            if (t != null){
+                return t;
+            }
+        }
+        return null;
     }
 }

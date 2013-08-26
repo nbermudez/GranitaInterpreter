@@ -8,7 +8,7 @@ import granita.Parser.Expressions.Expression;
 import granita.Parser.FieldItems.Field;
 import granita.Parser.Functions.ParameterDeclaration;
 import granita.Parser.Functions.VarDeclaration;
-import granita.Parser.LeftValues.ArrayIndexLeftValue;
+import granita.Parser.LeftValues.ArrayLeftValue;
 import granita.Parser.LeftValues.SimpleValue;
 import granita.Parser.Statements.AssignStatement;
 import granita.Parser.Statements.BlockStatement;

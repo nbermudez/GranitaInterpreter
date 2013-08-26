@@ -12,6 +12,13 @@ public class BoolType extends Type{
     
     BoolResult value;
 
+    public BoolType() {
+    }
+
+    public BoolType(BoolResult value) {
+        this.value = value;
+    }
+
     public BoolResult getValue() {
         return value;
     }

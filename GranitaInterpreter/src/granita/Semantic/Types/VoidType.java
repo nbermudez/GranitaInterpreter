@@ -28,4 +28,9 @@ public class VoidType extends Type{
     public void setValue(Object value) {
         throw new UnsupportedOperationException("Void type can't have a value");
     }
+
+    @Override
+    public Object getValue() {
+        return null;
+    }
 }

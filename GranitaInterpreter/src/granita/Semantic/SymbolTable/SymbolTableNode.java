@@ -11,6 +11,7 @@ import java.util.HashMap;
  * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
  */
 public class SymbolTableNode {
+
     private SymbolTableNode parent;
     private HashMap<String, SymbolTableValue> table;
 
@@ -18,23 +19,37 @@ public class SymbolTableNode {
         this.parent = parent;
         this.table = new HashMap<String, SymbolTableValue>();
     }
-    
-    public void addEntry(String id, SymbolTableValue value){
+
+    public void addEntry(String id, SymbolTableValue value) {
         this.table.put(id, value);
     }
-    
-    public SymbolTableValue getEntry(String id){
-        if (this.table.containsKey(id)){
+
+    public SymbolTableValue getEntry(String id) {
+        if (this.table.containsKey(id)) {
             return this.table.get(id);
         }
-        if (parent == null){
+        if (parent == null) {
             return null;
-        }else {
+        } else {
             return parent.getEntry(id);
         }
     }
-    
-    public void deleteEntry(String id){
+
+    public SymbolTableValue findInThisTable(String id) {
+        if (this.table.containsKey(id)) {
+            return this.table.get(id);
+        }
+        return null;
+    }
+
+    public SymbolTableValue findInParent(String id) {
+        if (this.parent == null) {
+            return null;
+        }
+        return this.parent.findInThisTable(id);
+    }
+
+    public void deleteEntry(String id) {
         this.table.remove(id);
     }
 
@@ -53,5 +68,4 @@ public class SymbolTableNode {
     public void setTable(HashMap<String, SymbolTableValue> table) {
         this.table = table;
     }
-    
 }

@@ -18,6 +18,9 @@ public class Variable extends SymbolTableValue {
     public Variable(Type type, Expression value) {
         this.type = type;
         this.value = value;
+        if (value != null) {
+            this.initialized = true;
+        }
     }
 
     public Type getType() {

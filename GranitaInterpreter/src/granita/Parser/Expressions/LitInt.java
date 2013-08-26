@@ -4,6 +4,7 @@
  */
 package granita.Parser.Expressions;
 
+import granita.Semantic.Types.IntResult;
 import granita.Semantic.Types.IntType;
 import granita.Semantic.Types.Type;
 import granitainterpreter.GranitaException;
@@ -46,6 +47,6 @@ public class LitInt extends Expression {
 
     @Override
     public Type validateSemantics() throws GranitaException {
-        return new IntType();
+        return new IntType(new IntResult(value));
     }
 }

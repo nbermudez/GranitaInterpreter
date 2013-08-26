@@ -5,33 +5,36 @@
 package granita.Parser.Functions;
 
 import granita.Parser.Statements.Statement;
+import granita.Semantic.SymbolTable.Function;
 import granita.Semantic.SymbolTable.SymbolTableNode;
 import granita.Semantic.SymbolTable.SymbolTableTree;
 import granita.Semantic.SymbolTable.Variable;
 import granita.Semantic.Types.Type;
+import granitainterpreter.ErrorHandler;
 import granitainterpreter.GranitaException;
-
-
 
 /**
  *
  * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
  */
 public class ParameterDeclaration extends Statement {
+
     Type type;
-    String name;
+    String name, methodName;
     int scopeId;
-    
+
     public ParameterDeclaration(int scopeId, int line) {
         super(line);
         this.scopeId = scopeId;
     }
-    
-    public ParameterDeclaration(Type type, String name, int scopeId, int line) {
+
+    public ParameterDeclaration(Type type, String name,
+            String methodName, int scopeId, int line) {
         super(line);
         this.type = type;
         this.scopeId = scopeId;
         this.name = name;
+        this.methodName = methodName;
     }
 
     public Type getType() {
@@ -58,6 +61,14 @@ public class ParameterDeclaration extends Statement {
         this.scopeId = scopeId;
     }
 
+    public String getMethodName() {
+        return methodName;
+    }
+
+    public void setMethodName(String methodName) {
+        this.methodName = methodName;
+    }
+
     @Override
     public String toString() {
         return type + " " + name;
@@ -66,7 +77,14 @@ public class ParameterDeclaration extends Statement {
     @Override
     public void validateSemantics() throws GranitaException {
         SymbolTableNode current = SymbolTableTree.getInstance().getCurrentNode();
-        current.addEntry(name, new Variable(type, null));
+        
+        Function f = (Function)SymbolTableTree.getInstance().lookupFromCurrent(methodName);
+        f.getParameters().add(new Variable(type, null));
+        
+        if (current.findInThisTable(name) != null) {
+            ErrorHandler.handle("duplicated parameter " + name + ": line " + this.getLine());
+        } else {            
+            current.addEntry(name, new Variable(type, null));
+        }
     }
-    
 }

@@ -1,7 +1,10 @@
 class nombre___
 {
-    bool b = 1;
+    bool b = false;
+	int b;
     int h_s_r = 1;
+	int nums[20];
+	bool bb[10];
 	
 	void method(){
 		{
@@ -12,6 +15,62 @@ class nombre___
 		}
 		{
 			int var2, var3;
+		}
+	}
+	
+	void main(int a){
+		int a;
+		bool a;
+		nums[a] = 1;
+		nums[b] = 5;
+		nums[0] = 4;
+		nums[bb[0]] = 3;
+		nums[h_s_r] = false;
+		nums[nums[0]] = 1+abc;
+		b[20] = true;
+		bb[0] = false;
+		bb[bb[0]] = true;
+	}
+	
+	bool me(int a){
+		bool a;
+		//return potato(false, false, 10,10);
+		potato2(a);
+	}
+	
+	bool potato(bool _, int _, bool __) {
+		if (true) {
+			return _;
+			return true;
+		}
+		return 1+2;
+		{
+			int _;
+		}
+	}
+	
+	void potato2(bool x) {
+		print "hola" , "mundo";
+		while(true) {
+			break;
+			return;
+			continue;
+		}
+	}
+	
+	int fib(int n) {
+		if (n == 1 || n == 0){
+			return 1;
+		}else{
+			return fib(n-1) + fib(n-2);
+		}
+	}
+	
+	int fib2() {
+		if (true){
+			return 1;
+		}else {
+			return false;
 		}
 	}
 }

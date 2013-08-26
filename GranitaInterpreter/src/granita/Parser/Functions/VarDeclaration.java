@@ -9,7 +9,9 @@ import granita.Semantic.SymbolTable.SymbolTableNode;
 import granita.Semantic.SymbolTable.SymbolTableTree;
 import granita.Semantic.SymbolTable.Variable;
 import granita.Semantic.Types.Type;
+import granitainterpreter.ErrorHandler;
 import granitainterpreter.GranitaException;
+import granitainterpreter.Utils;
 import java.util.ArrayList;
 
 /**
@@ -21,38 +23,38 @@ public class VarDeclaration extends Statement {
     Type type;
     int scopeId;
     ArrayList<String> varNames;
-    
+
     public VarDeclaration(Type type, ArrayList<String> varNames, int scopeId, int line) {
         super(line);
         this.type = type;
         this.scopeId = scopeId;
         this.varNames = varNames;
     }
-    
+
     public Type getType() {
         return type;
     }
-    
+
     public void setType(Type type) {
         this.type = type;
     }
-    
+
     public int getScopeId() {
         return scopeId;
     }
-    
+
     public void setScopeId(int scopeId) {
         this.scopeId = scopeId;
     }
-    
+
     public ArrayList<String> getVarNames() {
         return varNames;
     }
-    
+
     public void setVarNames(ArrayList<String> varNames) {
         this.varNames = varNames;
     }
-    
+
     @Override
     public String toString() {
         String var = type + " ";
@@ -62,12 +64,21 @@ public class VarDeclaration extends Statement {
         var += varNames.get(varNames.size() - 1);
         return var;
     }
-    
+
     @Override
     public void validateSemantics() throws GranitaException {
         SymbolTableNode current = SymbolTableTree.getInstance().getCurrentNode();
         for (String name : varNames) {
-            current.addEntry(name, new Variable(type, null));
+            if (current.findInThisTable(name) != null) {
+                ErrorHandler.handle("already defined variable " + name
+                        + ": line " + this.getLine());
+            } else if (Utils.getInstance().isFirstBlockInMethod()) {
+                if (current.findInParent(name) != null) {
+                    ErrorHandler.handleWarning("variable " + name
+                        + " shadows a parameter: line " + this.getLine());
+                    
+                }current.addEntry(name, new Variable(type, null));
+            }
         }
     }
 }

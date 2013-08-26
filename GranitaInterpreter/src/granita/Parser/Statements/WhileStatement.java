@@ -5,6 +5,9 @@
 package granita.Parser.Statements;
 
 import granita.Parser.Expressions.Expression;
+import granita.Semantic.Types.BoolType;
+import granita.Semantic.Types.Type;
+import granitainterpreter.ErrorHandler;
 import granitainterpreter.GranitaException;
 
 /**
@@ -46,8 +49,16 @@ public class WhileStatement extends Statement{
 
     @Override
     public void validateSemantics() throws GranitaException {
-        exp.validateSemantics();
+        Type rtype = exp.validateSemantics();
+        if (!(rtype instanceof BoolType)) {
+            ErrorHandler.handle("while condition must evaluate to bool: line " + this.getLine());
+        }
         block.validateSemantics();
+    }
+
+    @Override
+    public Type hasReturn(Type methodType) throws GranitaException {
+        return block.hasReturn(methodType);
     }
     
 }

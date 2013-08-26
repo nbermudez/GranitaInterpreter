@@ -6,6 +6,7 @@ package granita.Semantic.SymbolTable;
 
 import granita.Parser.Expressions.Expression;
 import granita.Semantic.Types.Type;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -15,15 +16,16 @@ import java.util.HashMap;
 public class Function extends SymbolTableValue {
     private Type type;
     private HashMap<String, Variable> localSymbolTable;
-    private HashMap<String, Variable> parameters;
+    private ArrayList<Variable> parameters;
     
     public Function(Type type){
         this.type = type;
         this.localSymbolTable = new HashMap<String, Variable>();
-        this.parameters = new HashMap<String, Variable>();
+        this.parameters = new ArrayList<Variable>();
     }
 
-    public Function(Type type, HashMap<String, Variable> localSymbolTable, HashMap<String, Variable> parameters) {
+    public Function(Type type, HashMap<String, Variable> localSymbolTable, 
+            ArrayList<Variable> parameters) {
         this.type = type;
         this.localSymbolTable = localSymbolTable;
         this.parameters = parameters;
@@ -45,11 +47,11 @@ public class Function extends SymbolTableValue {
         this.localSymbolTable = localSymbolTable;
     }
 
-    public HashMap<String, Variable> getParameters() {
+    public ArrayList<Variable> getParameters() {
         return parameters;
     }
 
-    public void setParameters(HashMap<String, Variable> parameters) {
+    public void setParameters(ArrayList<Variable> parameters) {
         this.parameters = parameters;
     }
     

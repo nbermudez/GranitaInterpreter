@@ -14,10 +14,12 @@ import granita.Semantic.Types.Type;
 public class ArrayVariable extends SymbolTableValue {
     Type type;
     LitInt size;
+    Type items[];
 
     public ArrayVariable(Type type, LitInt size) {
         this.type = type;
         this.size = size;
+        this.items = new Type[size.getValue()];
     }
 
     public Type getType() {

@@ -4,25 +4,26 @@
  */
 package granita.Parser.LeftValues;
 
-import granita.Semantic.SymbolTable.SymbolTableNode;
 import granita.Semantic.SymbolTable.SymbolTableTree;
 import granita.Semantic.SymbolTable.SymbolTableValue;
 import granita.Semantic.SymbolTable.Variable;
 import granita.Semantic.Types.Type;
+import granitainterpreter.ErrorHandler;
 import granitainterpreter.GranitaException;
 
 /**
  *
  * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
  */
-public class SimpleValue extends LeftValue{
+public class SimpleValue extends LeftValue {
+
     String id;
-    
+
     public SimpleValue(int scopeId, int line) {
         super(scopeId, line);
     }
 
-    public SimpleValue(String id, int scopeId,  int line) {
+    public SimpleValue(String id, int scopeId, int line) {
         super(scopeId, line);
         this.id = id;
     }
@@ -42,7 +43,7 @@ public class SimpleValue extends LeftValue{
     public void setScopeId(int scopeId) {
         this.scopeId = scopeId;
     }
-    
+
     @Override
     public String toString() {
         return id;
@@ -50,14 +51,12 @@ public class SimpleValue extends LeftValue{
 
     @Override
     public Type validateSemantics() throws GranitaException {
-        SymbolTableNode n = SymbolTableTree.getInstance().getCurrentNode();
         SymbolTableValue val = SymbolTableTree.getInstance().lookupFromCurrent(id);
-        if (val == null){
-            throw new GranitaException("undefined variable " + id + ", in line "+
-                    this.getLine());
-        }else{
-            return ((Variable)val).getType();
+        if (val == null) {
+            return ErrorHandler.handle("undefined variable " + id + ": line "
+                    + this.getLine());
+        } else {
+            return ((Variable) val).getType();
         }
     }
-    
 }

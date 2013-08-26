@@ -4,6 +4,7 @@
  */
 package granita.Parser.Statements;
 
+import granita.Semantic.Types.Type;
 import granitainterpreter.GranitaException;
 
 /**
@@ -26,4 +27,8 @@ public abstract class Statement {
     }    
     
     public abstract void validateSemantics() throws GranitaException;
+    
+    public Type hasReturn(Type methodType) throws GranitaException {
+        return null;
+    }
 }

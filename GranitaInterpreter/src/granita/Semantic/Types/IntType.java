@@ -12,6 +12,13 @@ public class IntType extends Type{
     
     IntResult value;   
 
+    public IntType() {
+    }
+
+    public IntType(IntResult value) {
+        this.value = value;
+    }
+
     public IntResult getValue() {
         return value;
     }

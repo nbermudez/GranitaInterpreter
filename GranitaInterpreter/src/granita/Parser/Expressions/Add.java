@@ -4,8 +4,10 @@
  */
 package granita.Parser.Expressions;
 
+import granita.Semantic.Types.ErrorType;
 import granita.Semantic.Types.IntType;
 import granita.Semantic.Types.Type;
+import granitainterpreter.ErrorHandler;
 import granitainterpreter.GranitaException;
 
 /**
@@ -26,21 +28,24 @@ public class Add extends BinaryExpression {
     @Override
     public Type validateSemantics() throws GranitaException {
         Type LHS = left.validateSemantics();
-        if (LHS == null){
-            throw new GranitaException("undefined variable " + left.toString() + 
-                    " in line " + line);
+        if (LHS == null) {
+            return ErrorHandler.handle("undefined variable " + left.toString()
+                    + ": line " + line);
         }
         Type RHS = right.validateSemantics();
-        if (RHS == null){
-            throw new GranitaException("undefined variable " + right.toString() + 
-                    " in line " + line);
+        if (RHS == null) {
+            return ErrorHandler.handle("undefined variable " + right.toString()
+                    + ": line " + line);
         }
-        
-        if (LHS instanceof IntType && RHS instanceof IntType){
+
+        if (LHS instanceof IntType && RHS instanceof IntType) {
             return LHS;
-        }else{
-            throw new GranitaException("Operator + cannot be applied to " + 
-                    LHS.toString() + " and " + RHS.toString() + " in line " + line);
+        } else if (LHS instanceof ErrorType || RHS instanceof ErrorType) {
+            return new ErrorType();
+        } else {
+            return ErrorHandler.handle("Operator + cannot be applied to "
+                    + LHS.toString() + " and " + RHS.toString()
+                    + ": line " + line);
         }
     }
 }

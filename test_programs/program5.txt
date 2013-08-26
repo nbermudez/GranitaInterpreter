@@ -1,5 +1,5 @@
 class _My_Class {
-	/*int var_char = 'a';
+	int var_char = 'a';
 	int var_int1;
 	int var_int2, var_int3;
 	int var_int4, var_int5[5], var_int6;
@@ -7,12 +7,18 @@ class _My_Class {
 	int a[10], b[20];
 	
 	int function1(){
+		arr[0] = (1>abc) || (bbb>(abcd + 10*cda));
+		arr[0] = abcde;
 		return 0XFFFF;
 	}
 	
 	int function2(int x, bool y, int _){
-		return function1();
-	}*/
+		
+		return function1gg();
+		for (1;x;x=x+1){
+		}
+		for(1;y;_=1){}		
+	}
 	
 	int function3(int __){
 		int variable;
@@ -21,12 +27,13 @@ class _My_Class {
 			if (__<100){
 				//return function1() + __;
 			}else{
-				//return __ - function2(__+1, false, 0x1);
+				return __ - function2(__+1, false, 0x1);
 			}
 		}
-		function5();
+		functiong();
 		print "hola mundo";
-		//potato = 1+2*3/4%5 rot 6 && true || false >> 1 << 3;
+		
+		potato = 1+2*3/4%5 rot 6 && true || false >> 1 << 3;
 		{
 			int __;
 			{
@@ -35,14 +42,16 @@ class _My_Class {
 		}
 		return 1+--21;
 	}
-	/*
+	
 	bool function4(bool __){
+		if (0) {return 0;}
+		while(1){break;}
 		//return false || true && false && ((2+ 1)>>2) <= 5;
 	}
 	
-	void main(){
-		bool c;	
-		
-		//read a[2],b[a+1],c;
-	}*/
+	bool main(int a){
+		int c;
+		read b[a[b[c]]];
+		read a[2],b[a[0]],c;
+	}
 }

@@ -13,6 +13,7 @@ import granitainterpreter.GranitaException;
  * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
  */
 public class UnaryNot extends Expression {
+
     Expression value;
 
     public UnaryNot(Expression value, int line) {
@@ -24,20 +25,20 @@ public class UnaryNot extends Expression {
     public String toString() {
         return "(" + "!" + value.toString() + ")";
     }
-    
+
     @Override
     public Type validateSemantics() throws GranitaException {
         Type tvalue = value.validateSemantics();
-        if (tvalue == null){
-            throw new GranitaException("undefined variable " + value.toString() +
-                    " in line " + line);
+        if (tvalue == null) {
+            throw new GranitaException("undefined variable " + value.toString()
+                    + ": line " + line);
         }
-        
-        if (tvalue instanceof BoolType){
+
+        if (tvalue instanceof BoolType) {
             return tvalue;
-        }else{
-            throw new GranitaException("Operator ! cannot be applied to " + 
-                    tvalue.toString() + " in line " + line);
+        } else {
+            throw new GranitaException("Operator ! cannot be applied to "
+                    + tvalue.toString() + ": line " + line);
         }
     }
 }

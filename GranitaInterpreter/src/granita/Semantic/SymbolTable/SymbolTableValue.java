@@ -9,5 +9,14 @@ package granita.Semantic.SymbolTable;
  * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
  */
 public abstract class SymbolTableValue {
+    boolean initialized = false;
+
+    public boolean isInitialized() {
+        return initialized;
+    }
+
+    public void setInitialized(boolean initialized) {
+        this.initialized = initialized;
+    }
     
 }

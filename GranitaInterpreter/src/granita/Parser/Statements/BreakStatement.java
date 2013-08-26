@@ -4,6 +4,7 @@
  */
 package granita.Parser.Statements;
 
+import granitainterpreter.ErrorHandler;
 import granitainterpreter.GranitaException;
 
 /**
@@ -33,5 +34,8 @@ public class BreakStatement extends Statement {
 
     @Override
     public void validateSemantics() throws GranitaException {
+        if (!isInsideLoop) {
+            ErrorHandler.handle("break statement must be inside a loop");
+        }
     }
 }

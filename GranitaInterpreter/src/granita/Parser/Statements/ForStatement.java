@@ -5,6 +5,9 @@
 package granita.Parser.Statements;
 
 import granita.Parser.Expressions.Expression;
+import granita.Semantic.Types.BoolType;
+import granita.Semantic.Types.Type;
+import granitainterpreter.ErrorHandler;
 import granitainterpreter.GranitaException;
 import java.util.ArrayList;
 
@@ -16,8 +19,8 @@ public class ForStatement extends Statement {
 
     Statement block;
     ArrayList<Expression> initializations;
-    Expression termination; 
-    ArrayList<Statement> increments; 
+    Expression termination;
+    ArrayList<Statement> increments;
 
     public ForStatement(int line) {
         super(line);
@@ -25,7 +28,7 @@ public class ForStatement extends Statement {
         this.increments = new ArrayList<Statement>();
     }
 
-    public ForStatement(Statement block, ArrayList<Expression> initializations, 
+    public ForStatement(Statement block, ArrayList<Expression> initializations,
             Expression termination, ArrayList<Statement> increments, int line) {
         super(line);
         this.block = block;
@@ -45,16 +48,16 @@ public class ForStatement extends Statement {
     public void addAssign(Statement assign) {
         this.increments.add(assign);
     }
-    
+
     @Override
     public String toString() {
         String f = "for(";
-        for (int i = 0; i< initializations.size() - 1 ; i++){
+        for (int i = 0; i < initializations.size() - 1; i++) {
             f += initializations.get(i).toString() + ",";
         }
         f += initializations.get(initializations.size() - 1).toString() + ";";
         f += termination.toString() + ";";
-        for (int i = 0; i< increments.size() - 1 ; i++){
+        for (int i = 0; i < increments.size() - 1; i++) {
             f += increments.get(i).toString() + ",";
         }
         f += increments.get(increments.size() - 1).toString();
@@ -65,13 +68,22 @@ public class ForStatement extends Statement {
 
     @Override
     public void validateSemantics() throws GranitaException {
-        for (Expression exp : initializations){
+        for (Expression exp : initializations) {
             exp.validateSemantics();
         }
-        termination.validateSemantics();
-        for (Statement exp : increments){
+        Type t = termination.validateSemantics();
+        if (!(t instanceof BoolType)) {
+            ErrorHandler.handle("for test expression must evaluate to bool: line "
+                    + termination.getLine());
+        }
+        for (Statement exp : increments) {
             exp.validateSemantics();
         }
         block.validateSemantics();
+    }
+
+    @Override
+    public Type hasReturn(Type methodType) throws GranitaException {
+        return block.hasReturn(methodType);
     }
 }

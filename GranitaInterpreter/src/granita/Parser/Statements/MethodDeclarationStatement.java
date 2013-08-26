@@ -9,6 +9,8 @@ import granita.Semantic.SymbolTable.Function;
 import granita.Semantic.SymbolTable.SymbolTableNode;
 import granita.Semantic.SymbolTable.SymbolTableTree;
 import granita.Semantic.Types.Type;
+import granita.Semantic.Types.VoidType;
+import granitainterpreter.ErrorHandler;
 import granitainterpreter.GranitaException;
 import java.util.ArrayList;
 
@@ -17,10 +19,11 @@ import java.util.ArrayList;
  * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
  */
 public class MethodDeclarationStatement extends Statement {
-    String identifier;
-    ArrayList<ParameterDeclaration> parameters;
-    Statement block;
-    Type type;
+    private String identifier;
+    private ArrayList<ParameterDeclaration> parameters;
+    private Statement block;
+    private Type type;
+    private SymbolTableNode paramsEntry;
     
     public MethodDeclarationStatement(Type type, String identifier, int line){
         super(line);
@@ -64,6 +67,18 @@ public class MethodDeclarationStatement extends Statement {
     public void addParameter(ParameterDeclaration param){
         this.parameters.add(param);
     }
+    
+    public boolean isMain(){
+        return this.identifier.equals("main");
+    }
+
+    public SymbolTableNode getParamsEntry() {
+        return paramsEntry;
+    }
+
+    public void setParamsEntry(SymbolTableNode paramsEntry) {
+        this.paramsEntry = paramsEntry;
+    }
 
     @Override
     public String toString() {
@@ -86,10 +101,19 @@ public class MethodDeclarationStatement extends Statement {
         
         SymbolTableNode parent = SymbolTableTree.getInstance().getParentNode();
         SymbolTableTree.getInstance().setCurrentNode(new SymbolTableNode(parent));
+        
         for (ParameterDeclaration st : parameters){
             st.validateSemantics();
         }
-        block.validateSemantics();
+        this.paramsEntry = SymbolTableTree.getInstance().getCurrentNode();
+        
+        
+        
+        if (!this.type.equivalent(new VoidType()) &&
+            this.block.hasReturn(this.type) == null) {
+            ErrorHandler.handle("missing return statement in method '" + identifier
+                    + "': line " + this.line);
+        }
         SymbolTableTree.getInstance().setCurrentNode(parent);
     }
     

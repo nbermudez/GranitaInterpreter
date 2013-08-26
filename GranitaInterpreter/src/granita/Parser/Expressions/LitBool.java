@@ -4,6 +4,7 @@
  */
 package granita.Parser.Expressions;
 
+import granita.Semantic.Types.BoolResult;
 import granita.Semantic.Types.BoolType;
 import granita.Semantic.Types.Type;
 import granitainterpreter.GranitaException;
@@ -40,6 +41,6 @@ public class LitBool extends Expression {
 
     @Override
     public Type validateSemantics() throws GranitaException {
-        return new BoolType();
+        return new BoolType(new BoolResult(value));
     }
 }

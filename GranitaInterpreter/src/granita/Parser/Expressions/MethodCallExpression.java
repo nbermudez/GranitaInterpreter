@@ -7,6 +7,7 @@ package granita.Parser.Expressions;
 import granita.Semantic.SymbolTable.Function;
 import granita.Semantic.SymbolTable.SymbolTableTree;
 import granita.Semantic.Types.Type;
+import granitainterpreter.ErrorHandler;
 import granitainterpreter.GranitaException;
 import java.util.ArrayList;
 
@@ -15,10 +16,10 @@ import java.util.ArrayList;
  * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
  */
 public class MethodCallExpression extends Expression {
-    
+
     ArrayList<Expression> arguments;
     String id;
-    
+
     public MethodCallExpression(int line) {
         super(line);
     }
@@ -28,18 +29,18 @@ public class MethodCallExpression extends Expression {
         this.arguments = arguments;
         this.id = id;
     }
-    
+
     @Override
     public String toString() {
         String t = id + "(";
-        
-        for (int i = 0; i< arguments.size() - 1; i++ ){
+
+        for (int i = 0; i < arguments.size() - 1; i++) {
             t = t + arguments.get(i).toString() + ",";
         }
-        if (arguments.size()>0){
+        if (arguments.size() > 0) {
             t = t + arguments.get(arguments.size() - 1).toString();
         }
-        
+
         t = t + ")";
         return t;
     }
@@ -47,19 +48,32 @@ public class MethodCallExpression extends Expression {
     @Override
     public Type validateSemantics() throws GranitaException {
         Type t = findInSymbolTable(this.id);
-        if (t == null){
-            throw new GranitaException("undefined method " + id + " in line " + line);
-        }else{
-            for (Expression ex : arguments){
-                ex.validateSemantics();
+        if (t == null) {
+            return ErrorHandler.handle("undefined method " + id + ": line " + line);
+        } else {
+            Function f = (Function) SymbolTableTree.getInstance().lookupFromCurrent(id);
+            if (arguments.size() != f.getParameters().size()) {
+                ErrorHandler.handle("actual and formal argument list differ in length "
+                        + ": line " + this.getLine());
+            }
+            int min = arguments.size()<f.getParameters().size()?
+                    arguments.size():f.getParameters().size();
+            for (int i = 0; i < min; i++) {
+                Expression ex = arguments.get(i);
+                Type ret = ex.validateSemantics();
+                Type o = f.getParameters().get(i).getType();
+                if (!o.equivalent(ret)) {
+                    ErrorHandler.handle("incompatible types in method call's arg " + i
+                            + ": line " + ex.getLine());
+                }
             }
             return t;
         }
     }
-    
-    private Type findInSymbolTable(String name){
+
+    private Type findInSymbolTable(String name) {
         Function f = (Function) SymbolTableTree.getInstance().lookupFromCurrent(name);
-        if (f != null){
+        if (f != null) {
             return f.getType();
         }
         return null;
