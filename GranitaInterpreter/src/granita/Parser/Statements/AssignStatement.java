@@ -10,6 +10,7 @@ import granita.Semantic.Types.ErrorType;
 import granita.Semantic.Types.Type;
 import granitainterpreter.ErrorHandler;
 import granitainterpreter.GranitaException;
+import granitainterpreter.Utils;
 
 /**
  *
@@ -53,6 +54,7 @@ public class AssignStatement extends Statement {
 
     @Override
     public void validateSemantics() throws GranitaException {
+        super.validateSemantics();
         Type LHS = left.validateSemantics();
         Type RHS = value.validateSemantics();
 

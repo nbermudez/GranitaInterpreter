@@ -5,7 +5,9 @@
 package granita.Parser.Statements;
 
 import granita.Semantic.Types.Type;
+import granitainterpreter.ErrorHandler;
 import granitainterpreter.GranitaException;
+import granitainterpreter.Utils;
 
 /**
  *
@@ -26,7 +28,12 @@ public abstract class Statement {
         this.line = line;
     }    
     
-    public abstract void validateSemantics() throws GranitaException;
+    public void validateSemantics() throws GranitaException {
+        if (Utils.getInstance().isUnreachableStatement() == 1) {
+            ErrorHandler.handle("unreachable statement: line " + this.getLine());
+            Utils.getInstance().setUnreachableStatement();
+        }
+    }
     
     public Type hasReturn(Type methodType) throws GranitaException {
         return null;

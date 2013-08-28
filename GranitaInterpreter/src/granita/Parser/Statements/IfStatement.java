@@ -19,6 +19,7 @@ public class IfStatement extends Statement {
     Expression conditional;
     Statement trueBlock, falseBlock;
 
+    //<editor-fold defaultstate="collapsed" desc="Constructors">
     public IfStatement(int line) {
         super(line);
     }
@@ -30,7 +31,9 @@ public class IfStatement extends Statement {
         this.trueBlock = trueBlock;
         this.falseBlock = falseBlock;
     }
+    //</editor-fold>    
 
+    //<editor-fold defaultstate="collapsed" desc="Getters & Setters">
     public void setConditional(Expression conditional) {
         this.conditional = conditional;
     }
@@ -42,6 +45,7 @@ public class IfStatement extends Statement {
     public void setFalseBlock(Statement falseBlock) {
         this.falseBlock = falseBlock;
     }
+    //</editor-fold>    
 
     @Override
     public String toString() {
@@ -58,6 +62,7 @@ public class IfStatement extends Statement {
 
     @Override
     public void validateSemantics() throws GranitaException {
+        super.validateSemantics();
         Type c = conditional.validateSemantics();
         if (!(c instanceof BoolType)) {
             ErrorHandler.handle("if condition must evaluate to bool: line "
@@ -75,17 +80,6 @@ public class IfStatement extends Statement {
         t1 = trueBlock.hasReturn(methodType);
         if (falseBlock != null) {
             t2 = falseBlock.hasReturn(methodType);
-        }
-
-        if (!methodType.equivalent(t1)) {
-            ErrorHandler.handle("incompatible return type, expected "
-                    + methodType + " but found "
-                    + t1 + ": line " + trueBlock.line);
-        }
-        if (t2 != null && !methodType.equivalent(t2)) {
-            ErrorHandler.handle("incompatible return type, expected "
-                    + methodType + " but found "
-                    + t2 + ": line " + falseBlock.line);
         }
         if (t2 == null) {
             return null;

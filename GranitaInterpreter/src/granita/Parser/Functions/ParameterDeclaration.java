@@ -82,7 +82,7 @@ public class ParameterDeclaration extends Statement {
         f.getParameters().add(new Variable(type, null));
         
         if (current.findInThisTable(name) != null) {
-            ErrorHandler.handle("duplicated parameter " + name + ": line " + this.getLine());
+            ErrorHandler.handle("duplicated parameter '" + name + "': line " + this.getLine());
         } else {            
             current.addEntry(name, new Variable(type, null));
         }

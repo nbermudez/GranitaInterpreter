@@ -46,6 +46,7 @@ public class ReadStatement extends Statement {
 
     @Override
     public void validateSemantics() throws GranitaException {
+        super.validateSemantics();
         for (LeftValue lv : leftValues){
             lv.validateSemantics();
         }

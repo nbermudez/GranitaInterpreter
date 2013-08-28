@@ -37,6 +37,7 @@ public class PrintStatement extends Statement {
 
     @Override
     public void validateSemantics() throws GranitaException {
+        super.validateSemantics();
         for (Argument st : arguments){
             st.validateSemantics();
         }

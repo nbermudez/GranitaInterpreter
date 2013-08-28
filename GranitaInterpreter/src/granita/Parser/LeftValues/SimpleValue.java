@@ -53,7 +53,7 @@ public class SimpleValue extends LeftValue {
     public Type validateSemantics() throws GranitaException {
         SymbolTableValue val = SymbolTableTree.getInstance().lookupFromCurrent(id);
         if (val == null) {
-            return ErrorHandler.handle("undefined variable " + id + ": line "
+            return ErrorHandler.handle("undefined variable '" + id + "': line "
                     + this.getLine());
         } else {
             return ((Variable) val).getType();

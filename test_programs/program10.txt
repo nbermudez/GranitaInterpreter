@@ -1,0 +1,86 @@
+class LlenaDeErrores {
+	//para test de variable duplicada
+	int a;
+	bool a = false;
+	bool b,c,b;
+	//terminan test variable duplicada
+	
+	//para test de variable duplicada
+	void test_same_scope1(){
+		int x;
+		int y,x;
+	}
+	
+	void test_same_scope2(int param) {
+		int param;
+		
+		bool d, param;
+	}	
+	
+	void test_same_scope3(int xxx){
+		{
+			bool xxx;
+			{
+				int xxx;
+				bool xxx;
+			}
+		}
+	}
+	//terminan test variable duplicada
+	
+	//test para variable sin declarar
+	void test_unde_var1() {
+		bool dec_var;
+		print undec_var;
+		read undec_var2;
+		{
+			print dec_var;
+			print a;
+			
+			{
+				int x;
+				{
+					print x;
+				}
+			}
+		}
+	}
+	//terminan test variable sin declarar
+	
+	//test method call params
+	void caller(){
+		method1(1, 2, 3);
+		method1(false, false);
+		method1();
+		{
+			method1(true, true, true);
+		}
+		method1(1, 2, true);
+		method1(a, a, a>1);
+	}
+	
+	void method1(int x, int y, bool z){
+		caller();
+		method1(x, y, z);	
+		return true;
+	}	
+	//
+	
+	// return types
+	int method2(){
+		//return method3();
+		//return method2(1,2,false);
+		//return method4();
+		if (1>2){
+			return false;
+		}
+		return 1;
+	}
+	
+	bool method3(){
+		return 2;
+	}
+	
+	bool method4(){ return 1>2;}
+	// return types end
+}

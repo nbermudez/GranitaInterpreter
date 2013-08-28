@@ -49,6 +49,7 @@ public class WhileStatement extends Statement{
 
     @Override
     public void validateSemantics() throws GranitaException {
+        super.validateSemantics();
         Type rtype = exp.validateSemantics();
         if (!(rtype instanceof BoolType)) {
             ErrorHandler.handle("while condition must evaluate to bool: line " + this.getLine());

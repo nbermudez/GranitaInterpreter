@@ -48,6 +48,7 @@ public class MethodCallStatement extends Statement {
 
     @Override
     public void validateSemantics() throws GranitaException {
+        super.validateSemantics();
         Type t = findInSymbolTable(this.id);
         if (t == null) {
             ErrorHandler.handle("undefined method " + id + ": line " + line);

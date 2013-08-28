@@ -68,6 +68,7 @@ public class ForStatement extends Statement {
 
     @Override
     public void validateSemantics() throws GranitaException {
+        super.validateSemantics();
         for (Expression exp : initializations) {
             exp.validateSemantics();
         }

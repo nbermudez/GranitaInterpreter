@@ -73,4 +73,8 @@ class nombre___
 			return false;
 		}
 	}
+	
+	void testx() {
+		return 1;
+	}
 }

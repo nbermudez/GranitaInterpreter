@@ -6,6 +6,7 @@ package granita.Parser.Statements;
 
 import granita.Semantic.SymbolTable.SymbolTableNode;
 import granita.Semantic.SymbolTable.SymbolTableTree;
+import granita.Semantic.Types.Type;
 import granita.Semantic.Types.VoidType;
 import granitainterpreter.ErrorHandler;
 import granitainterpreter.GranitaException;
@@ -78,6 +79,7 @@ public class ClassStatement extends Statement {
 
     @Override
     public void validateSemantics() throws GranitaException {
+        //<editor-fold defaultstate="collapsed" desc="Validate fields">
         SymbolTableNode root = SymbolTableTree.getInstance().getRoot();
 
         for (Statement st : fieldDecls) {
@@ -85,37 +87,40 @@ public class ClassStatement extends Statement {
         }
 
         SymbolTableTree.getInstance().setParentNode(root);
+        //</editor-fold>        
 
-        MethodDeclarationStatement main;
+        //<editor-fold defaultstate="collapsed" desc="Initialize methods">
+        MethodDeclarationStatement main = null, m;
+        boolean mainFound = false;
         for (Statement st : methodDecls) {
+            m = (MethodDeclarationStatement) st;
             if (((MethodDeclarationStatement) st).isMain()) {
-                main = (MethodDeclarationStatement) st;
-                if (main == null) {
-                    ErrorHandler.handle("class must contain a method 'main': line "
-                            + st.getLine());
-                } else {
-                    if (!main.getType().equivalent(new VoidType())) {
-                        ErrorHandler.handle("'main' method must be void: line "
-                                + st.getLine());
-                    }
-                    if (!main.getParameters().isEmpty()) {
-                        ErrorHandler.handle("'main' method cannot have parameters "
-                                + ": line " + st.getLine());
-                    }
-                }
+                mainFound = true;
+                main = m;
             }
-            st.validateSemantics();
+            m.initialize();
         }
-        for (Statement statement : methodDecls) {            
-            main = (MethodDeclarationStatement) statement;
-            
-            SymbolTableNode parent = SymbolTableTree.getInstance().getParentNode();
-            SymbolTableTree.getInstance().setCurrentNode(main.getParamsEntry());
-            
-            Utils.getInstance().setFirstBlockInMethod(true);
-            main.getBlock().validateSemantics();
-            
-            SymbolTableTree.getInstance().setCurrentNode(parent);
+        //</editor-fold>
+        
+        //<editor-fold defaultstate="collapsed" desc="Check for main method">
+        if (!mainFound) {
+            ErrorHandler.handle("class must contain a method 'main'");
+        } else {
+            if (!main.getType().equivalent(new VoidType())) {
+                ErrorHandler.handle("'main' method must be void");
+            }
+            if (!main.getParameters().isEmpty()) {
+                ErrorHandler.handle("'main' method cannot have parameters ");
+            }
         }
+        //</editor-fold>
+        
+        //<editor-fold defaultstate="collapsed" desc="Validate methods">
+        for (Statement statement : methodDecls) {
+            main = (MethodDeclarationStatement) statement;            
+            SymbolTableTree.getInstance().setCurrentNode(main.getParamsEntry());            
+            main.validateSemantics();
+        }
+        //</editor-fold>
     }
 }

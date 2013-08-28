@@ -6,6 +6,7 @@ package granita.Parser.FieldItems;
 
 import granita.Parser.Expressions.LitInt;
 import granita.Semantic.Types.Type;
+import granitainterpreter.ErrorHandler;
 import granitainterpreter.GranitaException;
 
 /**
@@ -36,7 +37,10 @@ public class ArrayField extends Field {
 
     @Override
     public void validateSemantics() throws GranitaException {
-        throw new UnsupportedOperationException("Not supported yet.");
+        if (size.getValue() <= 0) {
+            ErrorHandler.handle("array size must be greater than zero: line " 
+                    + this.getLine());
+        }
     }
     
 }

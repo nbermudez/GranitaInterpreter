@@ -7,6 +7,7 @@ package granita.Parser.Statements;
 import granita.Parser.Expressions.Expression;
 import granita.Semantic.SymbolTable.SymbolTableNode;
 import granita.Semantic.SymbolTable.SymbolTableTree;
+import granita.Semantic.SymbolTable.SymbolTableValue;
 import granita.Semantic.SymbolTable.Variable;
 import granita.Semantic.Types.Type;
 import granitainterpreter.ErrorHandler;
@@ -39,12 +40,20 @@ public class InitializedFieldDeclarationStatement extends Statement {
     public void validateSemantics() throws GranitaException {
         SymbolTableNode node = SymbolTableTree.getInstance().getRoot();
         Type result = this.initValue.validateSemantics();
+
+        SymbolTableValue v = node.findInThisTable(fieldName);
+        if (v != null) {
+            ErrorHandler.handle("already defined variable '" + fieldName
+                    + "': line " + this.getLine());
+        }
         if (!result.equivalent(type)) {
             ErrorHandler.handle("incompatible types, required " + type.toString()
                     + " and found " + result.toString() + ": line " + initValue.getLine());
         } else {
             type.setValue(result.getValue());
-            node.addEntry(fieldName, new Variable(type, initValue));
+            if (v == null){
+                node.addEntry(fieldName, new Variable(type, initValue));
+            }
         }
     }
 

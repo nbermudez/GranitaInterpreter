@@ -37,7 +37,7 @@ public class UnaryNot extends Expression {
         if (tvalue instanceof BoolType) {
             return tvalue;
         } else {
-            throw new GranitaException("Operator ! cannot be applied to "
+            throw new GranitaException("'not' cannot be applied to "
                     + tvalue.toString() + ": line " + line);
         }
     }

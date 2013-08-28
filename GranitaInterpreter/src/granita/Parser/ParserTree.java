@@ -265,25 +265,30 @@ public class ParserTree {
         Type type = getTypeFromText(typeText);
         if (currentToken == Token.TK_SEMICOLON) {
             SimpleField f = new SimpleField(id, lexer.lineNumber());
-            FieldDeclarationStatement flist = new FieldDeclarationStatement(type, lexer.lineNumber());
+            FieldDeclarationStatement flist = new 
+                    FieldDeclarationStatement(type, lexer.lineNumber());
             flist.addDeclaration(f);
             currentToken = lexer.nextToken();
             return flist;
         } else if (currentToken == Token.TK_OP_EQ) {
+            int line = lexer.lineNumber();
             currentToken = lexer.nextToken();
             Expression constant = CONSTANT();
             match(Token.TK_SEMICOLON, ";");
-            InitializedFieldDeclarationStatement i = new InitializedFieldDeclarationStatement(type, id, constant, lexer.lineNumber());
+            InitializedFieldDeclarationStatement i = new 
+                    InitializedFieldDeclarationStatement(type, id, constant, line);
             return i;
         } else if (currentToken == Token.TK_LEFT_BRACKET) {
             currentToken = lexer.nextToken();
 
-            LitInt arraySize = new LitInt(currentToken.lexeme, lexer.lineNumber());
+            String intValue = currentToken.lexeme;
+            match(Token.TK_INT_CONSTANT, "integer");
+            
+            LitInt arraySize = new LitInt(intValue, lexer.lineNumber());
             ArrayField f = new ArrayField(id, arraySize, lexer.lineNumber());
             FieldDeclarationStatement flist = new FieldDeclarationStatement(type, lexer.lineNumber());
             flist.addDeclaration(f);
-
-            match(Token.TK_INT_CONSTANT, "integer");
+            
             match(Token.TK_RIGHT_BRACKET, "]");
             String fieldId;
             while (currentToken == Token.TK_COLON) {

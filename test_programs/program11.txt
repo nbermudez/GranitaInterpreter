@@ -1,0 +1,12 @@
+class t {
+	void test_unde_var1() {
+		{
+			{
+				int x;
+				{
+					print x;
+				}
+			}
+		}
+	}
+}

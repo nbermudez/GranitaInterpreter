@@ -5,6 +5,7 @@
 package granita.Parser.LeftValues;
 
 import granita.Parser.Expressions.Expression;
+import granita.Parser.Expressions.LitInt;
 import granita.Semantic.SymbolTable.ArrayVariable;
 import granita.Semantic.SymbolTable.SymbolTableTree;
 import granita.Semantic.SymbolTable.SymbolTableValue;
@@ -61,11 +62,11 @@ public class ArrayLeftValue extends LeftValue {
     public Type validateSemantics() throws GranitaException {
         SymbolTableValue value = SymbolTableTree.getInstance().lookupFromCurrent(id);
         if (value == null) {
-            return ErrorHandler.handle("undefined variable " + id + " in line "
+            return ErrorHandler.handle("undefined variable '" + id + "' in line "
                     + this.getLine());
         } else {
             if (!(value instanceof ArrayVariable)) {
-                return ErrorHandler.handle("variable " + id + " is not an array: line "
+                return ErrorHandler.handle("variable '" + id + "' is not an array: line "
                         + this.getLine());
             } else {
                 ArrayVariable array = (ArrayVariable) value;

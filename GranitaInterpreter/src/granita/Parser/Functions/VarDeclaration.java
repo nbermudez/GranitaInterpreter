@@ -67,17 +67,14 @@ public class VarDeclaration extends Statement {
 
     @Override
     public void validateSemantics() throws GranitaException {
+        super.validateSemantics();
         SymbolTableNode current = SymbolTableTree.getInstance().getCurrentNode();
         for (String name : varNames) {
             if (current.findInThisTable(name) != null) {
-                ErrorHandler.handle("already defined variable " + name
-                        + ": line " + this.getLine());
-            } else if (Utils.getInstance().isFirstBlockInMethod()) {
-                if (current.findInParent(name) != null) {
-                    ErrorHandler.handleWarning("variable " + name
-                        + " shadows a parameter: line " + this.getLine());
-                    
-                }current.addEntry(name, new Variable(type, null));
+                ErrorHandler.handle("already defined variable '" + name
+                        + "': line " + this.getLine());
+            } else {
+                current.addEntry(name, new Variable(type, null));
             }
         }
     }

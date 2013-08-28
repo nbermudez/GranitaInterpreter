@@ -1,0 +1,35 @@
+class test_return_methods {
+	int function1(){
+		return false;
+	}
+	
+	bool function2(int a){
+		return 1+2+a;
+		{
+			return false;
+		}
+	}
+	
+	void function3(){
+		return false;
+	}
+	
+	void function4(){
+		return 1;
+		return;
+		return false;
+	}
+	
+	int megaTest(int x, bool y, int z){
+		{
+			{
+				if (1>2){
+					return 1;
+				} else {
+					return z+x;
+				}
+			}
+			return x;
+		}
+	}
+}

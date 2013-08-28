@@ -66,10 +66,10 @@ public class FieldDeclarationStatement extends Statement {
         SymbolTableNode node = SymbolTableTree.getInstance().getRoot();
 
         for (Field f : this.declarations) {
-            SymbolTableValue v = SymbolTableTree.getInstance().lookupFromCurrent(f.getFieldName());
+            SymbolTableValue v = node.findInThisTable(f.getFieldName());
             if (v != null) {
-                ErrorHandler.handle("already defined variable " + f.getFieldName()
-                        + ": line " + f.getLine());
+                ErrorHandler.handle("already defined variable '" + f.getFieldName()
+                        + "': line " + f.getLine());
             } else {
                 if (f instanceof ArrayField) {
                     ArrayField af = (ArrayField) f;

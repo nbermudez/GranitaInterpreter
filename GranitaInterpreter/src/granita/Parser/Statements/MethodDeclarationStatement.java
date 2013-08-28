@@ -12,6 +12,7 @@ import granita.Semantic.Types.Type;
 import granita.Semantic.Types.VoidType;
 import granitainterpreter.ErrorHandler;
 import granitainterpreter.GranitaException;
+import granitainterpreter.Utils;
 import java.util.ArrayList;
 
 /**
@@ -19,13 +20,14 @@ import java.util.ArrayList;
  * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
  */
 public class MethodDeclarationStatement extends Statement {
+
     private String identifier;
     private ArrayList<ParameterDeclaration> parameters;
     private Statement block;
     private Type type;
     private SymbolTableNode paramsEntry;
-    
-    public MethodDeclarationStatement(Type type, String identifier, int line){
+
+    public MethodDeclarationStatement(Type type, String identifier, int line) {
         super(line);
         this.type = type;
         this.identifier = identifier;
@@ -63,12 +65,12 @@ public class MethodDeclarationStatement extends Statement {
     public void setBlock(Statement block) {
         this.block = block;
     }
-    
-    public void addParameter(ParameterDeclaration param){
+
+    public void addParameter(ParameterDeclaration param) {
         this.parameters.add(param);
     }
-    
-    public boolean isMain(){
+
+    public boolean isMain() {
         return this.identifier.equals("main");
     }
 
@@ -83,10 +85,10 @@ public class MethodDeclarationStatement extends Statement {
     @Override
     public String toString() {
         String method = type + " " + identifier + "(";
-        for (int i = 0; i< parameters.size() - 1 ; i++){
+        for (int i = 0; i < parameters.size() - 1; i++) {
             method += parameters.get(i).toString() + ",";
         }
-        if (parameters.size()>0){
+        if (parameters.size() > 0) {
             method += parameters.get(parameters.size() - 1).toString();
         }
         method += ")";
@@ -94,27 +96,48 @@ public class MethodDeclarationStatement extends Statement {
         return method;
     }
 
-    @Override
-    public void validateSemantics() throws GranitaException {
+    public void initialize() throws GranitaException {
         SymbolTableNode root = SymbolTableTree.getInstance().getRoot();
         root.addEntry(identifier, new Function(type));
-        
+
         SymbolTableNode parent = SymbolTableTree.getInstance().getParentNode();
         SymbolTableTree.getInstance().setCurrentNode(new SymbolTableNode(parent));
-        
-        for (ParameterDeclaration st : parameters){
+
+        for (ParameterDeclaration st : parameters) {
             st.validateSemantics();
         }
         this.paramsEntry = SymbolTableTree.getInstance().getCurrentNode();
-        
-        
-        
-        if (!this.type.equivalent(new VoidType()) &&
-            this.block.hasReturn(this.type) == null) {
-            ErrorHandler.handle("missing return statement in method '" + identifier
-                    + "': line " + this.line);
-        }
+
         SymbolTableTree.getInstance().setCurrentNode(parent);
     }
-    
+
+    @Override
+    public void validateSemantics() throws GranitaException {
+        //<editor-fold defaultstate="collapsed" desc="Validate block">
+        Utils.getInstance().setExpectedReturnType(this.type);
+        
+        if (this.getType().equivalent(new VoidType())) {
+            Utils.getInstance().setMustReturnExpression(false);
+        } else {
+            Utils.getInstance().setMustReturnExpression(true);
+        }
+        this.block.validateSemantics();
+        //</editor-fold>
+
+        //<editor-fold defaultstate="collapsed" desc="Return type checks">
+        if (!this.getType().equivalent(new VoidType())) {
+            Utils.getInstance().setExpectedReturnType(this.type);
+            
+            Type hasReturn = this.getBlock().hasReturn(this.getType());
+            if ( hasReturn == null) {
+                ErrorHandler.handle("missing return statement in method '"
+                        + this.getIdentifier()
+                        + "': line " + this.line);
+            }
+            
+            Utils.getInstance().setExpectedReturnType(null);
+        }
+        //</editor-fold>
+        
+    }
 }

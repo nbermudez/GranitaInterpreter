@@ -4,12 +4,17 @@
  */
 package granitainterpreter;
 
+import granita.Semantic.Types.Type;
+
 /**
  *
  * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
  */
 public class Utils {
-    private boolean firstBlockInMethod = false;
+    private boolean mustReturnExpression = false;
+    private boolean errored = false;
+    private int unreachableStatement = 0;
+    private Type expectedReturnType = null;
     private Utils() {
     }
     
@@ -22,11 +27,44 @@ public class Utils {
         private static final Utils INSTANCE = new Utils();
     }
 
-    public boolean isFirstBlockInMethod() {
-        return firstBlockInMethod;
+    public boolean mustReturnExpression() {
+        return mustReturnExpression;
     }
 
-    public void setFirstBlockInMethod(boolean firstBlockInMethod) {
-        this.firstBlockInMethod = firstBlockInMethod;
+    public void setMustReturnExpression(boolean mustReturnExpression) {
+        this.mustReturnExpression = mustReturnExpression;
+    }
+
+    public boolean isErrored() {
+        errored = !errored;
+        return !errored;
+    }
+
+    public void setErrored() {
+        this.errored = true;
+    }
+
+    public Type getExpectedReturnType() {
+        return expectedReturnType;
+    }
+
+    public void setExpectedReturnType(Type expectedReturnType) {
+        this.expectedReturnType = expectedReturnType;
+    }
+
+    public int isUnreachableStatement() {
+        return unreachableStatement;
+    }
+
+    public void setUnreachableStatement() {
+        this.unreachableStatement++;
+    }
+    
+    public void unsetUnreachableStatement() {
+        this.unreachableStatement--;
+    }
+    
+    public void resetUnreachableStatement() {
+        this.unreachableStatement = 0;
     }
 }

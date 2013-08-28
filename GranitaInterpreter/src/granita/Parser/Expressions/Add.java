@@ -43,7 +43,7 @@ public class Add extends BinaryExpression {
         } else if (LHS instanceof ErrorType || RHS instanceof ErrorType) {
             return new ErrorType();
         } else {
-            return ErrorHandler.handle("Operator + cannot be applied to "
+            return ErrorHandler.handle("operator + cannot be applied to "
                     + LHS.toString() + " and " + RHS.toString()
                     + ": line " + line);
         }

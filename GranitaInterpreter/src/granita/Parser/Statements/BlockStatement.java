@@ -58,48 +58,33 @@ public class BlockStatement extends Statement {
 
     @Override
     public void validateSemantics() throws GranitaException {
+        super.validateSemantics();
         SymbolTableNode parent = SymbolTableTree.getInstance().getParentNode();
-        SymbolTableTree.getInstance().setCurrentNode(new SymbolTableNode(parent));
         
-        boolean is = Utils.getInstance().isFirstBlockInMethod();
-        
-        for (Statement st : statements) {
+        for (Statement st : statements) {            
             if (st instanceof BlockStatement) {
-                Utils.getInstance().setFirstBlockInMethod(false);
+                SymbolTableTree.getInstance().setCurrentNode(new SymbolTableNode(parent));
             }
             st.validateSemantics();
-            Utils.getInstance().setFirstBlockInMethod(is);
+            SymbolTableTree.getInstance().setCurrentNode(parent);
         }
-        SymbolTableTree.getInstance().setCurrentNode(parent);
-        
-        boolean returnFound = false, continueFound = false, breakFound = false;
-        for (Statement statement : statements) {
-            if (returnFound || continueFound || breakFound) {
-                ErrorHandler.handle("unreachable statement: line " + statement.getLine());
-                break;
-            } else if (statement instanceof ReturnStatement) {
-                returnFound = true;
-            } else if (statement instanceof ContinueStatement) {
-                continueFound = true;
-            } else if (statement instanceof BreakStatement) {
-                breakFound = true;
-            }
-        }
+        Utils.getInstance().resetUnreachableStatement();
     }
 
     @Override
     public Type hasReturn(Type methodType) throws GranitaException {
+        int unreachable = 0;
+        Type tt = null;
         for (Statement statement : statements) {
-            if (statement instanceof ReturnStatement) {
-                return ((ReturnStatement) statement).returnExpression.validateSemantics();
+            if (unreachable == 1) {
+                ErrorHandler.handle("unreachable statement: line " + statement.getLine());
             }
-        }
-        for (Statement statement : statements) {
             Type t = statement.hasReturn(methodType);
-            if (t != null){
-                return t;
+            if (t != null) {
+                tt = t;
+                unreachable += 1;
             }
         }
-        return null;
+        return tt;
     }
 }
