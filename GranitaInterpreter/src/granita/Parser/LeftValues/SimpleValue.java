@@ -10,6 +10,7 @@ import granita.Semantic.SymbolTable.Variable;
 import granita.Semantic.Types.Type;
 import granitainterpreter.ErrorHandler;
 import granitainterpreter.GranitaException;
+import granitainterpreter.Utils;
 
 /**
  *
@@ -56,6 +57,12 @@ public class SimpleValue extends LeftValue {
             return ErrorHandler.handle("undefined variable '" + id + "': line "
                     + this.getLine());
         } else {
+            if (!Utils.getInstance().isLeftValueAsLocation() 
+                    && !val.isInitialized()) {
+                return ErrorHandler.handle("variable '" + id + "' "
+                        + "must be initialized before use: line "
+                        + this.getLine());
+            }
             return ((Variable) val).getType();
         }
     }

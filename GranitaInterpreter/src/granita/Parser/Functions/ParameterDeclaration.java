@@ -79,12 +79,14 @@ public class ParameterDeclaration extends Statement {
         SymbolTableNode current = SymbolTableTree.getInstance().getCurrentNode();
         
         Function f = (Function)SymbolTableTree.getInstance().lookupFromCurrent(methodName);
-        f.getParameters().add(new Variable(type, null));
+        Variable v = new Variable(type, null);
+        v.setInitialized(true);
+        f.getParameters().add(v);
         
         if (current.findInThisTable(name) != null) {
             ErrorHandler.handle("duplicated parameter '" + name + "': line " + this.getLine());
         } else {            
-            current.addEntry(name, new Variable(type, null));
+            current.addEntry(name, v);
         }
     }
 }

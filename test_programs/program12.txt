@@ -4,9 +4,16 @@ class test_return_methods {
 	}
 	
 	bool function2(int a){
+		if(true){
 		return 1+2+a;
+		}else{return false;}
 		{
-			return false;
+			{
+				return a;
+			}
+			{
+				//return a;
+			}
 		}
 	}
 	

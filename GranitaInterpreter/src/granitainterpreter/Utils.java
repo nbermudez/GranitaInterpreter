@@ -15,6 +15,7 @@ public class Utils {
     private boolean errored = false;
     private int unreachableStatement = 0;
     private Type expectedReturnType = null;
+    private boolean leftValueAsLocation = false;
     private Utils() {
     }
     
@@ -66,5 +67,13 @@ public class Utils {
     
     public void resetUnreachableStatement() {
         this.unreachableStatement = 0;
+    }
+
+    public boolean isLeftValueAsLocation() {
+        return leftValueAsLocation;
+    }
+
+    public void setLeftValueAsLocation(boolean leftValueAsLocation) {
+        this.leftValueAsLocation = leftValueAsLocation;
     }
 }

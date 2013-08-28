@@ -55,7 +55,11 @@ public class AssignStatement extends Statement {
     @Override
     public void validateSemantics() throws GranitaException {
         super.validateSemantics();
+        
+        Utils.getInstance().setLeftValueAsLocation(true);
         Type LHS = left.validateSemantics();
+        Utils.getInstance().setLeftValueAsLocation(false);
+        
         Type RHS = value.validateSemantics();
 
         if (!(LHS instanceof ErrorType)

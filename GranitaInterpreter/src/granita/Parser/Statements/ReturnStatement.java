@@ -5,6 +5,7 @@
 package granita.Parser.Statements;
 
 import granita.Parser.Expressions.Expression;
+import granita.Semantic.Types.ErrorType;
 import granita.Semantic.Types.Type;
 import granita.Semantic.Types.VoidType;
 import granitainterpreter.ErrorHandler;
@@ -75,7 +76,9 @@ public class ReturnStatement extends Statement {
             returnType = returnExpression.validateSemantics();
         }
         Type expectedType = Utils.getInstance().getExpectedReturnType();
-        if (expectedType != null && !expectedType.equivalent(returnType)) {
+        if (expectedType != null 
+                && !returnType.equivalent(new ErrorType()) 
+                && !expectedType.equivalent(returnType)) {
             ErrorHandler.handle("return expression type must be "
                     + expectedType + " but found " + returnType + ": line "
                     + this.getLine());

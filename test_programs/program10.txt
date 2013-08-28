@@ -3,12 +3,15 @@ class LlenaDeErrores {
 	int a;
 	bool a = false;
 	bool b,c,b;
+	int wow = 3;
 	//terminan test variable duplicada
 	
 	//para test de variable duplicada
 	void test_same_scope1(){
 		int x;
 		int y,x;
+		print x;
+		print wow;
 	}
 	
 	void test_same_scope2(int param) {
