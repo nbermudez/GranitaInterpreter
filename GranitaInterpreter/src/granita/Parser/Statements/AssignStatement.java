@@ -6,6 +6,9 @@ package granita.Parser.Statements;
 
 import granita.Parser.Expressions.Expression;
 import granita.Parser.LeftValues.LeftValue;
+import granita.Semantic.SymbolTable.SymbolTableTree;
+import granita.Semantic.SymbolTable.SymbolTableValue;
+import granita.Semantic.SymbolTable.Variable;
 import granita.Semantic.Types.ErrorType;
 import granita.Semantic.Types.Type;
 import granitainterpreter.ErrorHandler;
@@ -59,6 +62,7 @@ public class AssignStatement extends Statement {
         Utils.getInstance().setLeftValueAsLocation(true);
         Type LHS = left.validateSemantics();
         Utils.getInstance().setLeftValueAsLocation(false);
+        left.initializeVariable();
         
         Type RHS = value.validateSemantics();
 
@@ -68,5 +72,11 @@ public class AssignStatement extends Statement {
             ErrorHandler.handle("cannot assign " + RHS.toString() + " to "
                     + LHS.toString() + " variable: line " + value.getLine());
         }
+    }
+
+    @Override
+    public void execute() throws GranitaException {
+        Variable v = (Variable)SymbolTableTree.getInstance().lookupFromCurrent("x");
+        v.getType().setValue(value.evaluate());
     }
 }

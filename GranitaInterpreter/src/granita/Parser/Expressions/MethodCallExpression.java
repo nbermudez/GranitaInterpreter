@@ -6,9 +6,11 @@ package granita.Parser.Expressions;
 
 import granita.Semantic.SymbolTable.Function;
 import granita.Semantic.SymbolTable.SymbolTableTree;
+import granita.Semantic.SymbolTable.SymbolTableValue;
 import granita.Semantic.Types.Type;
 import granitainterpreter.ErrorHandler;
 import granitainterpreter.GranitaException;
+import granitainterpreter.Interpreter;
 import java.util.ArrayList;
 
 /**
@@ -47,11 +49,18 @@ public class MethodCallExpression extends Expression {
 
     @Override
     public Type validateSemantics() throws GranitaException {
-        Type t = findInSymbolTable(this.id);
+        SymbolTableValue val = SymbolTableTree.getInstance().lookupFunction(id);
+        Function f;
+        if (val == null) {
+            return ErrorHandler.handle("no such method '" + id + "': line " 
+                    + this.getLine());
+        } else {
+            f = (Function) val;
+        }
+        Type t = f.getType();
         if (t == null) {
             return ErrorHandler.handle("undefined method " + id + ": line " + line);
         } else {
-            Function f = (Function) SymbolTableTree.getInstance().lookupFromCurrent(id);
             if (arguments.size() != f.getParameters().size()) {
                 ErrorHandler.handle("actual and formal argument list differ in length "
                         + ": line " + this.getLine());
@@ -71,11 +80,15 @@ public class MethodCallExpression extends Expression {
         }
     }
 
-    private Type findInSymbolTable(String name) {
-        Function f = (Function) SymbolTableTree.getInstance().lookupFromCurrent(name);
-        if (f != null) {
-            return f.getType();
+    @Override
+    public Object evaluate() throws GranitaException {
+        Function f = (Function) SymbolTableTree.getInstance().lookupFunction(this.id);
+        for (Expression arg : arguments) {
+            Type t = f.getParameters().get(0).getType();
+            t.setValue(arg.evaluate());
         }
-        return null;
+        Interpreter.getInstance().register(f);
+        f.getBlock().execute();
+        return f.getType().getValue();
     }
 }

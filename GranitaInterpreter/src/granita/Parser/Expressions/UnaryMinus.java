@@ -41,4 +41,10 @@ public class UnaryMinus extends Expression {
                     + tvalue.toString() + ": line " + line);
         }
     }
+
+    @Override
+    public Integer evaluate() throws GranitaException {
+        Integer r = (Integer) value.evaluate();
+        return -r;
+    }
 }

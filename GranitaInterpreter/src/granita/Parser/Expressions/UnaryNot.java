@@ -41,4 +41,10 @@ public class UnaryNot extends Expression {
                     + tvalue.toString() + ": line " + line);
         }
     }
+
+    @Override
+    public Boolean evaluate() throws GranitaException {
+        Boolean r = (Boolean) value.evaluate();
+        return !r;
+    }
 }

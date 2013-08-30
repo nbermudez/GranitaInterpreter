@@ -10,17 +10,17 @@ package granita.Semantic.Types;
  */
 public class StringType extends Type {
     
-    StringResult value;
+    String value;
 
-    public StringType(StringResult value) {
+    public StringType(String value) {
         this.value = value;
     }
 
-    public StringResult getValue() {
+    public String getValue() {
         return value;
     }
 
-    public void setValue(StringResult value) {
+    public void setValue(String value) {
         this.value = value;
     }
     
@@ -36,8 +36,8 @@ public class StringType extends Type {
 
     @Override
     public void setValue(Object value) {
-        if (value instanceof StringResult){
-            this.value = (StringResult) value;
+        if (value instanceof String){
+            this.value = (String) value;
         }
     }
     

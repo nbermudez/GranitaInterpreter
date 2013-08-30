@@ -127,4 +127,12 @@ public class BlockStatement extends Statement {
         }
         return tt;
     }
+
+    @Override
+    public void execute() throws GranitaException {
+        for (Statement statement : statements) {
+            statement.execute();
+        }
+    }
+    
 }

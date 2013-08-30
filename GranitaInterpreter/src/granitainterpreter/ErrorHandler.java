@@ -14,23 +14,22 @@ import java.util.ArrayList;
  */
 public class ErrorHandler {
 
-    private static ArrayList<String> errors;
-    private static ArrayList<String> warnings;
+    private static ArrayList<String> errors = new ArrayList<String>();;
+    private static ArrayList<String> warnings = new ArrayList<String>();;
+    private static ErrorType error = new ErrorType();
 
     public static Type handle(String msg) {
-        if (errors == null) {
-            errors = new ArrayList<String>();
-        }
         errors.add(msg);
-        return new ErrorType();
+        return error;
     }
     
     public static Type handleWarning(String msg) {
-        if (warnings == null) {
-            warnings = new ArrayList<String>();
-        }
         warnings.add(msg);
-        return new ErrorType();
+        return error;
+    }
+    
+    public static Type handleFatalError(String msg) throws GranitaException {
+        throw new GranitaException("fatal error: \n\t"+msg);
     }
 
     public static void printErrors() {
@@ -54,5 +53,14 @@ public class ErrorHandler {
     public static void printAll(){ 
         printErrors();
         printWarnings();
+    }
+    
+    public static boolean isEmpty() {
+        return errors.isEmpty();
+    }
+    
+    public static void cleanup() {
+        errors.clear();
+        warnings.clear();
     }
 }

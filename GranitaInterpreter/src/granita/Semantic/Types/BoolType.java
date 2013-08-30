@@ -10,20 +10,20 @@ package granita.Semantic.Types;
  */
 public class BoolType extends Type{
     
-    BoolResult value;
+    Boolean value;
 
     public BoolType() {
     }
 
-    public BoolType(BoolResult value) {
+    public BoolType(Boolean value) {
         this.value = value;
     }
 
-    public BoolResult getValue() {
+    public Boolean getValue() {
         return value;
     }
 
-    public void setValue(BoolResult value) {
+    public void setValue(Boolean value) {
         this.value = value;
     }
     
@@ -43,8 +43,8 @@ public class BoolType extends Type{
 
     @Override
     public void setValue(Object value) {
-        if (value instanceof BoolResult){
-            this.value = (BoolResult) value;
+        if (value instanceof Boolean){
+            this.value = (Boolean) value;
         }
     }
 }

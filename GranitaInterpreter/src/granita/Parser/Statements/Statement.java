@@ -38,4 +38,6 @@ public abstract class Statement {
     public Type hasReturn(Type methodType) throws GranitaException {
         return null;
     }
+    
+    public void execute() throws GranitaException {}
 }

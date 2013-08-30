@@ -1,12 +1,42 @@
 class t {
-	void test_unde_var1() {
+	int funct2(int n){
+		if (n == 1 || n == 0) {
+			return 1;
+		}
+		return funct2(n-1) + funct2(n-2);
+		
+	}
+
+	int test_unde_var1() {
 		{
 			{
 				int x;
+				x = 1;
 				{
-					print x;
+					print x, "\n", "hola";
 				}
+				print funct2(5);
 			}
+		}
+		return 3;
+	}
+	
+	void main() {
+		int x;
+		x = test_unde_var1();
+		print x+x*x;
+		while(x<=10){
+			print x, "\n";
+			x = x+1;
+		}
+		x = x+100;
+		if (x<100) {
+			print "x menor a 100";
+		}else {
+			print "x mayor a 100";
+		}
+		for(1; x<20; x=x+1){
+			print "potato", x, "\n";
 		}
 	}
 }

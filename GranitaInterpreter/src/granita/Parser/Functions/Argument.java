@@ -28,6 +28,14 @@ public class Argument extends Expression {
         this.scopeId = scopeId;
     }
 
+    public Expression getValue() {
+        return value;
+    }
+
+    public void setValue(Expression value) {
+        this.value = value;
+    }
+
     @Override
     public String toString() {
         return value.toString();
@@ -36,5 +44,10 @@ public class Argument extends Expression {
     @Override
     public Type validateSemantics() throws GranitaException {
         return value.validateSemantics();
+    }
+
+    @Override
+    public Object evaluate() throws GranitaException {
+        return value.evaluate();
     }
 }

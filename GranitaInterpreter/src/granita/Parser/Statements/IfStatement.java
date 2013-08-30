@@ -89,4 +89,14 @@ public class IfStatement extends Statement {
         }
         return t2;
     }
+
+    @Override
+    public void execute() throws GranitaException {
+        Boolean ret = (Boolean) conditional.evaluate();
+        if (ret) {
+            trueBlock.execute();
+        } else if (falseBlock != null) {
+            falseBlock.execute();
+        }
+    }
 }

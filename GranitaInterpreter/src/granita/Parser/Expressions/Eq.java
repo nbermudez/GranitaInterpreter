@@ -50,4 +50,12 @@ public class Eq extends BinaryExpression {
                     + ": line " + line);
         }
     }
+    
+    @Override
+    public Boolean evaluate() throws GranitaException {
+        Object l =  left.evaluate();
+        Object r = right.evaluate();
+        
+        return l.equals(r);
+    }
 }

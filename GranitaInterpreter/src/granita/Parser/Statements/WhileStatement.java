@@ -17,13 +17,13 @@ import granitainterpreter.GranitaException;
 public class WhileStatement extends Statement{
     
     Expression exp;
-    Statement block;
+    BlockStatement block;
     
     public WhileStatement(int line){
         super(line);
     }
     
-    public WhileStatement(Expression exp, Statement block, int line){
+    public WhileStatement(Expression exp, BlockStatement block, int line){
         super(line);
         this.exp = exp;
         this.block = block;
@@ -33,7 +33,7 @@ public class WhileStatement extends Statement{
         this.exp = exp;
     }
     
-    public void setBlock(Statement block){
+    public void setBlock(BlockStatement block){
         this.block = block;
     }
 
@@ -60,6 +60,25 @@ public class WhileStatement extends Statement{
     @Override
     public Type hasReturn(Type methodType) throws GranitaException {
         return block.hasReturn(methodType);
+    }
+
+    @Override
+    public void execute() throws GranitaException {
+        while (true) {
+            Boolean ret = (Boolean) exp.evaluate();
+            if (!ret) {
+                break;
+            }
+            for (Statement st : block.getStatements()) {
+                if (st instanceof ContinueStatement) {
+                    continue;
+                } else if (st instanceof BreakStatement) {
+                    break;
+                } else {
+                    st.execute();
+                }
+            }
+        }
     }
     
 }

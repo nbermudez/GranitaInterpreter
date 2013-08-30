@@ -102,6 +102,14 @@ public class ClassStatement extends Statement {
         }
         //</editor-fold>
         
+        //<editor-fold defaultstate="collapsed" desc="Validate methods">
+        for (Statement statement : methodDecls) {
+            main = (MethodDeclarationStatement) statement;            
+            SymbolTableTree.getInstance().setCurrentNode(main.getParamsEntry());            
+            main.validateSemantics();
+        }
+        //</editor-fold>
+        
         //<editor-fold defaultstate="collapsed" desc="Check for main method">
         if (!mainFound) {
             ErrorHandler.handle("class must contain a method 'main'");
@@ -114,13 +122,19 @@ public class ClassStatement extends Statement {
             }
         }
         //</editor-fold>
-        
-        //<editor-fold defaultstate="collapsed" desc="Validate methods">
-        for (Statement statement : methodDecls) {
-            main = (MethodDeclarationStatement) statement;            
-            SymbolTableTree.getInstance().setCurrentNode(main.getParamsEntry());            
-            main.validateSemantics();
-        }
-        //</editor-fold>
     }
+
+    @Override
+    public void execute() throws GranitaException {
+        for (Statement statement : fieldDecls) {
+            statement.execute();
+        }
+        for (Statement statement : methodDecls) {
+            MethodDeclarationStatement md = (MethodDeclarationStatement) statement;
+            if (md.isMain()) {
+                statement.execute();
+            }
+        }
+    }
+    
 }

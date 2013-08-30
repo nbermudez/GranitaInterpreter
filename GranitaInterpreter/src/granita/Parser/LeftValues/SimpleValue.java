@@ -4,6 +4,7 @@
  */
 package granita.Parser.LeftValues;
 
+import granita.Semantic.SymbolTable.ArrayVariable;
 import granita.Semantic.SymbolTable.SymbolTableTree;
 import granita.Semantic.SymbolTable.SymbolTableValue;
 import granita.Semantic.SymbolTable.Variable;
@@ -57,6 +58,16 @@ public class SimpleValue extends LeftValue {
             return ErrorHandler.handle("undefined variable '" + id + "': line "
                     + this.getLine());
         } else {
+            if (Utils.getInstance().isInsidePrint() 
+                    && val instanceof ArrayVariable) {
+                return ErrorHandler.handle("print can't be applied to an array "
+                        + "variable: line " + this.getLine());
+            }
+            if (Utils.getInstance().isInsideRead() 
+                    && val instanceof ArrayVariable) {
+                return ErrorHandler.handle("read can't be applied to an array "
+                        + "variable: line " + this.getLine());
+            }
             if (!Utils.getInstance().isLeftValueAsLocation() 
                     && !val.isInitialized()) {
                 return ErrorHandler.handle("variable '" + id + "' "
@@ -65,5 +76,19 @@ public class SimpleValue extends LeftValue {
             }
             return ((Variable) val).getType();
         }
+    }
+
+    @Override
+    public void initializeVariable() {
+        SymbolTableValue val = SymbolTableTree.getInstance().lookupFromCurrent(id);
+        if (val != null && val instanceof Variable) {
+            val.setInitialized(true);
+        }
+    }
+
+    @Override
+    public Object evaluate() throws GranitaException {
+        Variable val = (Variable) SymbolTableTree.getInstance().lookupFromCurrent(id);
+        return val.getType().getValue();
     }
 }

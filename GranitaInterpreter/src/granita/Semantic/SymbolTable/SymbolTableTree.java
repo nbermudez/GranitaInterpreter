@@ -55,4 +55,8 @@ public class SymbolTableTree {
     public SymbolTableValue lookupFromCurrent(String name) {
         return this.currentNode.getEntry(name);
     }
+    
+    public SymbolTableValue lookupFunction(String functionName) {
+        return this.currentNode.getFunction(functionName);
+    }
 }

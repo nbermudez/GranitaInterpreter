@@ -6,6 +6,7 @@ package granita.Parser.Statements;
 
 import granita.Parser.Functions.Argument;
 import granitainterpreter.GranitaException;
+import granitainterpreter.Utils;
 import java.util.ArrayList;
 
 /**
@@ -38,8 +39,18 @@ public class PrintStatement extends Statement {
     @Override
     public void validateSemantics() throws GranitaException {
         super.validateSemantics();
+        
+        Utils.getInstance().setInsidePrint(true);
         for (Argument st : arguments){
             st.validateSemantics();
+        }
+        Utils.getInstance().setInsidePrint(false);
+    }
+
+    @Override
+    public void execute() throws GranitaException {
+        for (Argument argument : arguments) {
+            System.out.print(argument.evaluate());
         }
     }
     

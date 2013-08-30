@@ -8,6 +8,7 @@ import granita.Parser.Functions.ParameterDeclaration;
 import granita.Semantic.SymbolTable.Function;
 import granita.Semantic.SymbolTable.SymbolTableNode;
 import granita.Semantic.SymbolTable.SymbolTableTree;
+import granita.Semantic.SymbolTable.SymbolTableValue;
 import granita.Semantic.Types.Type;
 import granita.Semantic.Types.VoidType;
 import granitainterpreter.ErrorHandler;
@@ -23,7 +24,7 @@ public class MethodDeclarationStatement extends Statement {
 
     private String identifier;
     private ArrayList<ParameterDeclaration> parameters;
-    private Statement block;
+    private BlockStatement block;
     private Type type;
     private SymbolTableNode paramsEntry;
 
@@ -58,11 +59,11 @@ public class MethodDeclarationStatement extends Statement {
         this.parameters = parameters;
     }
 
-    public Statement getBlock() {
+    public BlockStatement getBlock() {
         return block;
     }
 
-    public void setBlock(Statement block) {
+    public void setBlock(BlockStatement block) {
         this.block = block;
     }
 
@@ -98,7 +99,13 @@ public class MethodDeclarationStatement extends Statement {
 
     public void initialize() throws GranitaException {
         SymbolTableNode root = SymbolTableTree.getInstance().getRoot();
-        root.addEntry(identifier, new Function(type));
+        SymbolTableValue val = root.getFunction(identifier);
+        if (val == null) {
+            root.addFunction(identifier, new Function(type, this.block));
+        } else {
+            ErrorHandler.handle("function '" + identifier + "' is already defined:"
+                    + " line " + this.getLine());
+        }
 
         SymbolTableNode parent = SymbolTableTree.getInstance().getParentNode();
         SymbolTableTree.getInstance().setCurrentNode(new SymbolTableNode(parent));
@@ -115,7 +122,7 @@ public class MethodDeclarationStatement extends Statement {
     public void validateSemantics() throws GranitaException {
         //<editor-fold defaultstate="collapsed" desc="Validate block">
         Utils.getInstance().setExpectedReturnType(this.type);
-        
+
         if (this.getType().equivalent(new VoidType())) {
             Utils.getInstance().setMustReturnExpression(false);
         } else {
@@ -127,17 +134,24 @@ public class MethodDeclarationStatement extends Statement {
         //<editor-fold defaultstate="collapsed" desc="Return type checks">
         if (!this.getType().equivalent(new VoidType())) {
             Utils.getInstance().setExpectedReturnType(this.type);
-            
+
             Type hasReturn = this.getBlock().hasReturn(this.getType());
-            if ( hasReturn == null) {
+            if (hasReturn == null) {
                 ErrorHandler.handle("missing return statement in method '"
                         + this.getIdentifier()
                         + "': line " + this.line);
             }
-            
+
             Utils.getInstance().setExpectedReturnType(null);
         }
         //</editor-fold>
-        
+
+    }
+
+    @Override
+    public void execute() throws GranitaException {
+        for (Statement st : this.block.getStatements()) {
+            st.execute();
+        }
     }
 }

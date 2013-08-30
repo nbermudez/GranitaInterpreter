@@ -37,5 +37,13 @@ public class ArrayVariable extends SymbolTableValue {
     public void setSize(LitInt size) {
         this.size = size;
     }
+
+    public Type[] getItems() {
+        return items;
+    }
+
+    public void setItems(Type[] items) {
+        this.items = items;
+    }
     
 }

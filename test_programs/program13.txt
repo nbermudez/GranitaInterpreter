@@ -1,0 +1,29 @@
+class testComplex {
+	int i;
+	 
+	void main(){               /* next level of scope starts here */
+	  int i;
+	  i = 5;
+	 
+	  {                   /* next level of scope starts here */
+		int j,i;
+		j = 1;
+		i = 0;
+	 
+		{                 /* innermost level of scope of this program starts here */
+		  int k, i;
+		  i = -1;
+		  j = 6;
+		  k = 2;
+		}                 /* innermost level of scope of this program ends here */
+	 
+		print j, " ";
+	  }                   /* next level of scope ends here */
+	 
+	  print i, "\n";
+	}
+	
+	int i(){
+		
+	}
+}

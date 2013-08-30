@@ -5,6 +5,7 @@
 package granita.Parser.LeftValues;
 
 import granita.Parser.Expressions.Expression;
+import granitainterpreter.GranitaException;
 
 /**
  *
@@ -16,5 +17,9 @@ public abstract class LeftValue extends Expression {
     public LeftValue(int scopeId, int line) {
         super(line);
         this.scopeId = scopeId;
-    }    
+    }   
+    
+    public abstract void initializeVariable();
+    @Override
+    public abstract Object evaluate() throws GranitaException;
 }

@@ -16,6 +16,8 @@ public class Utils {
     private int unreachableStatement = 0;
     private Type expectedReturnType = null;
     private boolean leftValueAsLocation = false;
+    private boolean insidePrint = false;
+    private boolean insideRead = false;
     private Utils() {
     }
     
@@ -75,5 +77,21 @@ public class Utils {
 
     public void setLeftValueAsLocation(boolean leftValueAsLocation) {
         this.leftValueAsLocation = leftValueAsLocation;
+    }
+
+    public boolean isInsidePrint() {
+        return insidePrint;
+    }
+
+    public void setInsidePrint(boolean insidePrint) {
+        this.insidePrint = insidePrint;
+    }
+
+    public boolean isInsideRead() {
+        return insideRead;
+    }
+
+    public void setInsideRead(boolean insideRead) {
+        this.insideRead = insideRead;
     }
 }

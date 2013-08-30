@@ -78,7 +78,7 @@ public class ParameterDeclaration extends Statement {
     public void validateSemantics() throws GranitaException {
         SymbolTableNode current = SymbolTableTree.getInstance().getCurrentNode();
         
-        Function f = (Function)SymbolTableTree.getInstance().lookupFromCurrent(methodName);
+        Function f = (Function)SymbolTableTree.getInstance().lookupFunction(methodName);
         Variable v = new Variable(type, null);
         v.setInitialized(true);
         f.getParameters().add(v);

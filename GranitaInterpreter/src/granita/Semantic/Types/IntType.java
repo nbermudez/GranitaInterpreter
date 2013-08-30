@@ -10,20 +10,20 @@ package granita.Semantic.Types;
  */
 public class IntType extends Type{
     
-    IntResult value;   
+    Integer value;   
 
     public IntType() {
     }
 
-    public IntType(IntResult value) {
+    public IntType(Integer value) {
         this.value = value;
     }
 
-    public IntResult getValue() {
+    public Integer getValue() {
         return value;
     }
 
-    public void setValue(IntResult value) {
+    public void setValue(Integer value) {
         this.value = value;
     }
 
@@ -43,8 +43,8 @@ public class IntType extends Type{
 
     @Override
     public void setValue(Object value) {
-        if (value instanceof IntResult){
-            this.value = (IntResult) value;
+        if (value instanceof Integer){
+            this.value = (Integer) value;
         }
     }
 }

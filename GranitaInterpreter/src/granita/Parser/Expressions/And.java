@@ -49,4 +49,12 @@ public class And extends BinaryExpression {
                     + ": line " + line);
         }
     }
+    
+    @Override
+    public Boolean evaluate() throws GranitaException {
+        Boolean l = (Boolean) left.evaluate();
+        Boolean r = (Boolean) right.evaluate();
+        
+        return l && r;
+    }
 }

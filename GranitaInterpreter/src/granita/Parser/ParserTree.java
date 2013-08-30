@@ -357,7 +357,7 @@ public class ParserTree {
      * BLOCK represents a list of statements enclosed in curly brackets. BLOCK
      * -> '{' VD* STNT* '}'
      */
-    private Statement BLOCK() throws GranitaException {
+    private BlockStatement BLOCK() throws GranitaException {
         match(Token.TK_LEFT_CURLY_BRACKET, "{");
         BlockStatement block = new BlockStatement(getLocalScopeId(), lexer.lineNumber());
         while (is_type(currentToken)) {
@@ -465,7 +465,7 @@ public class ParserTree {
                 incrs.add(ASSIGN(id));
             }
             match(Token.TK_RIGHT_PARENTHESIS, ")");
-            Statement block = BLOCK();
+            BlockStatement block = BLOCK();
             insideLoop = false;
             Statement fo = new ForStatement(block, inits, termination, incrs, lexer.lineNumber());
 
@@ -480,7 +480,7 @@ public class ParserTree {
             match(Token.TK_LEFT_PARENTHESIS, "(");
             Expression condition = EXPR();
             match(Token.TK_RIGHT_PARENTHESIS, ")");
-            Statement block = BLOCK();
+            BlockStatement block = BLOCK();
             insideLoop = false;
 
             popLocalScope();

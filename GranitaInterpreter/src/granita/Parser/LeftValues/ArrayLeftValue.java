@@ -86,4 +86,19 @@ public class ArrayLeftValue extends LeftValue {
     public String toString() {
         return id + "[" + index.toString() + "]";
     }
+
+    @Override
+    public void initializeVariable() {
+        
+    }
+
+    @Override
+    public Object evaluate() throws GranitaException {
+        ArrayVariable value = (ArrayVariable) SymbolTableTree.getInstance().lookupFromCurrent(id);
+        Integer i = (Integer) index.evaluate();
+        if (i >= value.getSize().getValue()) {
+            ErrorHandler.handleFatalError("index out of bound: line " + this.getLine());
+        }
+        return value.getItems()[i].getValue();
+    }
 }

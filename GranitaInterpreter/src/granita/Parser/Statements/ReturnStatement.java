@@ -5,11 +5,14 @@
 package granita.Parser.Statements;
 
 import granita.Parser.Expressions.Expression;
+import granita.Semantic.Types.BoolType;
 import granita.Semantic.Types.ErrorType;
+import granita.Semantic.Types.IntType;
 import granita.Semantic.Types.Type;
 import granita.Semantic.Types.VoidType;
 import granitainterpreter.ErrorHandler;
 import granitainterpreter.GranitaException;
+import granitainterpreter.Interpreter;
 import granitainterpreter.Utils;
 
 /**
@@ -85,4 +88,12 @@ public class ReturnStatement extends Statement {
         }
         return returnType;
     }
+
+    @Override
+    public void execute() throws GranitaException {
+        if (returnType instanceof BoolType || returnType instanceof IntType) {
+            Interpreter.getInstance().setReturnValue(returnExpression.evaluate());
+        }
+    }
+    
 }

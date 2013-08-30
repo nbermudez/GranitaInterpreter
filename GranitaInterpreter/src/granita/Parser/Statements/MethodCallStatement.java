@@ -10,6 +10,7 @@ import granita.Semantic.SymbolTable.SymbolTableTree;
 import granita.Semantic.Types.Type;
 import granitainterpreter.ErrorHandler;
 import granitainterpreter.GranitaException;
+import granitainterpreter.Interpreter;
 import java.util.ArrayList;
 
 /**
@@ -53,7 +54,7 @@ public class MethodCallStatement extends Statement {
         if (t == null) {
             ErrorHandler.handle("undefined method " + id + ": line " + line);
         } else {            
-            Function f = (Function) SymbolTableTree.getInstance().lookupFromCurrent(id);
+            Function f = (Function) SymbolTableTree.getInstance().lookupFunction(id);
             if (params.size() != f.getParameters().size()) {
                 ErrorHandler.handle("actual and formal argument list differ in length "
                         + ": line " + this.getLine());
@@ -72,10 +73,21 @@ public class MethodCallStatement extends Statement {
     }
 
     private Type findInSymbolTable(String name) {
-        Function f = (Function) SymbolTableTree.getInstance().lookupFromCurrent(name);
+        Function f = (Function) SymbolTableTree.getInstance().lookupFunction(name);
         if (f != null) {
             return f.getType();
         }
         return null;
+    }
+
+    @Override
+    public void execute() throws GranitaException {
+        Function f = (Function) SymbolTableTree.getInstance().lookupFromCurrent(this.id);
+        for (Expression arg : params) {
+            Type t = f.getParameters().get(0).getType();
+            t.setValue(arg.evaluate());
+        }
+        Interpreter.getInstance().register(f);
+        f.getBlock().execute();
     }
 }

@@ -5,6 +5,7 @@
 package granita.Semantic.SymbolTable;
 
 import granita.Parser.Expressions.Expression;
+import granita.Parser.Statements.BlockStatement;
 import granita.Semantic.Types.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,11 +18,19 @@ public class Function extends SymbolTableValue {
     private Type type;
     private HashMap<String, Variable> localSymbolTable;
     private ArrayList<Variable> parameters;
+    private BlockStatement block;
     
     public Function(Type type){
         this.type = type;
         this.localSymbolTable = new HashMap<String, Variable>();
         this.parameters = new ArrayList<Variable>();
+    }
+    
+    public Function(Type type, BlockStatement block){
+        this.type = type;
+        this.localSymbolTable = new HashMap<String, Variable>();
+        this.parameters = new ArrayList<Variable>();
+        this.block = block;
     }
 
     public Function(Type type, HashMap<String, Variable> localSymbolTable, 
@@ -68,6 +77,14 @@ public class Function extends SymbolTableValue {
     
     public void deleteSymbolTableEntry(String id){
         this.localSymbolTable.remove(id);
+    }
+
+    public BlockStatement getBlock() {
+        return block;
+    }
+
+    public void setBlock(BlockStatement block) {
+        this.block = block;
     }
     
 }

@@ -49,4 +49,12 @@ public class GreaterThan extends BinaryExpression {
                     + ": line " + line);
         }
     }
+    
+    @Override
+    public Boolean evaluate() throws GranitaException {
+        Integer l = (Integer) left.evaluate();
+        Integer r = (Integer) right.evaluate();
+        
+        return l > r;
+    }
 }

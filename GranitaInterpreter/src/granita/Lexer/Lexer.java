@@ -242,23 +242,39 @@ public class Lexer {
                 case ')':
                     return Token.TK_RIGHT_PARENTHESIS;
                 case '\"':
-                    result.lexeme += (char) cs;
+                    //result.lexeme += (char) cs;
                     cs = getSymbol();
                     while (cs != '"') {
                         if (cs == EOF) {
                             return errorToken("Lexer error: \" expected: got EOF in line " + this.lineNumber, false);
                         }
                         if (cs == '\\') {
-                            result.lexeme += (char) cs;
+                            //result.lexeme += (char) cs;
                             cs = getSymbol();
-                            if (!isEscapedValid(cs) && cs != '\"' && cs != '\'') {
-                                return errorToken("Lexer error: invalid escaped character in line " + this.lineNumber, true);
+                            switch (cs) {
+                                case 'n':
+                                    cs = '\n';
+                                    break;
+                                case 't':
+                                    cs = '\t';
+                                    break;
+                                case '\\':
+                                    cs = '\\';
+                                    break;
+                                case '"':
+                                    cs = '"';
+                                    break;
+                                case 'r':
+                                    cs = '\r';
+                                    break;
+                                default:
+                                    return errorToken("Lexer error: invalid escaped character in line " + this.lineNumber, true);
                             }
                         }
                         result.lexeme += (char) cs;
                         cs = getSymbol();
                     }
-                    result.lexeme += (char) cs;
+                    //result.lexeme += (char) cs;
                     result.type = Token.TokenType.STRING_CONSTANT;
                     return result;
                 case '\'':

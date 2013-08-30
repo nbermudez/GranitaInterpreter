@@ -27,5 +27,6 @@ public abstract class Expression {
     }
     
     public abstract Type validateSemantics() throws GranitaException;
-    public abstract String toString();
+    
+    public abstract Object evaluate() throws GranitaException;
 }

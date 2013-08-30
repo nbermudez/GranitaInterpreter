@@ -17,7 +17,7 @@ import java.util.ArrayList;
  */
 public class ForStatement extends Statement {
 
-    Statement block;
+    BlockStatement block;
     ArrayList<Expression> initializations;
     Expression termination;
     ArrayList<Statement> increments;
@@ -28,7 +28,7 @@ public class ForStatement extends Statement {
         this.increments = new ArrayList<Statement>();
     }
 
-    public ForStatement(Statement block, ArrayList<Expression> initializations,
+    public ForStatement(BlockStatement block, ArrayList<Expression> initializations,
             Expression termination, ArrayList<Statement> increments, int line) {
         super(line);
         this.block = block;
@@ -37,7 +37,7 @@ public class ForStatement extends Statement {
         this.increments = increments;
     }
 
-    public void setBlock(Statement st) {
+    public void setBlock(BlockStatement st) {
         this.block = st;
     }
 
@@ -87,4 +87,29 @@ public class ForStatement extends Statement {
     public Type hasReturn(Type methodType) throws GranitaException {
         return block.hasReturn(methodType);
     }
+
+    @Override
+    public void execute() throws GranitaException {
+        while (true) {
+            for (Expression expression : initializations) {
+                expression.evaluate();
+            }
+            Boolean ret = (Boolean) termination.evaluate();
+            if (!ret) {
+                break;
+            }
+            for (Statement st : block.getStatements()) {
+                if (st instanceof ContinueStatement) {
+                    continue;
+                } else if (st instanceof BreakStatement) {
+                    break;
+                } else {
+                    st.execute();
+                }
+            }
+            for (Statement st : increments) {
+                st.execute();
+            }
+        }
+    }    
 }

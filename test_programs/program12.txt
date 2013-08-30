@@ -1,5 +1,12 @@
 class test_return_methods {
+	//int function1;
+	
 	int function1(){
+		int x,function2;
+		function2 = function1();
+		{
+			int function1;
+		}
 		return false;
 	}
 	

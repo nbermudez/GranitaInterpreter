@@ -48,4 +48,12 @@ public class Rot extends BinaryExpression {
                     + ": line " + line);
         }
     }
+    
+    @Override
+    public Integer evaluate() throws GranitaException {
+        Integer l = (Integer) left.evaluate();
+        Integer r = (Integer) right.evaluate();
+        
+        return Integer.rotateRight(l, r);
+    }
 }
