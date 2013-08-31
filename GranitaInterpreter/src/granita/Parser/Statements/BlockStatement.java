@@ -102,16 +102,19 @@ public class BlockStatement extends Statement {
             
             SemanticUtils.getInstance().setUnreachableStatement();
         }
-        //SymbolTableNode parent = SymbolTableTree.getInstance().getParentNode();
         for (Statement st : statements) {
             SemanticUtils.getInstance().setCurrentBlock(this);
             if (st instanceof BlockStatement) {
                 BlockStatement bl = (BlockStatement) st;
-                bl.setParentBlock(this);                
-                //SymbolTableTree.getInstance().setCurrentNode(new SymbolTableNode(parent));
+                bl.setParentBlock(this);
+            } else if (st instanceof WhileStatement) {
+                WhileStatement w = (WhileStatement) st;
+                w.block.setParentBlock(this);
+            } else if (st instanceof ForStatement) {
+                ForStatement f = (ForStatement) st;
+                f.block.setParentBlock(this);
             }
             st.validateSemantics();
-            //SymbolTableTree.getInstance().setCurrentNode(parent);
         }
         SemanticUtils.getInstance().resetUnreachableStatement();
         
@@ -180,17 +183,17 @@ public class BlockStatement extends Statement {
     @Override
     public void execute() throws GranitaException {
         Interpreter.getInstance().pushBlockToFunction(this);
-        boolean interrupted = false;
-        for (Statement statement : statements) {            
+        for (Statement statement : statements) {  
+            if (statement instanceof ForStatement) {
+                System.out.println("");
+            }
             statement.execute();
             if (Interpreter.getInstance().returnReached()) {
-                interrupted = true;
                 break;
             }
         }
-        if (!interrupted){
-            Interpreter.getInstance().popBlockToFunction();
-        }
+        Interpreter.getInstance().popBlockToFunction();
+        
     }
     
 }

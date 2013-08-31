@@ -9,6 +9,8 @@ import granita.Semantic.Types.BoolType;
 import granita.Semantic.Types.Type;
 import granitainterpreter.ErrorHandler;
 import granitainterpreter.GranitaException;
+import granitainterpreter.Interpreter;
+import granitainterpreter.SemanticUtils;
 
 /**
  *
@@ -17,15 +19,15 @@ import granitainterpreter.GranitaException;
 public class IfStatement extends Statement {
 
     Expression conditional;
-    Statement trueBlock, falseBlock;
+    BlockStatement trueBlock, falseBlock;
 
     //<editor-fold defaultstate="collapsed" desc="Constructors">
     public IfStatement(int line) {
         super(line);
     }
 
-    public IfStatement(Expression conditional, Statement trueBlock,
-            Statement falseBlock, int line) {
+    public IfStatement(Expression conditional, BlockStatement trueBlock,
+            BlockStatement falseBlock, int line) {
         super(line);
         this.conditional = conditional;
         this.trueBlock = trueBlock;
@@ -38,11 +40,11 @@ public class IfStatement extends Statement {
         this.conditional = conditional;
     }
 
-    public void setTrueBlock(Statement trueBlock) {
+    public void setTrueBlock(BlockStatement trueBlock) {
         this.trueBlock = trueBlock;
     }
 
-    public void setFalseBlock(Statement falseBlock) {
+    public void setFalseBlock(BlockStatement falseBlock) {
         this.falseBlock = falseBlock;
     }
     //</editor-fold>    
@@ -68,8 +70,10 @@ public class IfStatement extends Statement {
             ErrorHandler.handle("if condition must evaluate to bool: line "
                     + conditional.getLine());
         }
+        trueBlock.parentBlock = SemanticUtils.getInstance().getCurrentBlock();
         trueBlock.validateSemantics();
         if (falseBlock != null) {
+            falseBlock.parentBlock = SemanticUtils.getInstance().getCurrentBlock();
             falseBlock.validateSemantics();
         }
     }

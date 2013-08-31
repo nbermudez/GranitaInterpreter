@@ -494,7 +494,7 @@ public class ParserTree {
             match(Token.TK_LEFT_PARENTHESIS, "(");
             Expression conditional = EXPR();
             match(Token.TK_RIGHT_PARENTHESIS, ")");
-            Statement trueBlock = BLOCK(), falseBlock = null;
+            BlockStatement trueBlock = BLOCK(), falseBlock = null;
             if (currentToken == Token.TK_KW_ELSE) {
                 currentToken = lexer.nextToken();
                 falseBlock = BLOCK();

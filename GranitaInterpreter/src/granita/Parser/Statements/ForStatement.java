@@ -9,6 +9,8 @@ import granita.Semantic.Types.BoolType;
 import granita.Semantic.Types.Type;
 import granitainterpreter.ErrorHandler;
 import granitainterpreter.GranitaException;
+import granitainterpreter.Interpreter;
+import granitainterpreter.SemanticUtils;
 import java.util.ArrayList;
 
 /**
@@ -98,6 +100,7 @@ public class ForStatement extends Statement {
             if (!ret) {
                 break;
             }
+            Interpreter.getInstance().pushBlockToFunction(block);
             for (Statement st : block.getStatements()) {
                 if (st instanceof ContinueStatement) {
                     continue;
@@ -107,6 +110,7 @@ public class ForStatement extends Statement {
                     st.execute();
                 }
             }
+            Interpreter.getInstance().popBlockToFunction();
             for (Statement st : increments) {
                 st.execute();
             }

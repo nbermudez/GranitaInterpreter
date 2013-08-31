@@ -138,7 +138,9 @@ public class ClassStatement extends Statement {
                 Function f = (Function) SymbolTableTree.getInstance().lookupFunction("main");
                 Function AR = f.getCopy();
                 Interpreter.getInstance().register(AR);
-                AR.getBlock().execute();
+                BlockStatement block = AR.getBlock();
+                block.execute();
+                break;
             }
         }
     }
