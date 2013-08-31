@@ -20,7 +20,7 @@ import java.util.logging.Logger;
  * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
  */
 public class Lexer {
-    
+
     //<editor-fold defaultstate="collapsed" desc="Instance Attributes">
     private final int EOF = -1;
     private int lineNumber = 1;
@@ -68,7 +68,7 @@ public class Lexer {
         }
     }
     //</editor-fold>
-    
+
     //<editor-fold defaultstate="collapsed" desc="Helper functions">
     private int getSymbol() {
         if (this.in.hasRemaining()) {
@@ -108,17 +108,16 @@ public class Lexer {
             this.lineNumber += 1;
         }
     }
-    
-    private Token errorToken(String message, boolean unget){
-        if (unget){
+
+    private Token errorToken(String message, boolean unget) {
+        if (unget) {
             ungetSymbol(' ');
         }
         return new Token(Token.TokenType.ERROR, message);
     }
     //</editor-fold>  
-    
-    
-    public int lineNumber(){
+
+    public int lineNumber() {
         return this.lineNumber;
     }
 
@@ -165,7 +164,7 @@ public class Lexer {
                             cs = getSymbol();
                         }
                         continue;
-                    }else{
+                    } else {
                         ungetSymbol(cs);
                     }
                     return Token.TK_OP_DIV;
@@ -307,7 +306,7 @@ public class Lexer {
                         }
                         return errorToken("Lexer error: expected ', got " + (char) cs + " in line " + this.lineNumber, true);
                     }
-                    
+
                     return errorToken("Lexer error: not a printable character in line " + this.lineNumber, true);
                 case '0':
                     result.lexeme += (char) cs;
@@ -364,7 +363,7 @@ public class Lexer {
             }
         }
     }
-    
+
     @Override
     public String toString() {
         this.in.rewind();

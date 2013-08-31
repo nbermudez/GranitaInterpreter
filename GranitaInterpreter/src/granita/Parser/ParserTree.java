@@ -117,6 +117,7 @@ public class ParserTree {
         }
     }
 
+    //<editor-fold defaultstate="collapsed" desc="Scope manager, useless now">
     private int getLocalScopeId() {
         return this.scopes_d.peek();
     }
@@ -134,6 +135,7 @@ public class ParserTree {
         counter_d += 1;
         return ret;
     }
+    //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Non-terminals">
     /**

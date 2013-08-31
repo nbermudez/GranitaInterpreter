@@ -6,7 +6,6 @@ package granita.Parser.Expressions;
 
 import granita.Semantic.Types.BoolType;
 import granita.Semantic.Types.ErrorType;
-import granita.Semantic.Types.IntType;
 import granita.Semantic.Types.Type;
 import granitainterpreter.ErrorHandler;
 import granitainterpreter.GranitaException;

@@ -44,16 +44,16 @@ public class Div extends BinaryExpression {
             return new ErrorType();
         } else {
             return ErrorHandler.handle("operator / cannot be applied to "
-                    + LHS.toString() + " and " + RHS.toString() 
+                    + LHS.toString() + " and " + RHS.toString()
                     + ": line " + line);
         }
     }
-    
+
     @Override
     public Integer evaluate() throws GranitaException {
         Integer l = (Integer) left.evaluate();
         Integer r = (Integer) right.evaluate();
-        
+
         return l / r;
     }
 }
