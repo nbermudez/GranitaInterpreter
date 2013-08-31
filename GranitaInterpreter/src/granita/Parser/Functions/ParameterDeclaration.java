@@ -8,10 +8,11 @@ import granita.Parser.Statements.Statement;
 import granita.Semantic.SymbolTable.Function;
 import granita.Semantic.SymbolTable.SymbolTableNode;
 import granita.Semantic.SymbolTable.SymbolTableTree;
-import granita.Semantic.SymbolTable.Variable;
+import granita.Semantic.SymbolTable.SimpleVariable;
 import granita.Semantic.Types.Type;
 import granitainterpreter.ErrorHandler;
 import granitainterpreter.GranitaException;
+import granitainterpreter.SemanticUtils;
 
 /**
  *
@@ -76,17 +77,21 @@ public class ParameterDeclaration extends Statement {
 
     @Override
     public void validateSemantics() throws GranitaException {
-        SymbolTableNode current = SymbolTableTree.getInstance().getCurrentNode();
+        //SymbolTableNode current = SymbolTableTree.getInstance().getCurrentNode();
         
         Function f = (Function)SymbolTableTree.getInstance().lookupFunction(methodName);
-        Variable v = new Variable(type, null);
+        SimpleVariable v = new SimpleVariable(type, null);
         v.setInitialized(true);
         f.getParameters().add(v);
-        
-        if (current.findInThisTable(name) != null) {
+        if (SemanticUtils.getInstance().getCurrentBlock().alreadyRegistered(name)) {
+            ErrorHandler.handle("duplicated parameter '" + name + "': line " + this.getLine());
+        } else {
+            SemanticUtils.getInstance().getCurrentBlock().registerVariable(name, v);
+        }
+        /*if (current.findInThisTable(name) != null) {
             ErrorHandler.handle("duplicated parameter '" + name + "': line " + this.getLine());
         } else {            
             current.addEntry(name, v);
-        }
+        }*/
     }
 }

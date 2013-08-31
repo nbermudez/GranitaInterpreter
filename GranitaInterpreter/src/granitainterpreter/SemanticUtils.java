@@ -4,13 +4,14 @@
  */
 package granitainterpreter;
 
+import granita.Parser.Statements.BlockStatement;
 import granita.Semantic.Types.Type;
 
 /**
  *
  * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
  */
-public class Utils {
+public class SemanticUtils {
     private boolean mustReturnExpression = false;
     private boolean errored = false;
     private int unreachableStatement = 0;
@@ -18,16 +19,17 @@ public class Utils {
     private boolean leftValueAsLocation = false;
     private boolean insidePrint = false;
     private boolean insideRead = false;
-    private Utils() {
+    private BlockStatement currentBlock = null;
+    private SemanticUtils() {
     }
     
-    public static Utils getInstance() {
+    public static SemanticUtils getInstance() {
         return UtilsHolder.INSTANCE;
     }
     
     private static class UtilsHolder {
 
-        private static final Utils INSTANCE = new Utils();
+        private static final SemanticUtils INSTANCE = new SemanticUtils();
     }
 
     public boolean mustReturnExpression() {
@@ -93,5 +95,13 @@ public class Utils {
 
     public void setInsideRead(boolean insideRead) {
         this.insideRead = insideRead;
+    }
+
+    public BlockStatement getCurrentBlock() {
+        return currentBlock;
+    }
+
+    public void setCurrentBlock(BlockStatement currentBlock) {
+        this.currentBlock = currentBlock;
     }
 }

@@ -13,7 +13,7 @@ import granita.Semantic.Types.VoidType;
 import granitainterpreter.ErrorHandler;
 import granitainterpreter.GranitaException;
 import granitainterpreter.Interpreter;
-import granitainterpreter.Utils;
+import granitainterpreter.SemanticUtils;
 
 /**
  *
@@ -51,11 +51,11 @@ public class ReturnStatement extends Statement {
     @Override
     public void validateSemantics() throws GranitaException {
         super.validateSemantics();
-        if (!Utils.getInstance().mustReturnExpression()
+        if (!SemanticUtils.getInstance().mustReturnExpression()
                 && returnExpression != null) {
             ErrorHandler.handle("cannot return a value from method whose result"
                     + " type is void: line " + returnExpression.getLine());
-            Utils.getInstance().setErrored();
+            SemanticUtils.getInstance().setErrored();
         }
         if (returnExpression != null) {
             if (returnType == null) {
@@ -63,11 +63,11 @@ public class ReturnStatement extends Statement {
             }
             if (returnType instanceof VoidType) {
                 ErrorHandler.handle("return value cannot be void: line " + line);
-                Utils.getInstance().setErrored();
+                SemanticUtils.getInstance().setErrored();
             }
 
         }
-        Utils.getInstance().setUnreachableStatement();
+        SemanticUtils.getInstance().setUnreachableStatement();
     }
 
     @Override
@@ -78,7 +78,7 @@ public class ReturnStatement extends Statement {
         if (returnType == null) {
             returnType = returnExpression.validateSemantics();
         }
-        Type expectedType = Utils.getInstance().getExpectedReturnType();
+        Type expectedType = SemanticUtils.getInstance().getExpectedReturnType();
         if (expectedType != null 
                 && !returnType.equivalent(new ErrorType()) 
                 && !expectedType.equivalent(returnType)) {

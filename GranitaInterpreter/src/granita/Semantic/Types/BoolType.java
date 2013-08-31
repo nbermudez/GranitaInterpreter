@@ -47,4 +47,9 @@ public class BoolType extends Type{
             this.value = (Boolean) value;
         }
     }
+
+    @Override
+    public Type getCopy() {
+        return new BoolType(value);
+    }
 }

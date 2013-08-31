@@ -14,5 +14,5 @@ public abstract class Type {
     
     public abstract void setValue(Object value);
     public abstract Object getValue();
-    public abstract String toString();
+    public abstract Type getCopy();
 }

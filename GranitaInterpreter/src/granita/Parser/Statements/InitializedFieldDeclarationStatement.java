@@ -8,7 +8,7 @@ import granita.Parser.Expressions.Expression;
 import granita.Semantic.SymbolTable.SymbolTableNode;
 import granita.Semantic.SymbolTable.SymbolTableTree;
 import granita.Semantic.SymbolTable.SymbolTableValue;
-import granita.Semantic.SymbolTable.Variable;
+import granita.Semantic.SymbolTable.SimpleVariable;
 import granita.Semantic.Types.Type;
 import granitainterpreter.ErrorHandler;
 import granitainterpreter.GranitaException;
@@ -52,7 +52,7 @@ public class InitializedFieldDeclarationStatement extends Statement {
         } else {
             type.setValue(result.getValue());
             if (v == null){
-                node.addEntry(fieldName, new Variable(type, initValue));
+                node.addEntry(fieldName, new SimpleVariable(type, initValue));
             }
         }
     }

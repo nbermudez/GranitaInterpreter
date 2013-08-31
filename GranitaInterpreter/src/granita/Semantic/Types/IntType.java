@@ -47,4 +47,9 @@ public class IntType extends Type{
             this.value = (Integer) value;
         }
     }
+
+    @Override
+    public Type getCopy() {
+        return new IntType(value);
+    }
 }

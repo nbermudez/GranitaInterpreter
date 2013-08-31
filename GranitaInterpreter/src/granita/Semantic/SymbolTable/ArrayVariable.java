@@ -11,25 +11,16 @@ import granita.Semantic.Types.Type;
  *
  * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
  */
-public class ArrayVariable extends SymbolTableValue {
-    Type type;
+public class ArrayVariable extends Variable {
     LitInt size;
     Type items[];
 
     public ArrayVariable(Type type, LitInt size) {
-        this.type = type;
+        super(type);
         this.size = size;
         this.items = new Type[size.getValue()];
     }
-
-    public Type getType() {
-        return type;
-    }
-
-    public void setType(Type type) {
-        this.type = type;
-    }
-
+    
     public LitInt getSize() {
         return size;
     }
@@ -44,6 +35,13 @@ public class ArrayVariable extends SymbolTableValue {
 
     public void setItems(Type[] items) {
         this.items = items;
+    }
+
+    @Override
+    public Variable getCopy() {
+        ArrayVariable var = new ArrayVariable(type.getCopy(), size);
+        var.setVarName(varName);
+        return var;
     }
     
 }

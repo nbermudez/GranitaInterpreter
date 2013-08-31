@@ -6,11 +6,15 @@ package granita.Parser.Statements;
 
 import granita.Semantic.SymbolTable.SymbolTableNode;
 import granita.Semantic.SymbolTable.SymbolTableTree;
+import granita.Semantic.SymbolTable.Variable;
 import granita.Semantic.Types.Type;
 import granitainterpreter.ErrorHandler;
 import granitainterpreter.GranitaException;
-import granitainterpreter.Utils;
+import granitainterpreter.Interpreter;
+import granitainterpreter.SemanticUtils;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Set;
 
 /**
  *
@@ -20,11 +24,14 @@ public class BlockStatement extends Statement {
 
     ArrayList<Statement> statements;
     int localScope; //para el scope de las variables
+    BlockStatement parentBlock = null;
+    private HashMap<String, Variable> localSymbolTable;
 
     public BlockStatement(int localScope, int line) {
         super(line);
         this.localScope = localScope;
         this.statements = new ArrayList<Statement>();
+        this.localSymbolTable = new HashMap<String, Variable>();
     }
 
     public ArrayList<Statement> getStatements() {
@@ -37,6 +44,34 @@ public class BlockStatement extends Statement {
 
     public void addStatement(Statement stmt) {
         this.statements.add(stmt);
+    }
+
+    public BlockStatement getParentBlock() {
+        return parentBlock;
+    }
+
+    public void setParentBlock(BlockStatement parentBlock) {
+        this.parentBlock = parentBlock;
+    }
+    
+    public Variable getVariable(String id) {
+        Variable v = this.localSymbolTable.get(id);
+        if (v == null) {
+            if (this.parentBlock != null){
+                return this.parentBlock.getVariable(id);
+            } else {
+                return (Variable) SymbolTableTree.getInstance().getRoot().getEntry(id);
+            }
+        }return v;
+    }
+    
+    public boolean alreadyRegistered(String id) {
+        return localSymbolTable.containsKey(id);
+    }
+    
+    public void registerVariable(String id, Variable var) {
+        var.setVarName(id);
+        this.localSymbolTable.put(id, var);
     }
 
     @Override
@@ -58,25 +93,28 @@ public class BlockStatement extends Statement {
 
     @Override
     public void validateSemantics() throws GranitaException {
-        if (Utils.getInstance().isUnreachableStatement() == 1) {
+        if (SemanticUtils.getInstance().isUnreachableStatement() == 1) {
             int line2 = this.firstStatement().getLine();
             if (line2 != this.getLine()){
                 ErrorHandler.handle("unreachable statement: line " 
                     + line2);
             }
             
-            Utils.getInstance().setUnreachableStatement();
+            SemanticUtils.getInstance().setUnreachableStatement();
         }
-        SymbolTableNode parent = SymbolTableTree.getInstance().getParentNode();
-
+        //SymbolTableNode parent = SymbolTableTree.getInstance().getParentNode();
         for (Statement st : statements) {
+            SemanticUtils.getInstance().setCurrentBlock(this);
             if (st instanceof BlockStatement) {
-                SymbolTableTree.getInstance().setCurrentNode(new SymbolTableNode(parent));
+                BlockStatement bl = (BlockStatement) st;
+                bl.setParentBlock(this);                
+                //SymbolTableTree.getInstance().setCurrentNode(new SymbolTableNode(parent));
             }
             st.validateSemantics();
-            SymbolTableTree.getInstance().setCurrentNode(parent);
+            //SymbolTableTree.getInstance().setCurrentNode(parent);
         }
-        Utils.getInstance().resetUnreachableStatement();
+        SemanticUtils.getInstance().resetUnreachableStatement();
+        
     }
 
     private Statement firstStatement() {
@@ -93,6 +131,16 @@ public class BlockStatement extends Statement {
         }
         return this;
     }
+    
+    public BlockStatement getCopy() {
+        BlockStatement block = new BlockStatement(localScope, line);
+        block.setStatements(statements);
+        Set<String> keys = localSymbolTable.keySet();
+        for (String name : keys) {
+            block.registerVariable(name, localSymbolTable.get(name).getCopy());
+        }
+        return block;
+    }
 
     @Override
     public Type hasReturn(Type methodType) throws GranitaException {
@@ -104,6 +152,7 @@ public class BlockStatement extends Statement {
                 int lineN = statement.getLine();
                 if (statement instanceof BlockStatement) {
                     BlockStatement block = (BlockStatement) statement;
+                    block.setParentBlock(this);
                     lineN = block.firstStatement().getLine();
                     if (lineN != statement.getLine()) {
                         ErrorHandler.handle("unreachable statement: line " + lineN);
@@ -130,8 +179,17 @@ public class BlockStatement extends Statement {
 
     @Override
     public void execute() throws GranitaException {
-        for (Statement statement : statements) {
+        Interpreter.getInstance().pushBlockToFunction(this);
+        boolean interrupted = false;
+        for (Statement statement : statements) {            
             statement.execute();
+            if (Interpreter.getInstance().returnReached()) {
+                interrupted = true;
+                break;
+            }
+        }
+        if (!interrupted){
+            Interpreter.getInstance().popBlockToFunction();
         }
     }
     

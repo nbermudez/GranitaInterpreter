@@ -40,5 +40,10 @@ public class StringType extends Type {
             this.value = (String) value;
         }
     }
+
+    @Override
+    public Type getCopy() {
+        return new StringType(value);
+    }
     
 }

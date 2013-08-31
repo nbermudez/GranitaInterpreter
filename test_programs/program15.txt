@@ -1,0 +1,12 @@
+class testScopes {
+	void main(){
+		int x;
+		x = 1;
+		print x, "\n";
+		{
+			int y;
+			y = 2;
+			print x+y, "\n";
+		}print x, "\n";
+	}
+}

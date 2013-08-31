@@ -4,11 +4,11 @@
  */
 package granita.Semantic.SymbolTable;
 
-import granita.Parser.Expressions.Expression;
 import granita.Parser.Statements.BlockStatement;
 import granita.Semantic.Types.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
 
 /**
  *
@@ -16,27 +16,34 @@ import java.util.HashMap;
  */
 public class Function extends SymbolTableValue {
     private Type type;
-    private HashMap<String, Variable> localSymbolTable;
-    private ArrayList<Variable> parameters;
+    //private HashMap<String, SimpleVariable> localSymbolTable;
+    private ArrayList<SimpleVariable> parameters;
     private BlockStatement block;
     
     public Function(Type type){
         this.type = type;
-        this.localSymbolTable = new HashMap<String, Variable>();
-        this.parameters = new ArrayList<Variable>();
+        //this.localSymbolTable = new HashMap<String, SimpleVariable>();
+        this.parameters = new ArrayList<SimpleVariable>();
+    }
+    
+    public Function getCopy(){
+        Function copy = new Function(type.getCopy());
+        for (SimpleVariable simpleVariable : parameters) {
+            copy.parameters.add(simpleVariable.getCopy());
+        }
+        copy.setBlock(block.getCopy());
+        return copy;
     }
     
     public Function(Type type, BlockStatement block){
         this.type = type;
-        this.localSymbolTable = new HashMap<String, Variable>();
-        this.parameters = new ArrayList<Variable>();
+        //this.localSymbolTable = new HashMap<String, SimpleVariable>();
+        this.parameters = new ArrayList<SimpleVariable>();
         this.block = block;
     }
 
-    public Function(Type type, HashMap<String, Variable> localSymbolTable, 
-            ArrayList<Variable> parameters) {
+    public Function(Type type, ArrayList<SimpleVariable> parameters) {
         this.type = type;
-        this.localSymbolTable = localSymbolTable;
         this.parameters = parameters;
     }
     
@@ -48,43 +55,23 @@ public class Function extends SymbolTableValue {
         this.type = type;
     }
 
-    public HashMap<String, Variable> getLocalSymbolTable() {
-        return localSymbolTable;
-    }
-
-    public void setLocalSymbolTable(HashMap<String, Variable> localSymbolTable) {
-        this.localSymbolTable = localSymbolTable;
-    }
-
-    public ArrayList<Variable> getParameters() {
+    public ArrayList<SimpleVariable> getParameters() {
         return parameters;
     }
 
-    public void setParameters(ArrayList<Variable> parameters) {
+    public void setParameters(ArrayList<SimpleVariable> parameters) {
         this.parameters = parameters;
-    }
-    
-    public void addSymbolTableEntry(String id, Variable value){
-        this.localSymbolTable.put(id, value);
-    }
-    
-    public Variable getSymbolTableEntry(String id){
-        if (this.localSymbolTable.containsKey(id)){
-            return this.localSymbolTable.get(id);
-        }
-        return null;
-    }
-    
-    public void deleteSymbolTableEntry(String id){
-        this.localSymbolTable.remove(id);
     }
 
     public BlockStatement getBlock() {
-        return block;
+        return this.block;
     }
 
     public void setBlock(BlockStatement block) {
         this.block = block;
     }
     
+    public Variable getVariable(String id) {
+        return this.block.getVariable(id);
+    }
 }

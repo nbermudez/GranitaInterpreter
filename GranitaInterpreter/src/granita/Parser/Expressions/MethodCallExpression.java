@@ -7,6 +7,7 @@ package granita.Parser.Expressions;
 import granita.Semantic.SymbolTable.Function;
 import granita.Semantic.SymbolTable.SymbolTableTree;
 import granita.Semantic.SymbolTable.SymbolTableValue;
+import granita.Semantic.SymbolTable.Variable;
 import granita.Semantic.Types.Type;
 import granitainterpreter.ErrorHandler;
 import granitainterpreter.GranitaException;
@@ -83,12 +84,24 @@ public class MethodCallExpression extends Expression {
     @Override
     public Object evaluate() throws GranitaException {
         Function f = (Function) SymbolTableTree.getInstance().lookupFunction(this.id);
+        Function AR = f.getCopy();
+        
+        int i = 0;
         for (Expression arg : arguments) {
-            Type t = f.getParameters().get(0).getType();
-            t.setValue(arg.evaluate());
+            Type t = AR.getParameters().get(i).getType();
+            Object param = arg.evaluate();
+            t.setValue(param);
+            String varName = AR.getParameters().get(i).getVarName();
+            Variable v = AR.getBlock().getVariable(varName);
+            v.getType().setValue(param);
+            
+            i = i + 1;
         }
-        Interpreter.getInstance().register(f);
-        f.getBlock().execute();
-        return f.getType().getValue();
+        Interpreter.getInstance().register(AR);
+        AR.getBlock().execute();
+        Object o = AR.getType().getValue();
+        Interpreter.getInstance().popFunction();
+        Interpreter.getInstance().setReturnReached(false);
+        return o;
     }
 }

@@ -6,7 +6,7 @@ package granita.Parser.Statements;
 
 import granitainterpreter.ErrorHandler;
 import granitainterpreter.GranitaException;
-import granitainterpreter.Utils;
+import granitainterpreter.SemanticUtils;
 
 /**
  *
@@ -39,7 +39,7 @@ public class ContinueStatement extends Statement {
         if (!isInsideLoop) {
             ErrorHandler.handle("continue statement must be inside a loop");
         }
-        Utils.getInstance().setUnreachableStatement();
+        SemanticUtils.getInstance().setUnreachableStatement();
     }
     
 }

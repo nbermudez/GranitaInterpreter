@@ -13,7 +13,7 @@ import granita.Semantic.Types.Type;
 import granita.Semantic.Types.VoidType;
 import granitainterpreter.ErrorHandler;
 import granitainterpreter.GranitaException;
-import granitainterpreter.Utils;
+import granitainterpreter.SemanticUtils;
 import java.util.ArrayList;
 
 /**
@@ -109,6 +109,7 @@ public class MethodDeclarationStatement extends Statement {
 
         SymbolTableNode parent = SymbolTableTree.getInstance().getParentNode();
         SymbolTableTree.getInstance().setCurrentNode(new SymbolTableNode(parent));
+        SemanticUtils.getInstance().setCurrentBlock(block);
 
         for (ParameterDeclaration st : parameters) {
             st.validateSemantics();
@@ -116,24 +117,28 @@ public class MethodDeclarationStatement extends Statement {
         this.paramsEntry = SymbolTableTree.getInstance().getCurrentNode();
 
         SymbolTableTree.getInstance().setCurrentNode(parent);
+        SemanticUtils.getInstance().setCurrentBlock(block);
     }
 
     @Override
     public void validateSemantics() throws GranitaException {
         //<editor-fold defaultstate="collapsed" desc="Validate block">
-        Utils.getInstance().setExpectedReturnType(this.type);
+        SemanticUtils.getInstance().setExpectedReturnType(this.type);
 
         if (this.getType().equivalent(new VoidType())) {
-            Utils.getInstance().setMustReturnExpression(false);
+            SemanticUtils.getInstance().setMustReturnExpression(false);
         } else {
-            Utils.getInstance().setMustReturnExpression(true);
+            SemanticUtils.getInstance().setMustReturnExpression(true);
         }
+        System.out.println(identifier);
+        SemanticUtils.getInstance().setCurrentBlock(block);
         this.block.validateSemantics();
+        SemanticUtils.getInstance().setCurrentBlock(block.parentBlock);
         //</editor-fold>
 
         //<editor-fold defaultstate="collapsed" desc="Return type checks">
         if (!this.getType().equivalent(new VoidType())) {
-            Utils.getInstance().setExpectedReturnType(this.type);
+            SemanticUtils.getInstance().setExpectedReturnType(this.type);
 
             Type hasReturn = this.getBlock().hasReturn(this.getType());
             if (hasReturn == null) {
@@ -142,7 +147,7 @@ public class MethodDeclarationStatement extends Statement {
                         + "': line " + this.line);
             }
 
-            Utils.getInstance().setExpectedReturnType(null);
+            SemanticUtils.getInstance().setExpectedReturnType(null);
         }
         //</editor-fold>
 

@@ -6,7 +6,7 @@ package granita.Parser.Statements;
 
 import granita.Parser.LeftValues.LeftValue;
 import granitainterpreter.GranitaException;
-import granitainterpreter.Utils;
+import granitainterpreter.SemanticUtils;
 import java.util.ArrayList;
 
 /**
@@ -48,11 +48,11 @@ public class ReadStatement extends Statement {
     @Override
     public void validateSemantics() throws GranitaException {
         super.validateSemantics();
-        Utils.getInstance().setInsideRead(true);
+        SemanticUtils.getInstance().setInsideRead(true);
         for (LeftValue lv : leftValues){
             lv.validateSemantics();
         }
-        Utils.getInstance().setInsideRead(false);
+        SemanticUtils.getInstance().setInsideRead(false);
     }
     
 }

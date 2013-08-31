@@ -5,13 +5,13 @@
 package granita.Parser.LeftValues;
 
 import granita.Semantic.SymbolTable.ArrayVariable;
-import granita.Semantic.SymbolTable.SymbolTableTree;
-import granita.Semantic.SymbolTable.SymbolTableValue;
+import granita.Semantic.SymbolTable.SimpleVariable;
 import granita.Semantic.SymbolTable.Variable;
 import granita.Semantic.Types.Type;
 import granitainterpreter.ErrorHandler;
 import granitainterpreter.GranitaException;
-import granitainterpreter.Utils;
+import granitainterpreter.Interpreter;
+import granitainterpreter.SemanticUtils;
 
 /**
  *
@@ -53,42 +53,44 @@ public class SimpleValue extends LeftValue {
 
     @Override
     public Type validateSemantics() throws GranitaException {
-        SymbolTableValue val = SymbolTableTree.getInstance().lookupFromCurrent(id);
+        Variable val = SemanticUtils.getInstance().getCurrentBlock().getVariable(id);
         if (val == null) {
             return ErrorHandler.handle("undefined variable '" + id + "': line "
                     + this.getLine());
         } else {
-            if (Utils.getInstance().isInsidePrint() 
+            if (SemanticUtils.getInstance().isInsidePrint() 
                     && val instanceof ArrayVariable) {
                 return ErrorHandler.handle("print can't be applied to an array "
                         + "variable: line " + this.getLine());
             }
-            if (Utils.getInstance().isInsideRead() 
+            if (SemanticUtils.getInstance().isInsideRead() 
                     && val instanceof ArrayVariable) {
                 return ErrorHandler.handle("read can't be applied to an array "
                         + "variable: line " + this.getLine());
             }
-            if (!Utils.getInstance().isLeftValueAsLocation() 
+            if (!SemanticUtils.getInstance().isLeftValueAsLocation() 
                     && !val.isInitialized()) {
                 return ErrorHandler.handle("variable '" + id + "' "
                         + "must be initialized before use: line "
                         + this.getLine());
             }
-            return ((Variable) val).getType();
+            return ((SimpleVariable) val).getType();
         }
     }
 
     @Override
     public void initializeVariable() {
-        SymbolTableValue val = SymbolTableTree.getInstance().lookupFromCurrent(id);
-        if (val != null && val instanceof Variable) {
+        Variable val = SemanticUtils.getInstance().getCurrentBlock().getVariable(id);
+        if (val != null && val instanceof SimpleVariable) {
             val.setInitialized(true);
         }
     }
 
     @Override
     public Object evaluate() throws GranitaException {
-        Variable val = (Variable) SymbolTableTree.getInstance().lookupFromCurrent(id);
-        return val.getType().getValue();
+        SimpleVariable val = (SimpleVariable) Interpreter.getInstance().getVariable(id);
+        //System.out.println("id: " + id);
+        Type t = val.getType();
+        return t.getValue();
     }
 }

@@ -16,7 +16,8 @@ import granitainterpreter.GranitaException;
  * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
  */
 public class Eq extends BinaryExpression {
-
+    private Type resultType = null;
+    
     public Eq(Expression left, Expression right, int line) {
         super(left, right, line);
     }
@@ -38,7 +39,8 @@ public class Eq extends BinaryExpression {
             return ErrorHandler.handle("undefined variable " + right.toString()
                     + ": line " + line);
         }
-
+        
+        resultType = LHS;
         if (LHS instanceof IntType && RHS instanceof IntType
                 || LHS instanceof BoolType && RHS instanceof BoolType) {
             return new BoolType();
@@ -48,14 +50,19 @@ public class Eq extends BinaryExpression {
             return ErrorHandler.handle("operator == cannot be applied to "
                     + LHS.toString() + " and " + RHS.toString() 
                     + ": line " + line);
-        }
+        }        
     }
     
     @Override
     public Boolean evaluate() throws GranitaException {
-        Object l =  left.evaluate();
-        Object r = right.evaluate();
-        
-        return l.equals(r);
+        if (resultType instanceof IntType) {
+            Integer l = (Integer) left.evaluate();
+            Integer r = (Integer) right.evaluate();
+            return l.intValue() == r.intValue();
+        } else {
+            Boolean l = (Boolean) left.evaluate();
+            Boolean r = (Boolean) right.evaluate();
+            return l.booleanValue() == r.booleanValue();
+        }
     }
 }

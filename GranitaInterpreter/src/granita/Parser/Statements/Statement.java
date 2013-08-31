@@ -7,13 +7,13 @@ package granita.Parser.Statements;
 import granita.Semantic.Types.Type;
 import granitainterpreter.ErrorHandler;
 import granitainterpreter.GranitaException;
-import granitainterpreter.Utils;
+import granitainterpreter.SemanticUtils;
 
 /**
  *
  * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
  */
-public abstract class Statement {
+public abstract class Statement implements Cloneable {
     int line;
     
     public Statement(int line) {
@@ -29,9 +29,9 @@ public abstract class Statement {
     }    
     
     public void validateSemantics() throws GranitaException {
-        if (Utils.getInstance().isUnreachableStatement() == 1) {
+        if (SemanticUtils.getInstance().isUnreachableStatement() == 1) {
             ErrorHandler.handle("unreachable statement: line " + this.getLine());
-            Utils.getInstance().setUnreachableStatement();
+            SemanticUtils.getInstance().setUnreachableStatement();
         }
     }
     

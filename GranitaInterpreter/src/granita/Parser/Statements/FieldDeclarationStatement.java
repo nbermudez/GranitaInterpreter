@@ -10,7 +10,7 @@ import granita.Semantic.SymbolTable.ArrayVariable;
 import granita.Semantic.SymbolTable.SymbolTableNode;
 import granita.Semantic.SymbolTable.SymbolTableTree;
 import granita.Semantic.SymbolTable.SymbolTableValue;
-import granita.Semantic.SymbolTable.Variable;
+import granita.Semantic.SymbolTable.SimpleVariable;
 import granita.Semantic.Types.Type;
 import granitainterpreter.ErrorHandler;
 import granitainterpreter.GranitaException;
@@ -75,7 +75,7 @@ public class FieldDeclarationStatement extends Statement {
                     ArrayField af = (ArrayField) f;
                     node.addEntry(f.getFieldName(), new ArrayVariable(type, af.getSize()));
                 } else {
-                    node.addEntry(f.getFieldName(), new Variable(type, null));
+                    node.addEntry(f.getFieldName(), new SimpleVariable(type, null));
                 }
             }
         }

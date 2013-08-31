@@ -28,7 +28,7 @@ import granita.Parser.Statements.Statement;
 import granita.Parser.Statements.WhileStatement;
 import granita.Semantic.SymbolTable.Function;
 import granita.Semantic.SymbolTable.SymbolTableValue;
-import granita.Semantic.SymbolTable.Variable;
+import granita.Semantic.SymbolTable.SimpleVariable;
 import granita.Semantic.Types.Type;
 import granitainterpreter.GranitaException;
 import java.util.HashMap;

@@ -8,12 +8,13 @@ import granita.Parser.Expressions.Expression;
 import granita.Parser.LeftValues.LeftValue;
 import granita.Semantic.SymbolTable.SymbolTableTree;
 import granita.Semantic.SymbolTable.SymbolTableValue;
-import granita.Semantic.SymbolTable.Variable;
+import granita.Semantic.SymbolTable.SimpleVariable;
 import granita.Semantic.Types.ErrorType;
 import granita.Semantic.Types.Type;
 import granitainterpreter.ErrorHandler;
 import granitainterpreter.GranitaException;
-import granitainterpreter.Utils;
+import granitainterpreter.Interpreter;
+import granitainterpreter.SemanticUtils;
 
 /**
  *
@@ -59,9 +60,9 @@ public class AssignStatement extends Statement {
     public void validateSemantics() throws GranitaException {
         super.validateSemantics();
         
-        Utils.getInstance().setLeftValueAsLocation(true);
+        SemanticUtils.getInstance().setLeftValueAsLocation(true);
         Type LHS = left.validateSemantics();
-        Utils.getInstance().setLeftValueAsLocation(false);
+        SemanticUtils.getInstance().setLeftValueAsLocation(false);
         left.initializeVariable();
         
         Type RHS = value.validateSemantics();
@@ -76,7 +77,8 @@ public class AssignStatement extends Statement {
 
     @Override
     public void execute() throws GranitaException {
-        Variable v = (Variable)SymbolTableTree.getInstance().lookupFromCurrent("x");
+        String id = left.toString();
+        SimpleVariable v = (SimpleVariable) Interpreter.getInstance().getVariable(id);
         v.getType().setValue(value.evaluate());
     }
 }

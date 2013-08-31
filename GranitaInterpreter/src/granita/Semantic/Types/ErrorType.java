@@ -29,5 +29,10 @@ public class ErrorType extends Type{
     public String toString() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
+
+    @Override
+    public Type getCopy() {
+        return this;
+    }
     
 }

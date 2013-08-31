@@ -4,23 +4,26 @@
  */
 package granita.Semantic.SymbolTable;
 
-import granita.Parser.Expressions.Expression;
 import granita.Semantic.Types.Type;
 
 /**
  *
  * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
  */
-public class Variable extends SymbolTableValue {
-    Type type;
-    Expression value;
+public abstract class Variable extends SymbolTableValue {
+    protected String varName;
+    protected Type type;
 
-    public Variable(Type type, Expression value) {
+    public Variable(Type type) {
         this.type = type;
-        this.value = value;
-        if (value != null) {
-            this.initialized = true;
-        }
+    }
+
+    public String getVarName() {
+        return varName;
+    }
+
+    public void setVarName(String varName) {
+        this.varName = varName;
     }
 
     public Type getType() {
@@ -30,12 +33,6 @@ public class Variable extends SymbolTableValue {
     public void setType(Type type) {
         this.type = type;
     }
-
-    public Expression getValue() {
-        return value;
-    }
-
-    public void setValue(Expression value) {
-        this.value = value;
-    }
+    
+    public abstract Variable getCopy();
 }

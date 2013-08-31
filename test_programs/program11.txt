@@ -1,21 +1,24 @@
 class t {
 	int funct2(int n){
+		int x,y;
 		if (n == 1 || n == 0) {
 			return 1;
 		}
 		return funct2(n-1) + funct2(n-2);
-		
 	}
 
 	int test_unde_var1() {
 		{
 			{
-				int x;
+				int x,y;
 				x = 1;
+				y = 1;
 				{
-					print x, "\n", "hola";
+					print x+y, "\n", "hola";
 				}
-				print funct2(5);
+				print "fibonacci 5: ", funct2(5);
+				//print y;
+				//print funct2(5);
 			}
 		}
 		return 3;
@@ -24,8 +27,8 @@ class t {
 	void main() {
 		int x;
 		x = test_unde_var1();
-		print x+x*x;
-		while(x<=10){
+		//print x+x*x;
+		/*while(x<=10){
 			print x, "\n";
 			x = x+1;
 		}
@@ -37,6 +40,6 @@ class t {
 		}
 		for(1; x<20; x=x+1){
 			print "potato", x, "\n";
-		}
+		}*/
 	}
 }

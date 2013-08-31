@@ -8,7 +8,7 @@ package granita.Semantic.SymbolTable;
  *
  * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
  */
-public abstract class SymbolTableValue {
+public abstract class SymbolTableValue implements Cloneable{
     boolean initialized = false;
 
     public boolean isInitialized() {

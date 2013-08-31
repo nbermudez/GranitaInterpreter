@@ -82,12 +82,13 @@ public class MethodCallStatement extends Statement {
 
     @Override
     public void execute() throws GranitaException {
-        Function f = (Function) SymbolTableTree.getInstance().lookupFromCurrent(this.id);
+        Function f = (Function) SymbolTableTree.getInstance().lookupFunction(this.id);
         for (Expression arg : params) {
             Type t = f.getParameters().get(0).getType();
             t.setValue(arg.evaluate());
         }
-        Interpreter.getInstance().register(f);
-        f.getBlock().execute();
+        Function AR = f.getCopy();
+        Interpreter.getInstance().register(AR);
+        AR.getBlock().execute();
     }
 }

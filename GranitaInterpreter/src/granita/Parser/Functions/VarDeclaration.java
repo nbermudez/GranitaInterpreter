@@ -4,14 +4,15 @@
  */
 package granita.Parser.Functions;
 
+import granita.Parser.Statements.BlockStatement;
 import granita.Parser.Statements.Statement;
 import granita.Semantic.SymbolTable.SymbolTableNode;
 import granita.Semantic.SymbolTable.SymbolTableTree;
-import granita.Semantic.SymbolTable.Variable;
+import granita.Semantic.SymbolTable.SimpleVariable;
 import granita.Semantic.Types.Type;
 import granitainterpreter.ErrorHandler;
 import granitainterpreter.GranitaException;
-import granitainterpreter.Utils;
+import granitainterpreter.SemanticUtils;
 import java.util.ArrayList;
 
 /**
@@ -68,14 +69,25 @@ public class VarDeclaration extends Statement {
     @Override
     public void validateSemantics() throws GranitaException {
         super.validateSemantics();
-        SymbolTableNode current = SymbolTableTree.getInstance().getCurrentNode();
+        /*SymbolTableNode current = SymbolTableTree.getInstance().getCurrentNode();
         for (String name : varNames) {
             if (current.findInThisTable(name) != null) {
                 ErrorHandler.handle("already defined variable '" + name
                         + "': line " + this.getLine());
             } else {
-                current.addEntry(name, new Variable(type, null));
+                current.addEntry(name, new SimpleVariable(type, null));
+            }
+        }*/
+
+        BlockStatement currentBlock = SemanticUtils.getInstance().getCurrentBlock();
+        for (String name : varNames) {
+            if (currentBlock.alreadyRegistered(name)) {
+                ErrorHandler.handle("already defined variable '" + name
+                        + "': line " + this.getLine());
+            } else {
+                currentBlock.registerVariable(name, new SimpleVariable(type, null));
             }
         }
+
     }
 }

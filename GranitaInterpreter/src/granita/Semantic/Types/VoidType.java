@@ -33,4 +33,9 @@ public class VoidType extends Type{
     public Object getValue() {
         return null;
     }
+
+    @Override
+    public Type getCopy() {
+        return this;
+    }
 }

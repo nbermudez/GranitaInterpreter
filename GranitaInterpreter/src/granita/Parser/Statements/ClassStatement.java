@@ -4,13 +4,16 @@
  */
 package granita.Parser.Statements;
 
+import granita.Parser.Expressions.Expression;
+import granita.Semantic.SymbolTable.Function;
 import granita.Semantic.SymbolTable.SymbolTableNode;
 import granita.Semantic.SymbolTable.SymbolTableTree;
 import granita.Semantic.Types.Type;
 import granita.Semantic.Types.VoidType;
 import granitainterpreter.ErrorHandler;
 import granitainterpreter.GranitaException;
-import granitainterpreter.Utils;
+import granitainterpreter.Interpreter;
+import granitainterpreter.SemanticUtils;
 import java.util.ArrayList;
 
 /**
@@ -101,15 +104,15 @@ public class ClassStatement extends Statement {
             m.initialize();
         }
         //</editor-fold>
-        
+
         //<editor-fold defaultstate="collapsed" desc="Validate methods">
         for (Statement statement : methodDecls) {
-            main = (MethodDeclarationStatement) statement;            
-            SymbolTableTree.getInstance().setCurrentNode(main.getParamsEntry());            
+            main = (MethodDeclarationStatement) statement;
+            SymbolTableTree.getInstance().setCurrentNode(main.getParamsEntry());
             main.validateSemantics();
         }
         //</editor-fold>
-        
+
         //<editor-fold defaultstate="collapsed" desc="Check for main method">
         if (!mainFound) {
             ErrorHandler.handle("class must contain a method 'main'");
@@ -132,9 +135,11 @@ public class ClassStatement extends Statement {
         for (Statement statement : methodDecls) {
             MethodDeclarationStatement md = (MethodDeclarationStatement) statement;
             if (md.isMain()) {
-                statement.execute();
+                Function f = (Function) SymbolTableTree.getInstance().lookupFunction("main");
+                Function AR = f.getCopy();
+                Interpreter.getInstance().register(AR);
+                AR.getBlock().execute();
             }
         }
     }
-    
 }
