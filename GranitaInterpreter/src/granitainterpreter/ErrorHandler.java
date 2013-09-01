@@ -51,8 +51,12 @@ public class ErrorHandler {
     }
     
     public static void printAll(){ 
-        printErrors();
-        printWarnings();
+        if (!errors.isEmpty()){
+            printErrors();
+        }
+        if (!warnings.isEmpty()) {
+            printWarnings();
+        }
     }
     
     public static boolean isEmpty() {

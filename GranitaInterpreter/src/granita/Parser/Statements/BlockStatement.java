@@ -102,20 +102,35 @@ public class BlockStatement extends Statement {
             
             SemanticUtils.getInstance().setUnreachableStatement();
         }
+        BlockStatement blk = SemanticUtils.getInstance().getCurrentBlock();
+        BlockStatement back_up = this;
         for (Statement st : statements) {
             SemanticUtils.getInstance().setCurrentBlock(this);
             if (st instanceof BlockStatement) {
                 BlockStatement bl = (BlockStatement) st;
                 bl.setParentBlock(this);
+                back_up = this.getCopy();
             } else if (st instanceof WhileStatement) {
                 WhileStatement w = (WhileStatement) st;
                 w.block.setParentBlock(this);
             } else if (st instanceof ForStatement) {
                 ForStatement f = (ForStatement) st;
                 f.block.setParentBlock(this);
+            } else if (st instanceof IfStatement) {
+                IfStatement ifS = (IfStatement) st;
+                ifS.trueBlock.setParentBlock(this);
+                if (ifS.falseBlock != null) {
+                    ifS.falseBlock.setParentBlock(this);
+                }
             }
+            
             st.validateSemantics();
+            
+            if (st instanceof BlockStatement) {
+                this.localSymbolTable = back_up.localSymbolTable;
+            }
         }
+        SemanticUtils.getInstance().setCurrentBlock(blk);
         SemanticUtils.getInstance().resetUnreachableStatement();
         
     }
@@ -141,6 +156,9 @@ public class BlockStatement extends Statement {
         Set<String> keys = localSymbolTable.keySet();
         for (String name : keys) {
             block.registerVariable(name, localSymbolTable.get(name).getCopy());
+        }
+        if (this.parentBlock != null) {
+            block.parentBlock = this.parentBlock.getCopy();
         }
         return block;
     }
@@ -182,17 +200,40 @@ public class BlockStatement extends Statement {
 
     @Override
     public void execute() throws GranitaException {
-        Interpreter.getInstance().pushBlockToFunction(this);
-        for (Statement statement : statements) {  
-            if (statement instanceof ForStatement) {
-                System.out.println("");
+        BlockStatement back_up = this.getCopy();
+        Interpreter.getInstance().pushBlockToFunction(back_up);
+        
+        for (Statement st : statements) {
+            if (st instanceof BlockStatement) {
+                BlockStatement bl = (BlockStatement) st;
+                bl.setParentBlock(back_up);
+                back_up = this.getCopy();
+            } else if (st instanceof WhileStatement) {
+                WhileStatement w = (WhileStatement) st;
+                w.block.setParentBlock(back_up);
+            } else if (st instanceof ForStatement) {
+                ForStatement f = (ForStatement) st;
+                f.block.setParentBlock(back_up);
+            } else if (st instanceof IfStatement) {
+                IfStatement ifS = (IfStatement) st;
+                ifS.trueBlock.setParentBlock(back_up);
+                if (ifS.falseBlock != null) {
+                    ifS.falseBlock.setParentBlock(back_up);
+                }
             }
-            statement.execute();
+            st.execute();
+            /*if (st instanceof BlockStatement 
+                    || st instanceof IfStatement
+                    || st instanceof WhileStatement
+                    || st instanceof ForStatement) {
+                this.localSymbolTable = back_up.localSymbolTable;
+            }*/
             if (Interpreter.getInstance().returnReached()) {
                 break;
             }
         }
         Interpreter.getInstance().popBlockToFunction();
+        
         
     }
     

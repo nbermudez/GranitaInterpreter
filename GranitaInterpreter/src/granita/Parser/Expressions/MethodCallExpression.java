@@ -4,6 +4,7 @@
  */
 package granita.Parser.Expressions;
 
+import granita.Parser.Statements.BlockStatement;
 import granita.Semantic.SymbolTable.Function;
 import granita.Semantic.SymbolTable.SymbolTableTree;
 import granita.Semantic.SymbolTable.SymbolTableValue;
@@ -98,7 +99,8 @@ public class MethodCallExpression extends Expression {
             i = i + 1;
         }
         Interpreter.getInstance().register(AR);
-        AR.getBlock().execute();
+        BlockStatement toRun = AR.getBlock().getCopy();
+        toRun.execute();
         Object o = AR.getType().getValue();
         Interpreter.getInstance().popFunction();
         Interpreter.getInstance().setReturnReached(false);

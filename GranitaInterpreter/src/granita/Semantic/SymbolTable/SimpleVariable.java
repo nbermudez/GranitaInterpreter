@@ -12,7 +12,7 @@ import granita.Semantic.Types.Type;
  * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
  */
 public class SimpleVariable extends Variable {
-    Expression value;
+    Expression value, previousValue;
 
     public SimpleVariable(Type type, Expression value) {
         super(type);
@@ -20,6 +20,7 @@ public class SimpleVariable extends Variable {
         if (value != null) {
             this.initialized = true;
         }
+        this.previousValue = value;
     }
     
     public Expression getValue() {
@@ -34,6 +35,7 @@ public class SimpleVariable extends Variable {
     public SimpleVariable getCopy() {
         SimpleVariable v = new SimpleVariable(type.getCopy(), value);
         v.setVarName(varName);
+        v.setInitialized(initialized);
         return v;
     }
 }

@@ -3,8 +3,10 @@ class t {
 		int x,y;
 		if (n == 1 || n == 0) {
 			return 1;
+		} else {		
+			return funct2(n-1) + funct2(n-2);
 		}
-		return funct2(n-1) + funct2(n-2);
+		//return funct2(n-1) + funct2(n-2);
 	}
 
 	int test_unde_var1() {
@@ -13,15 +15,30 @@ class t {
 				int x,y;
 				x = 1;
 				y = 1;
+				//print "antes del block\n";
 				{
 					print x+y, "\n", "hola\n";
 				}
-				print "fibonacci 5: ", funct2(5), "\n";
+				x = funct2(5);
+				print "fibonacci 5: ", x, "\n";
 				print y, "\n";
 				//print funct2(5);
 			}
 		}
 		return 3;
+	}
+	
+	void printAll(int n){
+		if (n<0) {
+			return;
+		}
+		if (n % 2 == 0){
+			print "hola";
+		} else {
+			print " a todos \n";			
+		}
+		printAll(n-1);
+		
 	}
 	
 	void main() {
@@ -36,13 +53,29 @@ class t {
 		}
 		x = x+100;
 		if (x<100) {
-			print "x menor a 100";
-		}else {
-			print "x mayor a 100";
+			{
+			print "x menor a 100\n";
+			}
+			
+		} else {
+			print "x mayor a 100\n";
+			{
+				int x;
+				{
+					x = 999;
+					print "otro x: ", x, "\n";
+				}
+				x = 1000;
+				print "hmmm: ", x, "\n";
+			}
 		}
 		x = 1;
 		for(x; x<20; x=x+1){
 			print "potato", x, "\n";
 		}
+		print "------------------------------------\n";
+		printAll(6);
 	}
+	
+	void t(int x){}
 }

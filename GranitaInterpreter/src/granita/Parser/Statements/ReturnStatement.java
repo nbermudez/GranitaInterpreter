@@ -93,6 +93,8 @@ public class ReturnStatement extends Statement {
     public void execute() throws GranitaException {
         if (returnType instanceof BoolType || returnType instanceof IntType) {
             Interpreter.getInstance().setReturnValue(returnExpression.evaluate());
+        } else  {
+            Interpreter.getInstance().setReturnReached(true);
         }
     }
     

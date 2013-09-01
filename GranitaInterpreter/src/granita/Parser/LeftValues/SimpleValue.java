@@ -89,7 +89,6 @@ public class SimpleValue extends LeftValue {
     @Override
     public Object evaluate() throws GranitaException {
         SimpleVariable val = (SimpleVariable) Interpreter.getInstance().getVariable(id);
-        //System.out.println("id: " + id);
         Type t = val.getType();
         return t.getValue();
     }

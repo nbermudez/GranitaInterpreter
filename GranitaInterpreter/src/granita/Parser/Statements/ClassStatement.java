@@ -4,16 +4,13 @@
  */
 package granita.Parser.Statements;
 
-import granita.Parser.Expressions.Expression;
 import granita.Semantic.SymbolTable.Function;
 import granita.Semantic.SymbolTable.SymbolTableNode;
 import granita.Semantic.SymbolTable.SymbolTableTree;
-import granita.Semantic.Types.Type;
 import granita.Semantic.Types.VoidType;
 import granitainterpreter.ErrorHandler;
 import granitainterpreter.GranitaException;
 import granitainterpreter.Interpreter;
-import granitainterpreter.SemanticUtils;
 import java.util.ArrayList;
 
 /**
@@ -93,13 +90,19 @@ public class ClassStatement extends Statement {
         //</editor-fold>        
 
         //<editor-fold defaultstate="collapsed" desc="Initialize methods">
-        MethodDeclarationStatement main = null, m;
+        MethodDeclarationStatement main, m;
         boolean mainFound = false;
         for (Statement st : methodDecls) {
             m = (MethodDeclarationStatement) st;
             if (((MethodDeclarationStatement) st).isMain()) {
                 mainFound = true;
                 main = m;
+                if (!main.getType().equivalent(new VoidType())) {
+                    ErrorHandler.handle("'main' method must be void");
+                }
+                if (!main.getParameters().isEmpty()) {
+                    ErrorHandler.handle("'main' method cannot have parameters ");
+                }
             }
             m.initialize();
         }
@@ -116,13 +119,6 @@ public class ClassStatement extends Statement {
         //<editor-fold defaultstate="collapsed" desc="Check for main method">
         if (!mainFound) {
             ErrorHandler.handle("class must contain a method 'main'");
-        } else {
-            if (!main.getType().equivalent(new VoidType())) {
-                ErrorHandler.handle("'main' method must be void");
-            }
-            if (!main.getParameters().isEmpty()) {
-                ErrorHandler.handle("'main' method cannot have parameters ");
-            }
         }
         //</editor-fold>
     }

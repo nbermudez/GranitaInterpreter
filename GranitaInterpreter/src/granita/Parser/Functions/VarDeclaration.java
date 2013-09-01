@@ -69,16 +69,6 @@ public class VarDeclaration extends Statement {
     @Override
     public void validateSemantics() throws GranitaException {
         super.validateSemantics();
-        /*SymbolTableNode current = SymbolTableTree.getInstance().getCurrentNode();
-        for (String name : varNames) {
-            if (current.findInThisTable(name) != null) {
-                ErrorHandler.handle("already defined variable '" + name
-                        + "': line " + this.getLine());
-            } else {
-                current.addEntry(name, new SimpleVariable(type, null));
-            }
-        }*/
-
         BlockStatement currentBlock = SemanticUtils.getInstance().getCurrentBlock();
         for (String name : varNames) {
             if (currentBlock.alreadyRegistered(name)) {

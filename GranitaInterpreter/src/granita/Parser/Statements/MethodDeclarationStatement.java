@@ -130,7 +130,6 @@ public class MethodDeclarationStatement extends Statement {
         } else {
             SemanticUtils.getInstance().setMustReturnExpression(true);
         }
-        System.out.println(identifier);
         SemanticUtils.getInstance().setCurrentBlock(block);
         this.block.validateSemantics();
         SemanticUtils.getInstance().setCurrentBlock(block.parentBlock);

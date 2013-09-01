@@ -7,6 +7,8 @@ package granita.Parser.Statements;
 import granita.Parser.Expressions.Expression;
 import granita.Semantic.SymbolTable.Function;
 import granita.Semantic.SymbolTable.SymbolTableTree;
+import granita.Semantic.SymbolTable.SymbolTableValue;
+import granita.Semantic.SymbolTable.Variable;
 import granita.Semantic.Types.Type;
 import granitainterpreter.ErrorHandler;
 import granitainterpreter.GranitaException;
@@ -49,17 +51,26 @@ public class MethodCallStatement extends Statement {
 
     @Override
     public void validateSemantics() throws GranitaException {
-        super.validateSemantics();
-        Type t = findInSymbolTable(this.id);
+        super.validateSemantics();        
+        SymbolTableValue val = SymbolTableTree.getInstance().lookupFunction(id);
+        Function f;
+        if (val == null) {
+            ErrorHandler.handle("no such method '" + id + "': line " 
+                    + this.getLine());
+            return;
+        } else {
+            f = (Function) val;
+        }
+        Type t = f.getType();
         if (t == null) {
             ErrorHandler.handle("undefined method " + id + ": line " + line);
-        } else {            
-            Function f = (Function) SymbolTableTree.getInstance().lookupFunction(id);
+        } else {
             if (params.size() != f.getParameters().size()) {
                 ErrorHandler.handle("actual and formal argument list differ in length "
                         + ": line " + this.getLine());
             }
-            int min = params.size()<f.getParameters().size()? params.size():f.getParameters().size();
+            int min = params.size()<f.getParameters().size()?
+                    params.size():f.getParameters().size();
             for (int i = 0; i < min; i++) {
                 Expression ex = params.get(i);
                 Type ret = ex.validateSemantics();
@@ -72,23 +83,26 @@ public class MethodCallStatement extends Statement {
         }
     }
 
-    private Type findInSymbolTable(String name) {
-        Function f = (Function) SymbolTableTree.getInstance().lookupFunction(name);
-        if (f != null) {
-            return f.getType();
-        }
-        return null;
-    }
-
     @Override
-    public void execute() throws GranitaException {
+    public void execute() throws GranitaException {        
         Function f = (Function) SymbolTableTree.getInstance().lookupFunction(this.id);
-        for (Expression arg : params) {
-            Type t = f.getParameters().get(0).getType();
-            t.setValue(arg.evaluate());
-        }
         Function AR = f.getCopy();
+        
+        int i = 0;
+        for (Expression arg : params) {
+            Type t = AR.getParameters().get(i).getType();
+            Object param = arg.evaluate();
+            t.setValue(param);
+            String varName = AR.getParameters().get(i).getVarName();
+            Variable v = AR.getBlock().getVariable(varName);
+            v.getType().setValue(param);
+            
+            i = i + 1;
+        }
         Interpreter.getInstance().register(AR);
-        AR.getBlock().execute();
+        BlockStatement toRun = AR.getBlock().getCopy();
+        toRun.execute();
+        Interpreter.getInstance().popFunction();
+        Interpreter.getInstance().setReturnReached(false);
     }
 }
