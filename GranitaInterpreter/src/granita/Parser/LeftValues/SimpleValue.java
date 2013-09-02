@@ -92,4 +92,10 @@ public class SimpleValue extends LeftValue {
         Type t = val.getType();
         return t.getValue();
     }
+
+    @Override
+    public Type getLocation() {
+        Variable var = Interpreter.getInstance().getVariable(id);
+        return var.getType();
+    }
 }

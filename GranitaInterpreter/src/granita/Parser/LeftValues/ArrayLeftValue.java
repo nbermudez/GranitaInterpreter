@@ -9,10 +9,14 @@ import granita.Parser.Expressions.LitInt;
 import granita.Semantic.SymbolTable.ArrayVariable;
 import granita.Semantic.SymbolTable.SymbolTableTree;
 import granita.Semantic.SymbolTable.SymbolTableValue;
+import granita.Semantic.SymbolTable.Variable;
 import granita.Semantic.Types.IntType;
 import granita.Semantic.Types.Type;
 import granitainterpreter.ErrorHandler;
 import granitainterpreter.GranitaException;
+import granitainterpreter.Interpreter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -22,6 +26,7 @@ public class ArrayLeftValue extends LeftValue {
 
     String id;
     Expression index;
+    int calculatedIndex = -1;
 
     public ArrayLeftValue(int scopeId, int line) {
         super(scopeId, line);
@@ -95,10 +100,28 @@ public class ArrayLeftValue extends LeftValue {
     @Override
     public Object evaluate() throws GranitaException {
         ArrayVariable value = (ArrayVariable) SymbolTableTree.getInstance().lookupFromCurrent(id);
-        Integer i = (Integer) index.evaluate();
-        if (i >= value.getSize().getValue()) {
+        if (calculatedIndex == -1) {
+            calculatedIndex = (Integer) index.evaluate();
+        }
+        if (calculatedIndex >= value.getSize().getValue()) {
             ErrorHandler.handleFatalError("index out of bound: line " + this.getLine());
         }
-        return value.getItems()[i].getValue();
+        Type[] items = value.getItems();
+        Type item = items[calculatedIndex];
+        return item.getValue();
+    }
+
+    @Override
+    public Type getLocation() {
+        try {
+            Variable var = Interpreter.getInstance().getVariable(id);
+            ArrayVariable arrVar = (ArrayVariable) var;
+            //if (calculatedIndex == -1) {
+                calculatedIndex = (Integer) index.evaluate();
+            //}
+            return arrVar.getItems()[calculatedIndex];
+        } catch (GranitaException ex) {
+            return null;
+        }
     }
 }

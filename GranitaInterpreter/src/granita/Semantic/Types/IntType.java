@@ -13,6 +13,7 @@ public class IntType extends Type{
     Integer value;   
 
     public IntType() {
+        this.value = 0;
     }
 
     public IntType(Integer value) {

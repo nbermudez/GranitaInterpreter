@@ -1,4 +1,5 @@
 class testScopes {
+	int arr[10];
 	void main(){
 		int x;
 		x = 1;
@@ -8,5 +9,25 @@ class testScopes {
 			y = 2;
 			print x+y, "\n";
 		}print x, "\n";
+		print "---------------------------\n";
+		print "testing print de arreglos\n";
+		arr[0] = 10;
+		arr[1] = -3;
+		arr[2] = arr[0] - arr[1];
+		{
+		x = 0;
+		print arr[x], "\n";
+		x = x + 1;
+		print arr[x], "\n";
+		x = x + 1;
+		print arr[x], "\n";
+		x = x + 1;
+		print arr[x], "\n";
+		x = x + 1;
+		print arr[x], "\n";
+		}
+		
+		read arr[0];
+		print "despues de leer: ", arr[0], "\n";
 	}
 }

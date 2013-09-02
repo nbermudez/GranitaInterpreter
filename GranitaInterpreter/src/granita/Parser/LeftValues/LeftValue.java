@@ -5,6 +5,7 @@
 package granita.Parser.LeftValues;
 
 import granita.Parser.Expressions.Expression;
+import granita.Semantic.Types.Type;
 import granitainterpreter.GranitaException;
 
 /**
@@ -19,6 +20,7 @@ public abstract class LeftValue extends Expression {
         this.scopeId = scopeId;
     }   
     
+    public abstract Type getLocation();
     public abstract void initializeVariable();
     @Override
     public abstract Object evaluate() throws GranitaException;

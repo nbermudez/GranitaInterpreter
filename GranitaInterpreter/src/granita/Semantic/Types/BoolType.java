@@ -13,6 +13,7 @@ public class BoolType extends Type{
     Boolean value;
 
     public BoolType() {
+        this.value = false;
     }
 
     public BoolType(Boolean value) {

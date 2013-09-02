@@ -9,6 +9,7 @@ import granita.Parser.LeftValues.LeftValue;
 import granita.Semantic.SymbolTable.SymbolTableTree;
 import granita.Semantic.SymbolTable.SymbolTableValue;
 import granita.Semantic.SymbolTable.SimpleVariable;
+import granita.Semantic.SymbolTable.Variable;
 import granita.Semantic.Types.ErrorType;
 import granita.Semantic.Types.Type;
 import granitainterpreter.ErrorHandler;
@@ -77,8 +78,7 @@ public class AssignStatement extends Statement {
 
     @Override
     public void execute() throws GranitaException {
-        String id = left.toString();
-        SimpleVariable v = (SimpleVariable) Interpreter.getInstance().getVariable(id);
-        v.getType().setValue(value.evaluate());
+        Type ret = left.getLocation();
+        ret.setValue(value.evaluate());
     }
 }

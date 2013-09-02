@@ -19,6 +19,9 @@ public class ArrayVariable extends Variable {
         super(type);
         this.size = size;
         this.items = new Type[size.getValue()];
+        for (int i = 0; i < size.getValue(); i++) {
+            this.items[i] = type.getCopy();
+        }
     }
     
     public LitInt getSize() {

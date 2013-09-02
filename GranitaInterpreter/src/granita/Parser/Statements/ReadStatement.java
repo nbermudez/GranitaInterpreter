@@ -5,9 +5,17 @@
 package granita.Parser.Statements;
 
 import granita.Parser.LeftValues.LeftValue;
+import granita.Semantic.Types.BoolType;
+import granita.Semantic.Types.IntType;
+import granita.Semantic.Types.Type;
+import granitainterpreter.ErrorHandler;
 import granitainterpreter.GranitaException;
 import granitainterpreter.SemanticUtils;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -53,6 +61,26 @@ public class ReadStatement extends Statement {
             lv.validateSemantics();
         }
         SemanticUtils.getInstance().setInsideRead(false);
+    }
+
+    @Override
+    public void execute() throws GranitaException {
+        Scanner scanner = new Scanner(System.in);
+        for (LeftValue leftValue : leftValues) {
+            Type t = leftValue.getLocation();
+            try {
+                if (t instanceof IntType) {
+                    Integer readValue = scanner.nextInt();
+                    t.setValue(readValue);
+                } else if (t instanceof BoolType) {
+                    Boolean boolValue = scanner.nextBoolean();
+                    t.setValue(boolValue);
+                }
+            } catch (Exception ex) {
+                ErrorHandler.handleFatalError("incompatible types, expected "+ t
+                        + ": line " + line);
+            }
+        }
     }
     
 }

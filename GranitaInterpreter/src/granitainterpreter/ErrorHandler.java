@@ -29,7 +29,9 @@ public class ErrorHandler {
     }
     
     public static Type handleFatalError(String msg) throws GranitaException {
-        throw new GranitaException("fatal error: \n\t"+msg);
+        System.err.println("fatal error: \n\t" + msg);
+        System.exit(0);
+        return error;
     }
 
     public static void printErrors() {
