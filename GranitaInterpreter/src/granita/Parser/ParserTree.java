@@ -116,26 +116,6 @@ public class ParserTree {
         }
     }
 
-    //<editor-fold defaultstate="collapsed" desc="Scope manager, useless now">
-//    private int getLocalScopeId() {
-//        return this.scopes_d.peek();
-//    }
-//
-//    private void pushLocalScope(int top) {
-//        this.scopes_d.push(top);
-//    }
-//
-//    private void popLocalScope() {
-//        this.scopes_d.pop();
-//    }
-//
-//    private int newLocalScopeId() {
-//        int ret = this.counter_d;
-//        counter_d += 1;
-//        return ret;
-//    }
-    //</editor-fold>
-
     //<editor-fold defaultstate="collapsed" desc="Non-terminals">
     /**
      * P stands for Program. P -> class id { DECL_L }
