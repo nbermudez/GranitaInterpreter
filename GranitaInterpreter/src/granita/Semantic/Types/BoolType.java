@@ -20,6 +20,7 @@ public class BoolType extends Type{
         this.value = value;
     }
 
+    @Override
     public Boolean getValue() {
         return value;
     }

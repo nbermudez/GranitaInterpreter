@@ -4,6 +4,8 @@
  */
 package granita.Parser;
 
+import granita.Lexer.Lexer;
+import granita.Lexer.Token;
 import granita.Parser.Expressions.Add;
 import granita.Parser.Expressions.And;
 import granita.Parser.Expressions.Div;
@@ -35,8 +37,6 @@ import granita.Parser.Functions.VarDeclaration;
 import granita.Parser.LeftValues.ArrayLeftValue;
 import granita.Parser.LeftValues.LeftValue;
 import granita.Parser.LeftValues.SimpleValue;
-import granita.Lexer.Lexer;
-import granita.Lexer.Token;
 import granita.Parser.Statements.AssignStatement;
 import granita.Parser.Statements.BlockStatement;
 import granita.Parser.Statements.BreakStatement;
@@ -86,7 +86,6 @@ public class ParserTree {
     public ParserTree(Lexer lexer) {
         this.lexer = lexer;
         this.scopes_d = new Stack<Integer>();
-        pushLocalScope(newLocalScopeId());
     }
     //</editor-fold>    
 
@@ -118,23 +117,23 @@ public class ParserTree {
     }
 
     //<editor-fold defaultstate="collapsed" desc="Scope manager, useless now">
-    private int getLocalScopeId() {
-        return this.scopes_d.peek();
-    }
-
-    private void pushLocalScope(int top) {
-        this.scopes_d.push(top);
-    }
-
-    private void popLocalScope() {
-        this.scopes_d.pop();
-    }
-
-    private int newLocalScopeId() {
-        int ret = this.counter_d;
-        counter_d += 1;
-        return ret;
-    }
+//    private int getLocalScopeId() {
+//        return this.scopes_d.peek();
+//    }
+//
+//    private void pushLocalScope(int top) {
+//        this.scopes_d.push(top);
+//    }
+//
+//    private void popLocalScope() {
+//        this.scopes_d.pop();
+//    }
+//
+//    private int newLocalScopeId() {
+//        int ret = this.counter_d;
+//        counter_d += 1;
+//        return ret;
+//    }
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Non-terminals">
@@ -216,8 +215,6 @@ public class ParserTree {
                 lexer.lineNumber());
 
         match(Token.TK_LEFT_PARENTHESIS, "(");
-        int scopeId = newLocalScopeId();
-        pushLocalScope(scopeId);
 
         String paramType, paramId;
         if (is_type(currentToken)) {
@@ -227,7 +224,7 @@ public class ParserTree {
             paramId = currentToken.lexeme;
 
             ParameterDeclaration param = new ParameterDeclaration(getTypeFromText(paramType), 
-                    paramId, id, getLocalScopeId(), lexer.lineNumber());
+                    paramId, id, lexer.lineNumber());
 
             mds.addParameter(param);
 
@@ -242,7 +239,7 @@ public class ParserTree {
                     paramId = currentToken.lexeme;
 
                     param = new ParameterDeclaration(getTypeFromText(paramType), 
-                            paramId, id, getLocalScopeId(), lexer.lineNumber());
+                            paramId, id, lexer.lineNumber());
 
                     mds.addParameter(param);
 
@@ -256,7 +253,6 @@ public class ParserTree {
         match(Token.TK_RIGHT_PARENTHESIS, ")");
         mds.setBlock(BLOCK());
 
-        popLocalScope();
         return mds;
     }
 
@@ -361,7 +357,7 @@ public class ParserTree {
      */
     private BlockStatement BLOCK() throws GranitaException {
         match(Token.TK_LEFT_CURLY_BRACKET, "{");
-        BlockStatement block = new BlockStatement(getLocalScopeId(), lexer.lineNumber());
+        BlockStatement block = new BlockStatement(lexer.lineNumber());
         while (is_type(currentToken)) {
             block.addStatement(VD());
         }
@@ -396,8 +392,7 @@ public class ParserTree {
             }
             int line = lexer.lineNumber();
             match(Token.TK_SEMICOLON, ";");
-            return new VarDeclaration(getTypeFromText(type), vars, 
-                    getLocalScopeId(), line);
+            return new VarDeclaration(getTypeFromText(type), vars, line);
         }
         throw new GranitaException("Expected a variable declaration but found "
                 + currentToken.lexeme + " in line " + lexer.lineNumber());
@@ -405,12 +400,7 @@ public class ParserTree {
 
     private Statement STNT() throws GranitaException {
         if (currentToken == Token.TK_LEFT_CURLY_BRACKET) {
-            int scopeId = newLocalScopeId();
-            pushLocalScope(scopeId);
-
             Statement block = BLOCK();
-
-            popLocalScope();
             return block;
         } else if (currentToken == Token.TK_KW_CONTINUE) {
             Statement c = new ContinueStatement(insideLoop, lexer.lineNumber());
@@ -436,9 +426,6 @@ public class ParserTree {
             Statement re = new ReturnStatement(insideLoop, exp, line);
             return re;
         } else if (currentToken == Token.TK_KW_FOR) {
-            int scopeId = newLocalScopeId();
-            pushLocalScope(scopeId);
-
             ArrayList<Expression> inits = new ArrayList<Expression>();
             ArrayList<Statement> incrs = new ArrayList<Statement>();
             Expression termination;
@@ -471,12 +458,8 @@ public class ParserTree {
             insideLoop = false;
             Statement fo = new ForStatement(block, inits, termination, incrs, lexer.lineNumber());
 
-            popLocalScope();
             return fo;
         } else if (currentToken == Token.TK_KW_WHILE) {
-            int scopeId = newLocalScopeId();
-            pushLocalScope(scopeId);
-
             insideLoop = true;
             currentToken = lexer.nextToken();
             match(Token.TK_LEFT_PARENTHESIS, "(");
@@ -485,12 +468,8 @@ public class ParserTree {
             BlockStatement block = BLOCK();
             insideLoop = false;
 
-            popLocalScope();
             return new WhileStatement(condition, block, lexer.lineNumber());
         } else if (currentToken == Token.TK_KW_IF) {
-            int scopeId = newLocalScopeId();
-            pushLocalScope(scopeId);
-
             currentToken = lexer.nextToken();
             int line = lexer.lineNumber();
             match(Token.TK_LEFT_PARENTHESIS, "(");
@@ -502,7 +481,6 @@ public class ParserTree {
                 falseBlock = BLOCK();
             } else { /*Nada por el epsilon*/ }
 
-            popLocalScope();
             return new IfStatement(conditional, trueBlock, falseBlock, line);
         } else if (currentToken.equals(Token.TK_IDENTIFIER)) {
             String id = currentToken.lexeme;
@@ -530,7 +508,7 @@ public class ParserTree {
         if (currentToken == Token.TK_OP_EQ) {
             currentToken = lexer.nextToken();
 
-            LeftValue left = new SimpleValue(id, getLocalScopeId(), lexer.lineNumber());
+            LeftValue left = new SimpleValue(id, lexer.lineNumber());
             Expression value = EXPR();
 
             Statement assign = new AssignStatement(left, value, lexer.lineNumber());
@@ -545,7 +523,7 @@ public class ParserTree {
 
             Expression value = EXPR();
 
-            ArrayLeftValue left = new ArrayLeftValue(id, index, getLocalScopeId(), lexer.lineNumber());
+            ArrayLeftValue left = new ArrayLeftValue(id, index, lexer.lineNumber());
             Statement assign = new AssignStatement(left, value, lexer.lineNumber());
             return assign;
         } else {
@@ -585,9 +563,9 @@ public class ParserTree {
                 currentToken = lexer.nextToken();
                 index = EXPR();
                 match(Token.TK_RIGHT_BRACKET, "]");
-                leftValues.add(new ArrayLeftValue(id, index, getLocalScopeId(), lexer.lineNumber()));
+                leftValues.add(new ArrayLeftValue(id, index, lexer.lineNumber()));
             } else {
-                leftValues.add(new SimpleValue(id, getLocalScopeId(), lexer.lineNumber()));
+                leftValues.add(new SimpleValue(id, lexer.lineNumber()));
             }
             while (currentToken == Token.TK_COLON) {
                 currentToken = lexer.nextToken();
@@ -597,9 +575,9 @@ public class ParserTree {
                     currentToken = lexer.nextToken();
                     index = EXPR();
                     match(Token.TK_RIGHT_BRACKET, "]");
-                    leftValues.add(new ArrayLeftValue(id, index, getLocalScopeId(), lexer.lineNumber()));
+                    leftValues.add(new ArrayLeftValue(id, index, lexer.lineNumber()));
                 } else {
-                    leftValues.add(new SimpleValue(id, getLocalScopeId(), lexer.lineNumber()));
+                    leftValues.add(new SimpleValue(id, lexer.lineNumber()));
                 }
             }
             read.setLeftValues(leftValues);
@@ -657,7 +635,7 @@ public class ParserTree {
             value = new LitString(currentToken.lexeme, lexer.lineNumber());
             match(Token.TK_STRING_CONSTANT, "string constant");
         }
-        return new Argument(value, getLocalScopeId(), lexer.lineNumber());
+        return new Argument(value, lexer.lineNumber());
     }
 
     //</editor-fold>  
@@ -816,9 +794,9 @@ public class ParserTree {
                 Expression index = EXPR();
                 match(Token.TK_RIGHT_BRACKET, "]");
 
-                result = new ArrayLeftValue(id, index, getLocalScopeId(), lexer.lineNumber());
+                result = new ArrayLeftValue(id, index, lexer.lineNumber());
             } else {
-                result = new SimpleValue(id, getLocalScopeId(), lexer.lineNumber());
+                result = new SimpleValue(id, lexer.lineNumber());
             }
         } else if (is_constant(currentToken)) {
             result = CONSTANT();

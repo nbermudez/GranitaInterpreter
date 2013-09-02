@@ -80,13 +80,13 @@ public class ClassStatement extends Statement {
     @Override
     public void validateSemantics() throws GranitaException {
         //<editor-fold defaultstate="collapsed" desc="Validate fields">
-        SymbolTableNode root = SymbolTableTree.getInstance().getRoot();
+        SymbolTableNode root = SymbolTableTree.getInstance().getGlobal();
 
         for (Statement st : fieldDecls) {
             st.validateSemantics();
         }
 
-        SymbolTableTree.getInstance().setParentNode(root);
+        //SymbolTableTree.getInstance().setParentNode(root);
         //</editor-fold>        
 
         //<editor-fold defaultstate="collapsed" desc="Initialize methods">
@@ -111,7 +111,7 @@ public class ClassStatement extends Statement {
         //<editor-fold defaultstate="collapsed" desc="Validate methods">
         for (Statement statement : methodDecls) {
             main = (MethodDeclarationStatement) statement;
-            SymbolTableTree.getInstance().setCurrentNode(main.getParamsEntry());
+            //SymbolTableTree.getInstance().setCurrentNode(main.getParamsEntry());
             main.validateSemantics();
         }
         //</editor-fold>

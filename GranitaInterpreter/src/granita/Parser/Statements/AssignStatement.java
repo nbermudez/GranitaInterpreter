@@ -6,15 +6,10 @@ package granita.Parser.Statements;
 
 import granita.Parser.Expressions.Expression;
 import granita.Parser.LeftValues.LeftValue;
-import granita.Semantic.SymbolTable.SymbolTableTree;
-import granita.Semantic.SymbolTable.SymbolTableValue;
-import granita.Semantic.SymbolTable.SimpleVariable;
-import granita.Semantic.SymbolTable.Variable;
 import granita.Semantic.Types.ErrorType;
 import granita.Semantic.Types.Type;
 import granitainterpreter.ErrorHandler;
 import granitainterpreter.GranitaException;
-import granitainterpreter.Interpreter;
 import granitainterpreter.SemanticUtils;
 
 /**

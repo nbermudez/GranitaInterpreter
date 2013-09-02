@@ -8,7 +8,7 @@ import granita.Parser.Functions.ParameterDeclaration;
 import granita.Semantic.SymbolTable.Function;
 import granita.Semantic.SymbolTable.SymbolTableNode;
 import granita.Semantic.SymbolTable.SymbolTableTree;
-import granita.Semantic.SymbolTable.SymbolTableValue;
+import granita.Semantic.SymbolTable.SymbolTableEntry;
 import granita.Semantic.Types.Type;
 import granita.Semantic.Types.VoidType;
 import granitainterpreter.ErrorHandler;
@@ -98,8 +98,8 @@ public class MethodDeclarationStatement extends Statement {
     }
 
     public void initialize() throws GranitaException {
-        SymbolTableNode root = SymbolTableTree.getInstance().getRoot();
-        SymbolTableValue val = root.getFunction(identifier);
+        SymbolTableNode root = SymbolTableTree.getInstance().getGlobal();
+        SymbolTableEntry val = root.getFunction(identifier);
         if (val == null) {
             root.addFunction(identifier, new Function(type, this.block));
         } else {
@@ -107,16 +107,11 @@ public class MethodDeclarationStatement extends Statement {
                     + " line " + this.getLine());
         }
 
-        SymbolTableNode parent = SymbolTableTree.getInstance().getParentNode();
-        SymbolTableTree.getInstance().setCurrentNode(new SymbolTableNode(parent));
         SemanticUtils.getInstance().setCurrentBlock(block);
 
         for (ParameterDeclaration st : parameters) {
             st.validateSemantics();
         }
-        this.paramsEntry = SymbolTableTree.getInstance().getCurrentNode();
-
-        SymbolTableTree.getInstance().setCurrentNode(parent);
         SemanticUtils.getInstance().setCurrentBlock(block);
     }
 

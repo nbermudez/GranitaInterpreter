@@ -16,6 +16,7 @@ public class StringType extends Type {
         this.value = value;
     }
 
+    @Override
     public String getValue() {
         return value;
     }

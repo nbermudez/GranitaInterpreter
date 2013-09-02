@@ -7,14 +7,12 @@ package granita.Semantic.SymbolTable;
 import granita.Parser.Statements.BlockStatement;
 import granita.Semantic.Types.Type;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Set;
 
 /**
  *
  * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
  */
-public class Function extends SymbolTableValue {
+public class Function extends SymbolTableEntry {
     private Type type;
     //private HashMap<String, SimpleVariable> localSymbolTable;
     private ArrayList<SimpleVariable> parameters;

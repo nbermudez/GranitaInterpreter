@@ -13,11 +13,8 @@ import granitainterpreter.GranitaException;
  * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
  */
 public abstract class LeftValue extends Expression {
-    int scopeId;
-    
-    public LeftValue(int scopeId, int line) {
+    public LeftValue(int line) {
         super(line);
-        this.scopeId = scopeId;
     }   
     
     public abstract Type getLocation();

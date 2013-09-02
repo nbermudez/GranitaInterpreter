@@ -6,9 +6,8 @@ package granita.Parser.Functions;
 
 import granita.Parser.Statements.Statement;
 import granita.Semantic.SymbolTable.Function;
-import granita.Semantic.SymbolTable.SymbolTableNode;
-import granita.Semantic.SymbolTable.SymbolTableTree;
 import granita.Semantic.SymbolTable.SimpleVariable;
+import granita.Semantic.SymbolTable.SymbolTableTree;
 import granita.Semantic.Types.Type;
 import granitainterpreter.ErrorHandler;
 import granitainterpreter.GranitaException;
@@ -24,16 +23,14 @@ public class ParameterDeclaration extends Statement {
     String name, methodName;
     int scopeId;
 
-    public ParameterDeclaration(int scopeId, int line) {
+    public ParameterDeclaration(int line) {
         super(line);
-        this.scopeId = scopeId;
     }
 
     public ParameterDeclaration(Type type, String name,
-            String methodName, int scopeId, int line) {
+            String methodName, int line) {
         super(line);
         this.type = type;
-        this.scopeId = scopeId;
         this.name = name;
         this.methodName = methodName;
     }

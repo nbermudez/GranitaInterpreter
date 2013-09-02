@@ -6,8 +6,6 @@ package granita.Parser.Functions;
 
 import granita.Parser.Statements.BlockStatement;
 import granita.Parser.Statements.Statement;
-import granita.Semantic.SymbolTable.SymbolTableNode;
-import granita.Semantic.SymbolTable.SymbolTableTree;
 import granita.Semantic.SymbolTable.SimpleVariable;
 import granita.Semantic.Types.Type;
 import granitainterpreter.ErrorHandler;
@@ -22,13 +20,11 @@ import java.util.ArrayList;
 public class VarDeclaration extends Statement {
 
     Type type;
-    int scopeId;
     ArrayList<String> varNames;
 
-    public VarDeclaration(Type type, ArrayList<String> varNames, int scopeId, int line) {
+    public VarDeclaration(Type type, ArrayList<String> varNames, int line) {
         super(line);
         this.type = type;
-        this.scopeId = scopeId;
         this.varNames = varNames;
     }
 
@@ -38,14 +34,6 @@ public class VarDeclaration extends Statement {
 
     public void setType(Type type) {
         this.type = type;
-    }
-
-    public int getScopeId() {
-        return scopeId;
-    }
-
-    public void setScopeId(int scopeId) {
-        this.scopeId = scopeId;
     }
 
     public ArrayList<String> getVarNames() {

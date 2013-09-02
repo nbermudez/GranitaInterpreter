@@ -4,7 +4,6 @@
  */
 package granita.Parser.Statements;
 
-import granita.Semantic.SymbolTable.SymbolTableNode;
 import granita.Semantic.SymbolTable.SymbolTableTree;
 import granita.Semantic.SymbolTable.Variable;
 import granita.Semantic.Types.Type;
@@ -23,13 +22,11 @@ import java.util.Set;
 public class BlockStatement extends Statement {
 
     ArrayList<Statement> statements;
-    int localScope; //para el scope de las variables
     BlockStatement parentBlock = null;
     private HashMap<String, Variable> localSymbolTable;
 
-    public BlockStatement(int localScope, int line) {
+    public BlockStatement(int line) {
         super(line);
-        this.localScope = localScope;
         this.statements = new ArrayList<Statement>();
         this.localSymbolTable = new HashMap<String, Variable>();
     }
@@ -60,7 +57,7 @@ public class BlockStatement extends Statement {
             if (this.parentBlock != null){
                 return this.parentBlock.getVariable(id);
             } else {
-                return (Variable) SymbolTableTree.getInstance().getRoot().getEntry(id);
+                return (Variable) SymbolTableTree.getInstance().getGlobal().getEntry(id);
             }
         }return v;
     }
@@ -151,7 +148,7 @@ public class BlockStatement extends Statement {
     }
     
     public BlockStatement getCopy() {
-        BlockStatement block = new BlockStatement(localScope, line);
+        BlockStatement block = new BlockStatement(line);
         block.setStatements(statements);
         Set<String> keys = localSymbolTable.keySet();
         for (String name : keys) {

@@ -7,10 +7,10 @@ package granita.Parser.Statements;
 import granita.Parser.FieldItems.ArrayField;
 import granita.Parser.FieldItems.Field;
 import granita.Semantic.SymbolTable.ArrayVariable;
+import granita.Semantic.SymbolTable.SimpleVariable;
+import granita.Semantic.SymbolTable.SymbolTableEntry;
 import granita.Semantic.SymbolTable.SymbolTableNode;
 import granita.Semantic.SymbolTable.SymbolTableTree;
-import granita.Semantic.SymbolTable.SymbolTableValue;
-import granita.Semantic.SymbolTable.SimpleVariable;
 import granita.Semantic.Types.Type;
 import granitainterpreter.ErrorHandler;
 import granitainterpreter.GranitaException;
@@ -63,10 +63,10 @@ public class FieldDeclarationStatement extends Statement {
 
     @Override
     public void validateSemantics() throws GranitaException {
-        SymbolTableNode node = SymbolTableTree.getInstance().getRoot();
+        SymbolTableNode node = SymbolTableTree.getInstance().getGlobal();
 
         for (Field f : this.declarations) {
-            SymbolTableValue v = node.findInThisTable(f.getFieldName());
+            SymbolTableEntry v = node.findInThisTable(f.getFieldName());
             if (v != null) {
                 ErrorHandler.handle("already defined variable '" + f.getFieldName()
                         + "': line " + f.getLine());

@@ -18,7 +18,7 @@ import granita.Semantic.Types.IntType;
 public class Basic {
     public static void main(String args[]) {
         Function f = new Function(new BoolType(true));
-        BlockStatement block = new BlockStatement(1, 1);
+        BlockStatement block = new BlockStatement(1);
         block.addStatement(new IfStatement(1));
         block.registerVariable("test", new SimpleVariable(new IntType(), null));
         f.setBlock(block);

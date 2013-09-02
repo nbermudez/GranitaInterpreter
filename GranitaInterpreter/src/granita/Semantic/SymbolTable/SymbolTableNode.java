@@ -13,20 +13,20 @@ import java.util.HashMap;
 public class SymbolTableNode {
 
     private SymbolTableNode parent;
-    private HashMap<String, SymbolTableValue> table;
+    private HashMap<String, SymbolTableEntry> table;
     private HashMap<String, Function> functions;
 
     public SymbolTableNode(SymbolTableNode parent) {
         this.parent = parent;
-        this.table = new HashMap<String, SymbolTableValue>();
+        this.table = new HashMap<String, SymbolTableEntry>();
         this.functions = new HashMap<String, Function>();
     }
 
-    public void addEntry(String id, SymbolTableValue value) {
+    public void addEntry(String id, SymbolTableEntry value) {
         this.table.put(id, value);
     }
 
-    public SymbolTableValue getEntry(String id) {
+    public SymbolTableEntry getEntry(String id) {
         if (this.table.containsKey(id)) {
             return this.table.get(id);
         }
@@ -37,14 +37,14 @@ public class SymbolTableNode {
         }
     }
 
-    public SymbolTableValue findInThisTable(String id) {
+    public SymbolTableEntry findInThisTable(String id) {
         if (this.table.containsKey(id)) {
             return this.table.get(id);
         }
         return null;
     }
 
-    public SymbolTableValue findInParent(String id) {
+    public SymbolTableEntry findInParent(String id) {
         if (this.parent == null) {
             return null;
         }
@@ -63,11 +63,11 @@ public class SymbolTableNode {
         this.parent = parent;
     }
 
-    public HashMap<String, SymbolTableValue> getTable() {
+    public HashMap<String, SymbolTableEntry> getTable() {
         return table;
     }
 
-    public void setTable(HashMap<String, SymbolTableValue> table) {
+    public void setTable(HashMap<String, SymbolTableEntry> table) {
         this.table = table;
     }
 

@@ -15,17 +15,13 @@ import granitainterpreter.GranitaException;
 public class Argument extends Expression {
 
     Expression value;
-    int scopeId;
-
-    public Argument(int scopeId, int line) {
+    public Argument(int line) {
         super(line);
-        this.scopeId = scopeId;
     }
 
-    public Argument(Expression value, int scopeId, int line) {
+    public Argument(Expression value, int line) {
         super(line);
         this.value = value;
-        this.scopeId = scopeId;
     }
 
     public Expression getValue() {

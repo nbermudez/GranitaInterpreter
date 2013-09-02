@@ -20,6 +20,7 @@ public class IntType extends Type{
         this.value = value;
     }
 
+    @Override
     public Integer getValue() {
         return value;
     }

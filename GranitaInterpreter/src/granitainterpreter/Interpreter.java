@@ -6,7 +6,6 @@ package granitainterpreter;
 
 import granita.Parser.Statements.BlockStatement;
 import granita.Semantic.SymbolTable.Function;
-import granita.Semantic.SymbolTable.SimpleVariable;
 import granita.Semantic.SymbolTable.Variable;
 import granita.Semantic.Types.Type;
 import java.util.Stack;

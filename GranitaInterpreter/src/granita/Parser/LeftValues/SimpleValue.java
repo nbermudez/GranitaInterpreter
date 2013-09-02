@@ -21,12 +21,12 @@ public class SimpleValue extends LeftValue {
 
     String id;
 
-    public SimpleValue(int scopeId, int line) {
-        super(scopeId, line);
+    public SimpleValue(int line) {
+        super(line);
     }
 
-    public SimpleValue(String id, int scopeId, int line) {
-        super(scopeId, line);
+    public SimpleValue(String id, int line) {
+        super(line);
         this.id = id;
     }
 
@@ -36,14 +36,6 @@ public class SimpleValue extends LeftValue {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public int getScopeId() {
-        return scopeId;
-    }
-
-    public void setScopeId(int scopeId) {
-        this.scopeId = scopeId;
     }
 
     @Override

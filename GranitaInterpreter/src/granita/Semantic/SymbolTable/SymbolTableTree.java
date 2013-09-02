@@ -11,13 +11,9 @@ package granita.Semantic.SymbolTable;
 public class SymbolTableTree {
     private static SymbolTableTree instance = null;
     private SymbolTableNode root = null;
-    private SymbolTableNode parentNode = null;
-    private SymbolTableNode currentNode = null;
     
     private SymbolTableTree(){
         this.root = new SymbolTableNode(null);
-        this.parentNode = null;
-        this.currentNode = this.root;
     }
     
     public static SymbolTableTree getInstance(){
@@ -27,36 +23,15 @@ public class SymbolTableTree {
         return instance;
     }
 
-    public SymbolTableNode getRoot() {
+    public SymbolTableNode getGlobal() {
         return root;
     }
 
-    public void setRoot(SymbolTableNode root) {
+    public void setGlobal(SymbolTableNode root) {
         this.root = root;
     }
-
-    public SymbolTableNode getParentNode() {
-        return parentNode;
-    }
-
-    public void setParentNode(SymbolTableNode parentNode) {
-        this.parentNode = parentNode;
-    }
-
-    public SymbolTableNode getCurrentNode() {
-        return currentNode;
-    }
-
-    public void setCurrentNode(SymbolTableNode currentNode) {
-        this.currentNode = currentNode;
-        this.parentNode = currentNode;
-    }
     
-    public SymbolTableValue lookupFromCurrent(String name) {
-        return this.currentNode.getEntry(name);
-    }
-    
-    public SymbolTableValue lookupFunction(String functionName) {
-        return this.currentNode.getFunction(functionName);
-    }
+    public SymbolTableEntry lookupFunction(String functionName) {
+        return this.root.getFunction(functionName);
+    }    
 }

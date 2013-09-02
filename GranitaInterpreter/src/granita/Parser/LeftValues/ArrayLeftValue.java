@@ -5,18 +5,15 @@
 package granita.Parser.LeftValues;
 
 import granita.Parser.Expressions.Expression;
-import granita.Parser.Expressions.LitInt;
 import granita.Semantic.SymbolTable.ArrayVariable;
+import granita.Semantic.SymbolTable.SymbolTableEntry;
 import granita.Semantic.SymbolTable.SymbolTableTree;
-import granita.Semantic.SymbolTable.SymbolTableValue;
 import granita.Semantic.SymbolTable.Variable;
 import granita.Semantic.Types.IntType;
 import granita.Semantic.Types.Type;
 import granitainterpreter.ErrorHandler;
 import granitainterpreter.GranitaException;
 import granitainterpreter.Interpreter;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -28,12 +25,12 @@ public class ArrayLeftValue extends LeftValue {
     Expression index;
     int calculatedIndex = -1;
 
-    public ArrayLeftValue(int scopeId, int line) {
-        super(scopeId, line);
+    public ArrayLeftValue(int line) {
+        super(line);
     }
 
-    public ArrayLeftValue(String id, Expression index, int scopeId, int line) {
-        super(scopeId, line);
+    public ArrayLeftValue(String id, Expression index, int line) {
+        super(line);
         this.id = id;
         this.index = index;
     }
@@ -53,19 +50,10 @@ public class ArrayLeftValue extends LeftValue {
     public void setIndex(Expression index) {
         this.index = index;
     }
-
-    public int getScopeId() {
-        return scopeId;
-    }
-
-    public void setScopeId(int scopeId) {
-        this.scopeId = scopeId;
-    }
-
-
+    
     @Override
     public Type validateSemantics() throws GranitaException {
-        SymbolTableValue value = SymbolTableTree.getInstance().lookupFromCurrent(id);
+        SymbolTableEntry value = SymbolTableTree.getInstance().getGlobal().getEntry(id);
         if (value == null) {
             return ErrorHandler.handle("undefined variable '" + id + "' in line "
                     + this.getLine());

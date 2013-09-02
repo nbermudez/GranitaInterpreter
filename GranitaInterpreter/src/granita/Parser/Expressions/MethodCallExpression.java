@@ -6,8 +6,8 @@ package granita.Parser.Expressions;
 
 import granita.Parser.Statements.BlockStatement;
 import granita.Semantic.SymbolTable.Function;
+import granita.Semantic.SymbolTable.SymbolTableEntry;
 import granita.Semantic.SymbolTable.SymbolTableTree;
-import granita.Semantic.SymbolTable.SymbolTableValue;
 import granita.Semantic.SymbolTable.Variable;
 import granita.Semantic.Types.Type;
 import granitainterpreter.ErrorHandler;
@@ -51,7 +51,7 @@ public class MethodCallExpression extends Expression {
 
     @Override
     public Type validateSemantics() throws GranitaException {
-        SymbolTableValue val = SymbolTableTree.getInstance().lookupFunction(id);
+        SymbolTableEntry val = SymbolTableTree.getInstance().lookupFunction(id);
         Function f;
         if (val == null) {
             return ErrorHandler.handle("no such method '" + id + "': line " 

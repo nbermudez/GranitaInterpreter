@@ -10,7 +10,6 @@ import granita.Semantic.Types.Type;
 import granitainterpreter.ErrorHandler;
 import granitainterpreter.GranitaException;
 import granitainterpreter.Interpreter;
-import granitainterpreter.SemanticUtils;
 import java.util.ArrayList;
 
 /**
