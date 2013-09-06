@@ -6,6 +6,7 @@ package granitainterpreter;
 
 import granita.Lexer.Lexer;
 import granita.Parser.ParserTree;
+import granita.Parser.Statements.ClassStatement;
 import granita.Parser.Statements.Statement;
 import java.util.ArrayList;
 
@@ -24,16 +25,16 @@ public class GranitaInterpreter {
             Lexer lexer = new Lexer(path + "program10.txt");
 
             ParserTree parser = new ParserTree(lexer);
-            ArrayList<Statement> trees = parser.parse();
+            ArrayList<ClassStatement> trees = parser.parse();
             for (Statement tree : trees) {
-                //System.out.println(tree.toString());
-                tree.validateSemantics();
+                System.out.println(tree.toString());
+                /*tree.validateSemantics();
                 if (ErrorHandler.isEmpty()) {
                     tree.execute();
                 } else {
                     ErrorHandler.printAll();
                     ErrorHandler.cleanup();
-                }
+                }*/
             }
 
         } catch (Exception ex) {

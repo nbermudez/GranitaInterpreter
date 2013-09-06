@@ -4,6 +4,8 @@
  */
 package granita.Parser.Expressions;
 
+import granita.IR.Expressions.D_Expression;
+import granita.IR.Expressions.D_LitInt;
 import granita.Semantic.Types.IntType;
 import granita.Semantic.Types.Type;
 import granitainterpreter.GranitaException;
@@ -52,5 +54,10 @@ public class LitInt extends Expression {
     @Override
     public Integer evaluate() throws GranitaException {
         return value;
+    }
+
+    @Override
+    public D_Expression getIR() {
+        return new D_LitInt(value);
     }
 }

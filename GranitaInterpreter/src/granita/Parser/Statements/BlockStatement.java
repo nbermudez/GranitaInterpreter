@@ -204,7 +204,7 @@ public class BlockStatement extends Statement {
             if (st instanceof BlockStatement) {
                 BlockStatement bl = (BlockStatement) st;
                 bl.setParentBlock(back_up);
-                back_up = this.getCopy();
+                //back_up = this.getCopy();
             } else if (st instanceof WhileStatement) {
                 WhileStatement w = (WhileStatement) st;
                 w.block.setParentBlock(back_up);

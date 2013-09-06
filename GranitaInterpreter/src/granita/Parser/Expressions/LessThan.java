@@ -4,6 +4,8 @@
  */
 package granita.Parser.Expressions;
 
+import granita.IR.Expressions.D_Expression;
+import granita.IR.Expressions.D_LessThan;
 import granita.Semantic.Types.BoolType;
 import granita.Semantic.Types.ErrorType;
 import granita.Semantic.Types.IntType;
@@ -56,5 +58,33 @@ public class LessThan extends BinaryExpression {
         Integer r = (Integer) right.evaluate();
         
         return l < r;
+    }
+
+    @Override
+    public D_Expression getIR() {
+        D_Expression LHS = left.getIR();
+        if (LHS == null) {
+            ErrorHandler.handle("undefined variable " + left.toString()
+                    + ": line " + line);
+            return null;
+        }
+        D_Expression RHS = right.getIR();
+        if (RHS == null) {
+            ErrorHandler.handle("undefined variable " + right.toString()
+                    + ": line " + line);
+            return null;
+        }
+        
+        Type rType = RHS.getExpressionType(), lType = LHS.getExpressionType();
+        if (lType instanceof IntType && rType instanceof IntType) {
+            return new D_LessThan(LHS, RHS);
+        } else if (lType instanceof ErrorType || rType instanceof ErrorType) {
+            return new D_LessThan(LHS, RHS);
+        } else {
+            ErrorHandler.handle("operator < cannot be applied to "
+                    + lType.toString() + " and " + rType.toString() 
+                    + ": line " + line);
+            return null;
+        }
     }
 }

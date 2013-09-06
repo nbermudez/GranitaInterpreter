@@ -4,6 +4,10 @@
  */
 package granita.Parser.Statements;
 
+import granita.IR.Expressions.D_Expression;
+import granita.IR.Statements.D_Block;
+import granita.IR.Statements.D_If;
+import granita.IR.Statements.D_Statement;
 import granita.Parser.Expressions.Expression;
 import granita.Semantic.Types.BoolType;
 import granita.Semantic.Types.Type;
@@ -101,5 +105,18 @@ public class IfStatement extends Statement {
         } else if (falseBlock != null) {
             falseBlock.execute();
         }
+    }
+
+    @Override
+    public D_Statement getIR() {
+        D_Expression cond = conditional.getIR();
+        D_Statement tBlock = trueBlock.getIR();
+        if (tBlock != null && tBlock instanceof D_Block) {
+            if (falseBlock != null) {
+                return new D_If(cond, (D_Block) tBlock, (D_Block) falseBlock.getIR());
+            }
+            return new D_If(cond, (D_Block) tBlock);
+        }
+        return null;
     }
 }

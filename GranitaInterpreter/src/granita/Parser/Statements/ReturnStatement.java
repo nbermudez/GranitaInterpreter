@@ -4,6 +4,9 @@
  */
 package granita.Parser.Statements;
 
+import granita.IR.Expressions.D_Expression;
+import granita.IR.Statements.D_Return;
+import granita.IR.Statements.D_Statement;
 import granita.Parser.Expressions.Expression;
 import granita.Semantic.Types.BoolType;
 import granita.Semantic.Types.ErrorType;
@@ -96,6 +99,15 @@ public class ReturnStatement extends Statement {
         } else  {
             Interpreter.getInstance().setReturnReached(true);
         }
+    }
+
+    @Override
+    public D_Statement getIR() {
+        D_Expression retExp = null;
+        if (returnExpression != null) {
+            retExp = returnExpression.getIR();
+        }
+        return new D_Return(retExp);
     }
     
 }

@@ -60,7 +60,6 @@ import granita.Semantic.Types.VoidType;
 import granitainterpreter.GranitaException;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Stack;
 
 /**
  *
@@ -73,29 +72,25 @@ public class ParserTree {
     private Lexer lexer;
     private ClassStatement currentClass;
     private boolean insideLoop = false;
-    private int counter_d = 0;
-    private Stack<Integer> scopes_d;
     //</editor-fold>    
 
     //<editor-fold defaultstate="collapsed" desc="Constructors">
     public ParserTree(String path) throws IOException {
         lexer = new Lexer(path);
-        this.scopes_d = new Stack<Integer>();
     }
 
     public ParserTree(Lexer lexer) {
         this.lexer = lexer;
-        this.scopes_d = new Stack<Integer>();
     }
     //</editor-fold>    
 
-    public ArrayList<Statement> parse() throws GranitaException {
+    public ArrayList<ClassStatement> parse() throws GranitaException {
         currentToken = lexer.nextToken();
         return statements();
     }
 
-    private ArrayList<Statement> statements() throws GranitaException {
-        ArrayList<Statement> programs = new ArrayList<Statement>();
+    private ArrayList<ClassStatement> statements() throws GranitaException {
+        ArrayList<ClassStatement> programs = new ArrayList<ClassStatement>();
         if (currentToken != Token.TK_KW_CLASS) {
             throw new GranitaException("Expected class but found " + currentToken.lexeme
                     + " in line " + this.lexer.lineNumber());
@@ -112,7 +107,7 @@ public class ParserTree {
             currentToken = lexer.nextToken();
         } else {
             throw new GranitaException("Expected " + expected + " but found " + currentToken.lexeme
-                    + " in line " + this.lexer.lineNumber());
+                    + " in line " + this.lexer.prevLine());
         }
     }
 
@@ -120,7 +115,7 @@ public class ParserTree {
     /**
      * P stands for Program. P -> class id { DECL_L }
      */
-    private Statement P() throws GranitaException {
+    private ClassStatement P() throws GranitaException {
 
         match(Token.TK_KW_CLASS, "class");
         currentClass = new ClassStatement(currentToken.lexeme, lexer.lineNumber());
@@ -523,13 +518,14 @@ public class ParserTree {
     private Statement SMC() throws GranitaException {
         if (currentToken == Token.TK_KW_PRINT) {
             currentToken = lexer.nextToken();
+            int line  = lexer.lineNumber();
             ArrayList<Argument> args = new ArrayList<Argument>();
             args.add(ARG());
             while (currentToken == Token.TK_COLON) {
                 currentToken = lexer.nextToken();
                 args.add(ARG());
             }
-            return new PrintStatement(args, lexer.lineNumber());
+            return new PrintStatement(args, line);
         } else if (currentToken == Token.TK_KW_READ) {
             currentToken = lexer.nextToken();
 
@@ -609,13 +605,14 @@ public class ParserTree {
      */
     private Argument ARG() throws GranitaException {
         Expression value;
+        int line = lexer.lineNumber();
         if (is_start_of_expr(currentToken)) {
             value = EXPR();
         } else {
             value = new LitString(currentToken.lexeme, lexer.lineNumber());
             match(Token.TK_STRING_CONSTANT, "string constant");
         }
-        return new Argument(value, lexer.lineNumber());
+        return new Argument(value, line);
     }
 
     //</editor-fold>  

@@ -4,6 +4,8 @@
  */
 package granita.Parser.LeftValues;
 
+import granita.IR.Expressions.D_Expression;
+import granita.IR.LeftValues.D_SimpleValue;
 import granita.Semantic.SymbolTable.ArrayVariable;
 import granita.Semantic.SymbolTable.SimpleVariable;
 import granita.Semantic.SymbolTable.Variable;
@@ -89,5 +91,36 @@ public class SimpleValue extends LeftValue {
     public Type getLocation() {
         Variable var = Interpreter.getInstance().getVariable(id);
         return var.getType();
+    }
+
+    @Override
+    public D_Expression getIR() {
+        Variable val = SemanticUtils.getInstance().getCurrentBlock().getVariable(id);
+        if (val == null) {
+            ErrorHandler.handle("undefined variable '" + id + "': line "
+                    + this.getLine());
+            return null;
+        } else {
+            if (SemanticUtils.getInstance().isInsidePrint() 
+                    && val instanceof ArrayVariable) {
+                ErrorHandler.handle("print can't be applied to an array "
+                        + "variable: line " + this.getLine());
+                return null;
+            }
+            if (SemanticUtils.getInstance().isInsideRead() 
+                    && val instanceof ArrayVariable) {
+                ErrorHandler.handle("read can't be applied to an array "
+                        + "variable: line " + this.getLine());
+                return null;
+            }
+            if (!SemanticUtils.getInstance().isLeftValueAsLocation() 
+                    && !val.isInitialized()) {
+                ErrorHandler.handle("variable '" + id + "' "
+                        + "must be initialized before use: line "
+                        + this.getLine());
+                return null;
+            }
+            return new D_SimpleValue(id);
+        }
     }
 }

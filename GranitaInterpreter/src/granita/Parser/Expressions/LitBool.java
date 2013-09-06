@@ -4,6 +4,8 @@
  */
 package granita.Parser.Expressions;
 
+import granita.IR.Expressions.D_Expression;
+import granita.IR.Expressions.D_LitBool;
 import granita.Semantic.Types.BoolType;
 import granita.Semantic.Types.Type;
 import granitainterpreter.GranitaException;
@@ -46,5 +48,10 @@ public class LitBool extends Expression {
     @Override
     public Boolean evaluate() throws GranitaException {
         return value;
+    }
+
+    @Override
+    public D_Expression getIR() {
+        return new D_LitBool(value);
     }
 }

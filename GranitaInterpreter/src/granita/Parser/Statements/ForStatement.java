@@ -4,6 +4,10 @@
  */
 package granita.Parser.Statements;
 
+import granita.IR.Expressions.D_Expression;
+import granita.IR.Statements.D_Block;
+import granita.IR.Statements.D_For;
+import granita.IR.Statements.D_Statement;
 import granita.Parser.Expressions.Expression;
 import granita.Semantic.Types.BoolType;
 import granita.Semantic.Types.Type;
@@ -115,4 +119,24 @@ public class ForStatement extends Statement {
             }
         }
     }    
+
+    @Override
+    public D_Statement getIR() {
+        D_Statement blk = block.getIR();
+        if (blk != null && blk instanceof D_Block) {
+            ArrayList<D_Expression> inits = new ArrayList<D_Expression>();
+            D_Expression terminate = termination.getIR();
+            ArrayList<D_Statement> incs = new ArrayList<D_Statement>();
+            
+            for (Expression exp : initializations) {
+                inits.add(exp.getIR());
+            }
+            
+            for (Statement st : increments) {
+                incs.add(st.getIR());
+            }
+            return new D_For(inits, terminate, incs, (D_Block) blk);
+        }
+        return null;
+    }
 }

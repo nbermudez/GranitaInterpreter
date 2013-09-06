@@ -4,6 +4,8 @@
  */
 package granita.Parser.Expressions;
 
+import granita.IR.Expressions.D_Expression;
+import granita.IR.Expressions.D_MethodCallExpression;
 import granita.Parser.Statements.BlockStatement;
 import granita.Semantic.SymbolTable.Function;
 import granita.Semantic.SymbolTable.SymbolTableEntry;
@@ -105,5 +107,42 @@ public class MethodCallExpression extends Expression {
         Interpreter.getInstance().popFunction();
         Interpreter.getInstance().setReturnReached(false);
         return o;
+    }
+
+    @Override
+    public D_Expression getIR() {
+        SymbolTableEntry val = SymbolTableTree.getInstance().lookupFunction(id);
+        Function f;
+        if (val == null) {
+            ErrorHandler.handle("no such method '" + id + "': line " 
+                    + this.getLine());
+            return null;
+        } else {
+            f = (Function) val;
+        }
+        Type t = f.getType();
+        if (t == null) {
+            ErrorHandler.handle("undefined method " + id + ": line " + line);
+            return null;
+        } else {
+            if (arguments.size() != f.getParameters().size()) {
+                ErrorHandler.handle("actual and formal argument list differ in length "
+                        + ": line " + this.getLine());
+            }
+            int min = arguments.size()<f.getParameters().size()?
+                    arguments.size():f.getParameters().size();
+            ArrayList<D_Expression> d_args = new ArrayList<D_Expression>();
+            for (int i = 0; i < min; i++) {
+                D_Expression ex = arguments.get(i).getIR();
+                Type ret = ex.getExpressionType();
+                Type o = f.getParameters().get(i).getType();
+                if (!o.equivalent(ret)) {
+                    ErrorHandler.handle("incompatible types in method call's arg " + i
+                            + ": line " + arguments.get(i).getLine());
+                }
+                d_args.add(ex);
+            }
+            return new D_MethodCallExpression(id, d_args);
+        }
     }
 }

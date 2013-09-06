@@ -4,6 +4,10 @@
  */
 package granita.Parser.Statements;
 
+import granita.IR.Expressions.D_Expression;
+import granita.IR.Functions.D_Argument;
+import granita.IR.Statements.D_Print;
+import granita.IR.Statements.D_Statement;
 import granita.Parser.Functions.Argument;
 import granitainterpreter.GranitaException;
 import granitainterpreter.SemanticUtils;
@@ -52,6 +56,17 @@ public class PrintStatement extends Statement {
         for (Argument argument : arguments) {
             System.out.print(argument.evaluate());
         }
+    }
+
+    @Override
+    public D_Statement getIR() {
+        ArrayList<D_Argument> args = new ArrayList<D_Argument>();
+        
+        for (Argument arg : arguments) {
+            args.add(arg.getIR());
+        }
+        
+        return new D_Print(args);
     }
     
 }

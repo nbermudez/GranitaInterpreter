@@ -4,6 +4,8 @@
  */
 package granita.Parser.Expressions;
 
+import granita.IR.Expressions.D_Expression;
+import granita.IR.Expressions.D_LitString;
 import granita.Semantic.Types.StringType;
 import granita.Semantic.Types.Type;
 import granitainterpreter.GranitaException;
@@ -30,7 +32,7 @@ public class LitString extends Expression {
     
     @Override
     public String toString() {
-        return value;
+        return "\"" + value.replace("\n", "\\n").replace("\t", "\\t") + "\"";
     }
 
     @Override
@@ -41,5 +43,10 @@ public class LitString extends Expression {
     @Override
     public String evaluate() throws GranitaException {
         return value;
+    }
+
+    @Override
+    public D_Expression getIR() {
+        return new D_LitString(value);
     }
 }

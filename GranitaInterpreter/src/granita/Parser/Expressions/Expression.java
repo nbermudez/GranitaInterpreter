@@ -4,6 +4,7 @@
  */
 package granita.Parser.Expressions;
 
+import granita.IR.Expressions.D_Expression;
 import granita.Semantic.Types.Type;
 import granitainterpreter.GranitaException;
 
@@ -29,4 +30,6 @@ public abstract class Expression {
     public abstract Type validateSemantics() throws GranitaException;
     
     public abstract Object evaluate() throws GranitaException;
+    
+    public abstract D_Expression getIR();
 }

@@ -4,6 +4,7 @@
  */
 package granita.Parser.Statements;
 
+import granita.IR.Statements.D_Statement;
 import granita.Semantic.SymbolTable.Function;
 import granita.Semantic.SymbolTable.SymbolTableNode;
 import granita.Semantic.SymbolTable.SymbolTableTree;
@@ -139,5 +140,10 @@ public class ClassStatement extends Statement {
                 break;
             }
         }
+    }
+
+    @Override
+    public D_Statement getIR() {
+        return super.getIR();
     }
 }

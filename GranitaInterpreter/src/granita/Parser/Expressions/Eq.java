@@ -4,6 +4,8 @@
  */
 package granita.Parser.Expressions;
 
+import granita.IR.Expressions.D_Eq;
+import granita.IR.Expressions.D_Expression;
 import granita.Semantic.Types.BoolType;
 import granita.Semantic.Types.ErrorType;
 import granita.Semantic.Types.IntType;
@@ -50,7 +52,8 @@ public class Eq extends BinaryExpression {
             return ErrorHandler.handle("operator == cannot be applied to "
                     + LHS.toString() + " and " + RHS.toString() 
                     + ": line " + line);
-        }        
+        }
+        //D_Expression dNode = new D_Eq(resultType, left.getIR(), right.getIR());
     }
     
     @Override
@@ -63,6 +66,35 @@ public class Eq extends BinaryExpression {
             Boolean l = (Boolean) left.evaluate();
             Boolean r = (Boolean) right.evaluate();
             return l.booleanValue() == r.booleanValue();
+        }
+    }
+    
+    @Override
+    public D_Expression getIR() {
+        D_Expression LHS = left.getIR();
+        if (LHS == null) {
+            ErrorHandler.handle("undefined variable " + left.toString()
+                    + ": line " + line);
+            return null;
+        }
+        D_Expression RHS = right.getIR();
+        if (RHS == null) {
+            ErrorHandler.handle("undefined variable " + right.toString()
+                    + ": line " + line);
+            return null;
+        }
+        
+        Type rType = RHS.getExpressionType(), lType = LHS.getExpressionType();
+        if (rType instanceof IntType && lType instanceof IntType
+                || lType instanceof BoolType && rType instanceof BoolType) {
+            return new D_Eq(lType, LHS, RHS);
+        } else if (lType instanceof ErrorType || rType instanceof ErrorType) {
+            return new D_Eq(new ErrorType(), LHS, RHS);
+        } else {
+            ErrorHandler.handle("operator == cannot be applied to "
+                    + lType.toString() + " and " + rType.toString() 
+                    + ": line " + line);
+            return null;
         }
     }
 }

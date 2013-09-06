@@ -10,8 +10,8 @@ class LlenaDeErrores {
 	void test_same_scope1(){
 		int x;
 		int y,x;
+		print x[1];
 		print x;
-		print wow;
 	}
 	
 	void test_same_scope2(int param) {

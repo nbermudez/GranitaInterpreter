@@ -4,6 +4,8 @@
  */
 package granita.Parser.Expressions;
 
+import granita.IR.Expressions.D_Expression;
+import granita.IR.Expressions.D_NotEq;
 import granita.Semantic.Types.BoolType;
 import granita.Semantic.Types.ErrorType;
 import granita.Semantic.Types.IntType;
@@ -57,5 +59,34 @@ public class NotEq extends BinaryExpression {
         Object r = right.evaluate();
         
         return !l.equals(r);
+    }
+
+    @Override
+    public D_Expression getIR() {
+        D_Expression LHS = left.getIR();
+        if (LHS == null) {
+            ErrorHandler.handle("undefined variable " + left.toString()
+                    + ": line " + line);
+            return null;
+        }
+        D_Expression RHS = right.getIR();
+        if (RHS == null) {
+            ErrorHandler.handle("undefined variable " + right.toString()
+                    + ": line " + line);
+            return null;
+        }
+        
+        Type rType = RHS.getExpressionType(), lType = LHS.getExpressionType();
+        if (rType instanceof IntType && lType instanceof IntType
+                || lType instanceof BoolType && rType instanceof BoolType) {
+            return new D_NotEq(lType, LHS, RHS);
+        } else if (lType instanceof ErrorType || rType instanceof ErrorType) {
+            return new D_NotEq(new ErrorType(), LHS, RHS);
+        } else {
+            ErrorHandler.handle("operator != cannot be applied to "
+                    + lType.toString() + " and " + rType.toString() 
+                    + ": line " + line);
+            return null;
+        }
     }
 }

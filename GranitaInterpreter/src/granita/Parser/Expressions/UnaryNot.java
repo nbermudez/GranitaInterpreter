@@ -4,8 +4,10 @@
  */
 package granita.Parser.Expressions;
 
+import granita.IR.Expressions.D_Expression;
 import granita.Semantic.Types.BoolType;
 import granita.Semantic.Types.Type;
+import granitainterpreter.ErrorHandler;
 import granitainterpreter.GranitaException;
 
 /**
@@ -46,5 +48,23 @@ public class UnaryNot extends Expression {
     public Boolean evaluate() throws GranitaException {
         Boolean r = (Boolean) value.evaluate();
         return !r;
+    }
+
+    @Override
+    public D_Expression getIR() {
+        D_Expression ret = value.getIR();
+        Type tvalue = ret.getExpressionType();
+        if (tvalue == null) {
+            ErrorHandler.handle("undefined variable " + value.toString()
+                    + ": line " + line);
+        }
+
+        if (tvalue instanceof BoolType) {
+            return ret;
+        } else {
+            ErrorHandler.handle("'not' cannot be applied to "
+                    + tvalue.toString() + ": line " + line);
+        }
+        return null;
     }
 }

@@ -4,6 +4,7 @@
  */
 package granita.Parser.Statements;
 
+import granita.IR.Statements.D_Statement;
 import granita.Semantic.Types.Type;
 import granitainterpreter.ErrorHandler;
 import granitainterpreter.GranitaException;
@@ -40,4 +41,6 @@ public abstract class Statement implements Cloneable {
     }
     
     public void execute() throws GranitaException {}
+    
+    public D_Statement getIR(){return null;}
 }

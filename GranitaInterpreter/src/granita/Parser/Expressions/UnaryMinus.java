@@ -4,8 +4,10 @@
  */
 package granita.Parser.Expressions;
 
+import granita.IR.Expressions.D_Expression;
 import granita.Semantic.Types.IntType;
 import granita.Semantic.Types.Type;
+import granitainterpreter.ErrorHandler;
 import granitainterpreter.GranitaException;
 
 /**
@@ -46,5 +48,23 @@ public class UnaryMinus extends Expression {
     public Integer evaluate() throws GranitaException {
         Integer r = (Integer) value.evaluate();
         return -r;
+    }
+
+    @Override
+    public D_Expression getIR() {
+        D_Expression ret = value.getIR();
+        Type tvalue = ret.getExpressionType();
+        if (tvalue == null) {
+            ErrorHandler.handle("undefined variable " + value.toString()
+                    + ": line " + line);
+        }
+
+        if (tvalue instanceof IntType) {
+            return ret;
+        } else {
+            ErrorHandler.handle("Operator - cannot be applied to "
+                    + tvalue.toString() + ": line " + line);
+            return null;
+        }
     }
 }

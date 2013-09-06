@@ -47,20 +47,30 @@ class testScopes {
 		arr[0] = 10;
 		arr[2] = arr[0] - arr[1];
 		{
+			arr[0] = 5;
 			x = 0;
-			print arr[x], "\n";
+			print x, ", ", arr[x], "\n";
 			x = x + 1;
-			print arr[x], "\n";
+			print x, ", ", arr[x], "\n";
 			x = x + 1;
-			print arr[x], "\n";
+			print x, ", ", arr[x], "\n";
+			if(true){}
 			x = x + 1;
-			print arr[x], "\n";
-			x = x + 1;
-			print arr[x], "\n";
-			x = x + 1;
-			print arr[x], "\n";
+			{
+				print x, ", ", arr[x], "\n";
+				x = x + 1;
+			}
+			print "x: ", x, "\n";
+			{
+				print x, ", ", arr[x], "\n";
+				{
+					x = x + 1;
+					print x, ", ", arr[x], "\n";
+				}
+			}
 		}
-		
+		print "otro arr[0]", arr[0], "\n";
+		print "antes de llamada a printArr................\n";
 		printArr();
 		
 		read arr[0];

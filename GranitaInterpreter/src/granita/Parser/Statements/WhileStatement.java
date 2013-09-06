@@ -4,6 +4,10 @@
  */
 package granita.Parser.Statements;
 
+import granita.IR.Expressions.D_Expression;
+import granita.IR.Statements.D_Block;
+import granita.IR.Statements.D_Statement;
+import granita.IR.Statements.D_While;
 import granita.Parser.Expressions.Expression;
 import granita.Semantic.Types.BoolType;
 import granita.Semantic.Types.Type;
@@ -14,26 +18,26 @@ import granitainterpreter.GranitaException;
  *
  * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
  */
-public class WhileStatement extends Statement{
-    
+public class WhileStatement extends Statement {
+
     Expression exp;
     BlockStatement block;
-    
-    public WhileStatement(int line){
+
+    public WhileStatement(int line) {
         super(line);
     }
-    
-    public WhileStatement(Expression exp, BlockStatement block, int line){
+
+    public WhileStatement(Expression exp, BlockStatement block, int line) {
         super(line);
         this.exp = exp;
         this.block = block;
     }
-    
-    public void setExpression(Expression exp){
+
+    public void setExpression(Expression exp) {
         this.exp = exp;
     }
-    
-    public void setBlock(BlockStatement block){
+
+    public void setBlock(BlockStatement block) {
         this.block = block;
     }
 
@@ -43,7 +47,7 @@ public class WhileStatement extends Statement{
         w += exp.toString();
         w += ")";
         w += block.toString();
-        
+
         return w;
     }
 
@@ -80,5 +84,14 @@ public class WhileStatement extends Statement{
             }
         }
     }
-    
+
+    @Override
+    public D_Statement getIR() {
+        D_Statement blk = block.getIR();
+        if (blk != null && blk instanceof D_Block) {
+            D_Expression centinel = exp.getIR();
+            return new D_While(centinel, (D_Block) blk);
+        }
+        return null;
+    }
 }

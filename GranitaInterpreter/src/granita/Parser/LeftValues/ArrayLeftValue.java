@@ -4,6 +4,8 @@
  */
 package granita.Parser.LeftValues;
 
+import granita.IR.Expressions.D_Expression;
+import granita.IR.LeftValues.D_ArrayLeftValue;
 import granita.Parser.Expressions.Expression;
 import granita.Semantic.SymbolTable.ArrayVariable;
 import granita.Semantic.SymbolTable.SymbolTableEntry;
@@ -106,6 +108,34 @@ public class ArrayLeftValue extends LeftValue {
             return arrVar.getItems()[calculatedIndex];
         } catch (GranitaException ex) {
             return null;
+        }
+    }
+
+    @Override
+    public D_Expression getIR() {
+        SymbolTableEntry value = SymbolTableTree.getInstance().getGlobal().getEntry(id);
+        if (value == null) {
+            ErrorHandler.handle("undefined variable '" + id + "' in line "
+                    + this.getLine());
+            return null;
+        } else {
+            if (!(value instanceof ArrayVariable)) {
+                ErrorHandler.handle("variable '" + id + "' is not an array: line "
+                        + this.getLine());
+                return null;
+            } else {
+                ArrayVariable array = (ArrayVariable) value;
+                D_Expression arrIndex = this.index.getIR();
+                Type it = arrIndex.getExpressionType();
+
+                if (!it.equivalent(new IntType())) {
+                    ErrorHandler.handle("array index must be int: line "
+                            + this.getLine());
+                    return null;
+                }
+                array.getType().setValue(it.getValue());
+                return new D_ArrayLeftValue(arrIndex, id);
+            }
         }
     }
 }

@@ -4,6 +4,8 @@
  */
 package granita.Parser.Expressions;
 
+import granita.IR.Expressions.D_Expression;
+import granita.IR.Expressions.D_Rot;
 import granita.Semantic.Types.ErrorType;
 import granita.Semantic.Types.IntType;
 import granita.Semantic.Types.Type;
@@ -55,5 +57,33 @@ public class Rot extends BinaryExpression {
         Integer r = (Integer) right.evaluate();
         
         return Integer.rotateRight(l, r);
+    }
+
+    @Override
+    public D_Expression getIR() {
+        D_Expression LHS = left.getIR();
+        if (LHS == null) {
+            ErrorHandler.handle("undefined variable " + left.toString()
+                    + ": line " + line);
+            return null;
+        }
+        D_Expression RHS = right.getIR();
+        if (RHS == null) {
+            ErrorHandler.handle("undefined variable " + right.toString()
+                    + ": line " + line);
+            return null;
+        }
+        
+        Type rType = RHS.getExpressionType(), lType = LHS.getExpressionType();
+        if (rType instanceof IntType && lType instanceof IntType) {
+            return new D_Rot(LHS, RHS);
+        } else if (lType instanceof ErrorType || rType instanceof ErrorType) {
+            return new D_Rot(LHS, RHS);
+        } else {
+            ErrorHandler.handle("operator rot cannot be applied to "
+                    + lType.toString() + " and " + rType.toString()
+                    + ": line " + line);
+            return null;
+        }
     }
 }

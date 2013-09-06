@@ -6,6 +6,7 @@ package granitainterpreter;
 
 import granita.Parser.ParserTree;
 import granita.Lexer.Lexer;
+import granita.Parser.Statements.ClassStatement;
 import granita.Parser.Statements.Statement;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -154,7 +155,7 @@ public class MainWindow extends javax.swing.JFrame {
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
         try {
             ParserTree parser = new ParserTree(lexer);
-            ArrayList<Statement> trees = parser.parse();
+            ArrayList<ClassStatement> trees = parser.parse();
             this.compilerOutput.setText(trees.get(0).toString());
         } catch (GranitaException ex) {
             Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);

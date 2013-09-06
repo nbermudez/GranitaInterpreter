@@ -23,7 +23,7 @@ public class Lexer {
 
     //<editor-fold defaultstate="collapsed" desc="Instance Attributes">
     private final int EOF = -1;
-    private int lineNumber = 1;
+    private int lineNumber = 1, prevLine = 0;
     private RandomAccessFile memoryMappedFile = null;
     private MappedByteBuffer in = null;
     private HashMap<String, Token> keywords;
@@ -120,10 +120,14 @@ public class Lexer {
     public int lineNumber() {
         return this.lineNumber;
     }
+    
+    public int prevLine() {
+        return this.prevLine;
+    }
 
     public Token nextToken() {
         Token result = new Token(Token.TokenType.ERROR, "");
-
+        prevLine = lineNumber;
         while (true) {
             int cs = getSymbol();
             while ((cs != EOF) && (Character.isWhitespace((char) cs))) {
