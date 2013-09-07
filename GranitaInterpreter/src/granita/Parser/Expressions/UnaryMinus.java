@@ -5,8 +5,8 @@
 package granita.Parser.Expressions;
 
 import granita.IR.Expressions.D_Expression;
-import granita.Semantic.Types.IntType;
-import granita.Semantic.Types.Type;
+import granita.Types.IntType;
+import granita.Types.Type;
 import granitainterpreter.ErrorHandler;
 import granitainterpreter.GranitaException;
 
@@ -42,12 +42,6 @@ public class UnaryMinus extends Expression {
             throw new GranitaException("Operator - cannot be applied to "
                     + tvalue.toString() + ": line " + line);
         }
-    }
-
-    @Override
-    public Integer evaluate() throws GranitaException {
-        Integer r = (Integer) value.evaluate();
-        return -r;
     }
 
     @Override

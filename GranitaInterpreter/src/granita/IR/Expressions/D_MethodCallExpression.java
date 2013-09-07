@@ -5,10 +5,10 @@
 package granita.IR.Expressions;
 
 import granita.Parser.Statements.BlockStatement;
-import granita.Semantic.SymbolTable.Function;
-import granita.Semantic.SymbolTable.SymbolTableTree;
-import granita.Semantic.SymbolTable.Variable;
-import granita.Semantic.Types.Type;
+import granita.DataLayout.Function;
+import granita.SymbolTable.SymbolTableTree;
+import granita.DataLayout.Variable;
+import granita.Types.Type;
 import granitainterpreter.Interpreter;
 import java.util.ArrayList;
 

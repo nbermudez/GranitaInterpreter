@@ -26,9 +26,9 @@ public class GetIRTest {
             ParserTree parser = new ParserTree(lexer);
             ArrayList<ClassStatement> trees = parser.parse();
             for (ClassStatement tree : trees) {
-                System.out.println(tree.toString());
+                //System.out.println(tree.toString());
                 D_Program program = IntermediateRepresentation.validateAndGenerate(tree);
-                if (ErrorHandler.isEmpty() && program != null) {
+                if (ErrorHandler.isEmpty()) {
                     Interpreter.interpret(program);
                 } else {
                     ErrorHandler.printAll();

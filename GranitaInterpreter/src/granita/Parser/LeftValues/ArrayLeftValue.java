@@ -6,13 +6,14 @@ package granita.Parser.LeftValues;
 
 import granita.IR.Expressions.D_Expression;
 import granita.IR.LeftValues.D_ArrayLeftValue;
+import granita.IR.LeftValues.D_LeftValue;
 import granita.Parser.Expressions.Expression;
-import granita.Semantic.SymbolTable.ArrayVariable;
-import granita.Semantic.SymbolTable.SymbolTableEntry;
-import granita.Semantic.SymbolTable.SymbolTableTree;
-import granita.Semantic.SymbolTable.Variable;
-import granita.Semantic.Types.IntType;
-import granita.Semantic.Types.Type;
+import granita.DataLayout.ArrayVariable;
+import granita.SymbolTable.SymbolTableEntry;
+import granita.SymbolTable.SymbolTableTree;
+import granita.DataLayout.Variable;
+import granita.Types.IntType;
+import granita.Types.Type;
 import granitainterpreter.ErrorHandler;
 import granitainterpreter.GranitaException;
 import granitainterpreter.Interpreter;
@@ -52,7 +53,7 @@ public class ArrayLeftValue extends LeftValue {
     public void setIndex(Expression index) {
         this.index = index;
     }
-    
+
     @Override
     public Type validateSemantics() throws GranitaException {
         SymbolTableEntry value = SymbolTableTree.getInstance().getGlobal().getEntry(id);
@@ -84,35 +85,18 @@ public class ArrayLeftValue extends LeftValue {
 
     @Override
     public void initializeVariable() {
-        
-    }
-
-    @Override
-    public Object evaluate() throws GranitaException {
-        ArrayVariable value = (ArrayVariable) Interpreter.getInstance().getVariable(id);
-        calculatedIndex = (Integer) index.evaluate();
-        if (calculatedIndex >= value.getSize().getValue()) {
-            ErrorHandler.handleFatalError("index out of bound: line " + this.getLine());
-        }
-        Type[] items = value.getItems();
-        Type item = items[calculatedIndex];
-        return item.getValue();
     }
 
     @Override
     public Type getLocation() {
-        try {
-            Variable var = Interpreter.getInstance().getVariable(id);
-            ArrayVariable arrVar = (ArrayVariable) var;
-            calculatedIndex = (Integer) index.evaluate();
-            return arrVar.getItems()[calculatedIndex];
-        } catch (GranitaException ex) {
-            return null;
-        }
+        Variable var = Interpreter.getInstance().getVariable(id);
+        ArrayVariable arrVar = (ArrayVariable) var;
+        //calculatedIndex = (Integer) index.evaluate();
+        return arrVar.getItems()[calculatedIndex];
     }
 
     @Override
-    public D_Expression getIR() {
+    public D_LeftValue getIR() {
         SymbolTableEntry value = SymbolTableTree.getInstance().getGlobal().getEntry(id);
         if (value == null) {
             ErrorHandler.handle("undefined variable '" + id + "' in line "

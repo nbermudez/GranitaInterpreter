@@ -9,11 +9,10 @@ import granita.IR.Statements.D_Block;
 import granita.IR.Statements.D_For;
 import granita.IR.Statements.D_Statement;
 import granita.Parser.Expressions.Expression;
-import granita.Semantic.Types.BoolType;
-import granita.Semantic.Types.Type;
+import granita.Types.BoolType;
+import granita.Types.Type;
 import granitainterpreter.ErrorHandler;
 import granitainterpreter.GranitaException;
-import granitainterpreter.Interpreter;
 import java.util.ArrayList;
 
 /**
@@ -73,7 +72,7 @@ public class ForStatement extends Statement {
 
     @Override
     public void validateSemantics() throws GranitaException {
-        super.validateSemantics();
+        /*super.validateSemantics();
         for (Expression exp : initializations) {
             exp.validateSemantics();
         }
@@ -85,7 +84,7 @@ public class ForStatement extends Statement {
         for (Statement exp : increments) {
             exp.validateSemantics();
         }
-        block.validateSemantics();
+        block.validateSemantics();*/
     }
 
     @Override
@@ -94,49 +93,26 @@ public class ForStatement extends Statement {
     }
 
     @Override
-    public void execute() throws GranitaException {
-        while (true) {
-            for (Expression expression : initializations) {
-                expression.evaluate();
-            }
-            Boolean ret = (Boolean) termination.evaluate();
-            if (!ret) {
-                break;
-            }
-            Interpreter.getInstance().pushBlockToFunction(block);
-            for (Statement st : block.getStatements()) {
-                if (st instanceof ContinueStatement) {
-                    continue;
-                } else if (st instanceof BreakStatement) {
-                    break;
-                } else {
-                    st.execute();
-                }
-            }
-            Interpreter.getInstance().popBlockToFunction();
-            for (Statement st : increments) {
-                st.execute();
-            }
-        }
-    }    
-
-    @Override
     public D_Statement getIR() {
-        D_Statement blk = block.getIR();
-        if (blk != null && blk instanceof D_Block) {
-            ArrayList<D_Expression> inits = new ArrayList<D_Expression>();
-            D_Expression terminate = termination.getIR();
-            ArrayList<D_Statement> incs = new ArrayList<D_Statement>();
-            
-            for (Expression exp : initializations) {
-                inits.add(exp.getIR());
-            }
-            
-            for (Statement st : increments) {
-                incs.add(st.getIR());
-            }
-            return new D_For(inits, terminate, incs, (D_Block) blk);
+        checkForUnreachableStatement();
+        
+        ArrayList<D_Expression> inits = new ArrayList<D_Expression>();
+        for (Expression exp : initializations) {
+            inits.add(exp.getIR());
         }
-        return null;
+        
+        D_Expression terminate = termination.getIR();
+        if (!(terminate.getExpressionType() instanceof BoolType)) {
+            ErrorHandler.handle("for test expression must evaluate to bool: line "
+                    + termination.getLine());
+        }
+        
+        ArrayList<D_Statement> incs = new ArrayList<D_Statement>();
+        for (Statement st : increments) {
+            incs.add(st.getIR());
+        }
+        
+        D_Statement blk = block.getIR();
+        return new D_For(inits, terminate, incs, (D_Block) blk);
     }
 }

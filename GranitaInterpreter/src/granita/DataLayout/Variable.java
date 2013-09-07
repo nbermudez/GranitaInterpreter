@@ -2,9 +2,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package granita.Semantic.SymbolTable;
+package granita.DataLayout;
 
-import granita.Semantic.Types.Type;
+import granita.SymbolTable.SymbolTableEntry;
+import granita.Types.Type;
 
 /**
  *

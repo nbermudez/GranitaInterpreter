@@ -4,12 +4,15 @@
  */
 package granita.Parser.Statements;
 
+import granita.IR.Expressions.D_Expression;
+import granita.IR.Statements.D_MethodCall;
+import granita.IR.Statements.D_Statement;
 import granita.Parser.Expressions.Expression;
-import granita.Semantic.SymbolTable.Function;
-import granita.Semantic.SymbolTable.SymbolTableEntry;
-import granita.Semantic.SymbolTable.SymbolTableTree;
-import granita.Semantic.SymbolTable.Variable;
-import granita.Semantic.Types.Type;
+import granita.DataLayout.Function;
+import granita.SymbolTable.SymbolTableEntry;
+import granita.SymbolTable.SymbolTableTree;
+import granita.DataLayout.Variable;
+import granita.Types.Type;
 import granitainterpreter.ErrorHandler;
 import granitainterpreter.GranitaException;
 import granitainterpreter.Interpreter;
@@ -84,25 +87,39 @@ public class MethodCallStatement extends Statement {
     }
 
     @Override
-    public void execute() throws GranitaException {        
-        Function f = (Function) SymbolTableTree.getInstance().lookupFunction(this.id);
-        Function AR = f.getCopy();
-        
-        int i = 0;
-        for (Expression arg : params) {
-            Type t = AR.getParameters().get(i).getType();
-            Object param = arg.evaluate();
-            t.setValue(param);
-            String varName = AR.getParameters().get(i).getVarName();
-            Variable v = AR.getBlock().getVariable(varName);
-            v.getType().setValue(param);
-            
-            i = i + 1;
+    public D_Statement getIR() {
+        SymbolTableEntry val = SymbolTableTree.getInstance().lookupFunction(id);
+        Function f;
+        if (val == null) {
+            ErrorHandler.handle("no such method '" + id + "': line " 
+                    + this.getLine());
+            return null;
+        } else {
+            f = (Function) val;
         }
-        Interpreter.getInstance().register(AR);
-        BlockStatement toRun = AR.getBlock().getCopy();
-        toRun.execute();
-        Interpreter.getInstance().popFunction();
-        Interpreter.getInstance().setReturnReached(false);
+        Type t = f.getType();
+        if (t == null) {
+            ErrorHandler.handle("undefined method " + id + ": line " + line);
+            return null;
+        } else {
+            if (params.size() != f.getParameters().size()) {
+                ErrorHandler.handle("actual and formal argument list differ in length "
+                        + ": line " + this.getLine());
+            }
+            int min = params.size()<f.getParameters().size()?
+                    params.size():f.getParameters().size();
+            ArrayList<D_Expression> dParams = new ArrayList<D_Expression>();
+            for (int i = 0; i < min; i++) {
+                D_Expression dExp = params.get(i).getIR();
+                Type ret = dExp.getExpressionType();
+                Type o = f.getParameters().get(i).getType();
+                if (!o.equivalent(ret)) {
+                    ErrorHandler.handle("incompatible types in method call's arg " + i
+                            + ": line " + params.get(i).getLine());
+                }
+                dParams.add(dExp);
+            }
+            return new D_MethodCall(id, dParams);
+        }
     }
 }

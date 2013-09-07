@@ -5,11 +5,11 @@
 package granita.Parser.Statements;
 
 import granita.Parser.Expressions.Expression;
-import granita.Semantic.SymbolTable.SimpleVariable;
-import granita.Semantic.SymbolTable.SymbolTableEntry;
-import granita.Semantic.SymbolTable.SymbolTableNode;
-import granita.Semantic.SymbolTable.SymbolTableTree;
-import granita.Semantic.Types.Type;
+import granita.DataLayout.SimpleVariable;
+import granita.SymbolTable.SymbolTableEntry;
+import granita.SymbolTable.SymbolTableNode;
+import granita.SymbolTable.SymbolTableTree;
+import granita.Types.Type;
 import granitainterpreter.ErrorHandler;
 import granitainterpreter.GranitaException;
 
@@ -17,7 +17,7 @@ import granitainterpreter.GranitaException;
  *
  * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
  */
-public class InitializedFieldDeclarationStatement extends Statement {
+public class InitializedFieldDeclarationStatement extends DeclarationStatement {
 
     Expression initValue;
     String fieldName;
@@ -79,5 +79,10 @@ public class InitializedFieldDeclarationStatement extends Statement {
 
     public void setType(Type type) {
         this.type = type;
+    }
+
+    @Override
+    public void register() throws GranitaException {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

@@ -2,10 +2,12 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package granita.Semantic.SymbolTable;
+package granita.DataLayout;
 
+import granita.IR.Statements.D_Block;
 import granita.Parser.Statements.BlockStatement;
-import granita.Semantic.Types.Type;
+import granita.SymbolTable.SymbolTableEntry;
+import granita.Types.Type;
 import java.util.ArrayList;
 
 /**
@@ -17,6 +19,7 @@ public class Function extends SymbolTableEntry {
     //private HashMap<String, SimpleVariable> localSymbolTable;
     private ArrayList<SimpleVariable> parameters;
     private BlockStatement block;
+    private D_Block body;
     
     public Function(Type type){
         this.type = type;
@@ -67,6 +70,14 @@ public class Function extends SymbolTableEntry {
 
     public void setBlock(BlockStatement block) {
         this.block = block;
+    }
+
+    public D_Block getBody() {
+        return body;
+    }
+
+    public void setBody(D_Block body) {
+        this.body = body;
     }
     
     public Variable getVariable(String id) {

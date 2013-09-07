@@ -2,13 +2,13 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package granita.Semantic.SymbolTable;
+package granita.SymbolTable;
 
 /**
  *
  * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
  */
-public abstract class SymbolTableEntry implements Cloneable{
+public abstract class SymbolTableEntry {
     boolean initialized = false;
 
     public boolean isInitialized() {

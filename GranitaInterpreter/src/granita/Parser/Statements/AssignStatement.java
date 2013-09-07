@@ -4,10 +4,14 @@
  */
 package granita.Parser.Statements;
 
+import granita.IR.Expressions.D_Expression;
+import granita.IR.LeftValues.D_LeftValue;
+import granita.IR.Statements.D_Assign;
+import granita.IR.Statements.D_Statement;
 import granita.Parser.Expressions.Expression;
 import granita.Parser.LeftValues.LeftValue;
-import granita.Semantic.Types.ErrorType;
-import granita.Semantic.Types.Type;
+import granita.Types.ErrorType;
+import granita.Types.Type;
 import granitainterpreter.ErrorHandler;
 import granitainterpreter.GranitaException;
 import granitainterpreter.SemanticUtils;
@@ -54,7 +58,7 @@ public class AssignStatement extends Statement {
 
     @Override
     public void validateSemantics() throws GranitaException {
-        super.validateSemantics();
+        /*super.validateSemantics();
         
         SemanticUtils.getInstance().setLeftValueAsLocation(true);
         Type LHS = left.validateSemantics();
@@ -68,12 +72,35 @@ public class AssignStatement extends Statement {
                 && !LHS.equivalent(RHS)) {
             ErrorHandler.handle("cannot assign " + RHS.toString() + " to "
                     + LHS.toString() + " variable: line " + value.getLine());
-        }
+        }*/
     }
 
     @Override
     public void execute() throws GranitaException {
-        Type ret = left.getLocation();
-        ret.setValue(value.evaluate());
+        /*Type ret = left.getLocation();
+        ret.setValue(value.evaluate());*/
     }
+
+    @Override
+    public D_Statement getIR() {
+        checkForUnreachableStatement();
+        
+        SemanticUtils.getInstance().setLeftValueAsLocation(true);
+        D_LeftValue lValue = left.getIR();
+        SemanticUtils.getInstance().setLeftValueAsLocation(false);
+        D_Expression dValue = value.getIR();
+        //left.initializeVariable();
+        
+        if (lValue != null && dValue != null) {
+            Type LHS = lValue.getExpressionType(), RHS = dValue.getExpressionType();
+            if (LHS != null && RHS != null && !(LHS instanceof ErrorType)
+                    && !(RHS instanceof ErrorType) 
+                    && !LHS.equivalent(RHS)) {
+                ErrorHandler.handle("cannot assign " + RHS.toString() + " to "
+                        + LHS.toString() + " variable: line " + value.getLine());
+            }
+        }
+        return new D_Assign(lValue, dValue);
+    }
+    
 }

@@ -9,8 +9,8 @@ import granita.IR.Statements.D_Block;
 import granita.IR.Statements.D_Statement;
 import granita.IR.Statements.D_While;
 import granita.Parser.Expressions.Expression;
-import granita.Semantic.Types.BoolType;
-import granita.Semantic.Types.Type;
+import granita.Types.BoolType;
+import granita.Types.Type;
 import granitainterpreter.ErrorHandler;
 import granitainterpreter.GranitaException;
 
@@ -53,12 +53,12 @@ public class WhileStatement extends Statement {
 
     @Override
     public void validateSemantics() throws GranitaException {
-        super.validateSemantics();
+        /*super.validateSemantics();
         Type rtype = exp.validateSemantics();
         if (!(rtype instanceof BoolType)) {
             ErrorHandler.handle("while condition must evaluate to bool: line " + this.getLine());
         }
-        block.validateSemantics();
+        block.validateSemantics();*/
     }
 
     @Override
@@ -67,31 +67,13 @@ public class WhileStatement extends Statement {
     }
 
     @Override
-    public void execute() throws GranitaException {
-        while (true) {
-            Boolean ret = (Boolean) exp.evaluate();
-            if (!ret) {
-                break;
-            }
-            for (Statement st : block.getStatements()) {
-                if (st instanceof ContinueStatement) {
-                    continue;
-                } else if (st instanceof BreakStatement) {
-                    break;
-                } else {
-                    st.execute();
-                }
-            }
-        }
-    }
-
-    @Override
     public D_Statement getIR() {
-        D_Statement blk = block.getIR();
-        if (blk != null && blk instanceof D_Block) {
-            D_Expression centinel = exp.getIR();
-            return new D_While(centinel, (D_Block) blk);
+        checkForUnreachableStatement();
+        D_Expression centinel = exp.getIR();
+        if (centinel != null && !(centinel.getExpressionType() instanceof BoolType)) {
+            ErrorHandler.handle("while condition must evaluate to bool: line " + exp.getLine());
         }
-        return null;
+        D_Statement blk = block.getIR();
+        return new D_While(centinel, (D_Block) blk);
     }
 }

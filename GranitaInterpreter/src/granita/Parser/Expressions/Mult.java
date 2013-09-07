@@ -6,9 +6,9 @@ package granita.Parser.Expressions;
 
 import granita.IR.Expressions.D_Expression;
 import granita.IR.Expressions.D_Mult;
-import granita.Semantic.Types.ErrorType;
-import granita.Semantic.Types.IntType;
-import granita.Semantic.Types.Type;
+import granita.Types.ErrorType;
+import granita.Types.IntType;
+import granita.Types.Type;
 import granitainterpreter.ErrorHandler;
 import granitainterpreter.GranitaException;
 
@@ -49,14 +49,6 @@ public class Mult extends BinaryExpression {
                     + LHS.toString() + " and " + RHS.toString()
                     + ": line " + line);
         }
-    }
-    
-    @Override
-    public Integer evaluate() throws GranitaException {
-        Integer l = (Integer) left.evaluate();
-        Integer r = (Integer) right.evaluate();
-        
-        return l * r;
     }
 
     @Override

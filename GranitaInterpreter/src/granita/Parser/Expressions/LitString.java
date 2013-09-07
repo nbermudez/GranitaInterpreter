@@ -6,8 +6,8 @@ package granita.Parser.Expressions;
 
 import granita.IR.Expressions.D_Expression;
 import granita.IR.Expressions.D_LitString;
-import granita.Semantic.Types.StringType;
-import granita.Semantic.Types.Type;
+import granita.Types.StringType;
+import granita.Types.Type;
 import granitainterpreter.GranitaException;
 
 /**
@@ -38,11 +38,6 @@ public class LitString extends Expression {
     @Override
     public Type validateSemantics() throws GranitaException {
         return new StringType(value);
-    }
-
-    @Override
-    public String evaluate() throws GranitaException {
-        return value;
     }
 
     @Override

@@ -5,8 +5,8 @@
 package granita.IR.LeftValues;
 
 import granita.IR.Expressions.D_Expression;
-import granita.Semantic.SymbolTable.ArrayVariable;
-import granita.Semantic.Types.Type;
+import granita.DataLayout.ArrayVariable;
+import granita.Types.Type;
 import granitainterpreter.ErrorHandler;
 import granitainterpreter.GranitaException;
 import granitainterpreter.Interpreter;

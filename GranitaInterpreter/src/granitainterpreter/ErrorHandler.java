@@ -4,8 +4,8 @@
  */
 package granitainterpreter;
 
-import granita.Semantic.Types.ErrorType;
-import granita.Semantic.Types.Type;
+import granita.Types.ErrorType;
+import granita.Types.Type;
 import java.util.ArrayList;
 
 /**

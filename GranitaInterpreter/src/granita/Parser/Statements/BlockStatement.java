@@ -4,9 +4,11 @@
  */
 package granita.Parser.Statements;
 
-import granita.Semantic.SymbolTable.SymbolTableTree;
-import granita.Semantic.SymbolTable.Variable;
-import granita.Semantic.Types.Type;
+import granita.IR.Statements.D_Block;
+import granita.IR.Statements.D_Statement;
+import granita.SymbolTable.SymbolTableTree;
+import granita.DataLayout.Variable;
+import granita.Types.Type;
 import granitainterpreter.ErrorHandler;
 import granitainterpreter.GranitaException;
 import granitainterpreter.Interpreter;
@@ -89,7 +91,7 @@ public class BlockStatement extends Statement {
     }
 
     @Override
-    public void validateSemantics() throws GranitaException {
+    public void checkForUnreachableStatement() {
         if (SemanticUtils.getInstance().isUnreachableStatement() == 1) {
             int line2 = this.firstStatement().getLine();
             if (line2 != this.getLine()){
@@ -99,6 +101,12 @@ public class BlockStatement extends Statement {
             
             SemanticUtils.getInstance().setUnreachableStatement();
         }
+    }
+
+    @Override
+    public void validateSemantics() throws GranitaException {
+        checkForUnreachableStatement();
+        
         BlockStatement blk = SemanticUtils.getInstance().getCurrentBlock();
         BlockStatement back_up = this;
         for (Statement st : statements) {
@@ -232,6 +240,20 @@ public class BlockStatement extends Statement {
         Interpreter.getInstance().popBlockToFunction();
         
         
+    }
+
+    @Override
+    public D_Block getIR() {
+        checkForUnreachableStatement();
+        
+        ArrayList<D_Statement> dStatements = new ArrayList<D_Statement>();
+        for (Statement statement : statements) {
+            //switch dependiendo del tipo de statement.
+            dStatements.add(statement.getIR());
+        }
+        
+        SemanticUtils.getInstance().resetUnreachableStatement();
+        return new D_Block(dStatements);
     }
     
 }

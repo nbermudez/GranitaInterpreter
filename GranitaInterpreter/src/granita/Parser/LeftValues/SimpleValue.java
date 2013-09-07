@@ -5,11 +5,12 @@
 package granita.Parser.LeftValues;
 
 import granita.IR.Expressions.D_Expression;
+import granita.IR.LeftValues.D_LeftValue;
 import granita.IR.LeftValues.D_SimpleValue;
-import granita.Semantic.SymbolTable.ArrayVariable;
-import granita.Semantic.SymbolTable.SimpleVariable;
-import granita.Semantic.SymbolTable.Variable;
-import granita.Semantic.Types.Type;
+import granita.DataLayout.ArrayVariable;
+import granita.DataLayout.SimpleVariable;
+import granita.DataLayout.Variable;
+import granita.Types.Type;
 import granitainterpreter.ErrorHandler;
 import granitainterpreter.GranitaException;
 import granitainterpreter.Interpreter;
@@ -81,20 +82,13 @@ public class SimpleValue extends LeftValue {
     }
 
     @Override
-    public Object evaluate() throws GranitaException {
-        SimpleVariable val = (SimpleVariable) Interpreter.getInstance().getVariable(id);
-        Type t = val.getType();
-        return t.getValue();
-    }
-
-    @Override
     public Type getLocation() {
         Variable var = Interpreter.getInstance().getVariable(id);
         return var.getType();
     }
 
     @Override
-    public D_Expression getIR() {
+    public D_LeftValue getIR() {
         Variable val = SemanticUtils.getInstance().getCurrentBlock().getVariable(id);
         if (val == null) {
             ErrorHandler.handle("undefined variable '" + id + "': line "

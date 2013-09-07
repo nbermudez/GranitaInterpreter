@@ -4,7 +4,7 @@
  */
 package granita.IR.Expressions;
 
-import granita.Semantic.Types.ErrorType;
+import granita.Types.ErrorType;
 
 /**
  *

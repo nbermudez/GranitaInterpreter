@@ -4,9 +4,9 @@
  */
 package granita.IR.Expressions;
 
-import granita.Semantic.Types.BoolType;
-import granita.Semantic.Types.IntType;
-import granita.Semantic.Types.Type;
+import granita.Types.BoolType;
+import granita.Types.IntType;
+import granita.Types.Type;
 
 /**
  *

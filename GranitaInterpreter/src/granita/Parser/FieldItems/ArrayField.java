@@ -5,7 +5,7 @@
 package granita.Parser.FieldItems;
 
 import granita.Parser.Expressions.LitInt;
-import granita.Semantic.Types.Type;
+import granita.Types.Type;
 import granitainterpreter.ErrorHandler;
 import granitainterpreter.GranitaException;
 

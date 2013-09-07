@@ -2,56 +2,49 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package granita.Semantic.Types;
+package granita.Types;
 
 /**
  *
  * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
  */
-public class IntType extends Type{
+public class StringType extends Type {
     
-    Integer value;   
+    String value;
 
-    public IntType() {
-        this.value = 0;
-    }
-
-    public IntType(Integer value) {
+    public StringType(String value) {
         this.value = value;
     }
 
     @Override
-    public Integer getValue() {
+    public String getValue() {
         return value;
     }
 
-    public void setValue(Integer value) {
+    public void setValue(String value) {
         this.value = value;
     }
-
+    
     @Override
     public boolean equivalent(Type t) {
-        return t instanceof IntType;
+        return t instanceof StringType;
     }
 
     @Override
     public String toString() {
-        return "int";
-    }
-    
-    public static String text(){
-        return "int";
+        return "string";
     }
 
     @Override
     public void setValue(Object value) {
-        if (value instanceof Integer){
-            this.value = (Integer) value;
+        if (value instanceof String){
+            this.value = (String) value;
         }
     }
 
     @Override
     public Type getCopy() {
-        return new IntType(value);
+        return new StringType(value);
     }
+    
 }

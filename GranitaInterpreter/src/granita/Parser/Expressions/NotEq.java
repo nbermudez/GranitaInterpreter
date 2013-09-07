@@ -6,10 +6,10 @@ package granita.Parser.Expressions;
 
 import granita.IR.Expressions.D_Expression;
 import granita.IR.Expressions.D_NotEq;
-import granita.Semantic.Types.BoolType;
-import granita.Semantic.Types.ErrorType;
-import granita.Semantic.Types.IntType;
-import granita.Semantic.Types.Type;
+import granita.Types.BoolType;
+import granita.Types.ErrorType;
+import granita.Types.IntType;
+import granita.Types.Type;
 import granitainterpreter.ErrorHandler;
 import granitainterpreter.GranitaException;
 
@@ -51,14 +51,6 @@ public class NotEq extends BinaryExpression {
                     + LHS.toString() + " and " + RHS.toString()
                     + ": line " + line);
         }
-    }
-    
-    @Override
-    public Boolean evaluate() throws GranitaException {
-        Object l =  left.evaluate();
-        Object r = right.evaluate();
-        
-        return !l.equals(r);
     }
 
     @Override

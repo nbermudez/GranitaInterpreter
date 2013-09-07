@@ -6,12 +6,12 @@ package granita.Parser.Statements;
 
 import granita.Parser.FieldItems.ArrayField;
 import granita.Parser.FieldItems.Field;
-import granita.Semantic.SymbolTable.ArrayVariable;
-import granita.Semantic.SymbolTable.SimpleVariable;
-import granita.Semantic.SymbolTable.SymbolTableEntry;
-import granita.Semantic.SymbolTable.SymbolTableNode;
-import granita.Semantic.SymbolTable.SymbolTableTree;
-import granita.Semantic.Types.Type;
+import granita.DataLayout.ArrayVariable;
+import granita.DataLayout.SimpleVariable;
+import granita.SymbolTable.SymbolTableEntry;
+import granita.SymbolTable.SymbolTableNode;
+import granita.SymbolTable.SymbolTableTree;
+import granita.Types.Type;
 import granitainterpreter.ErrorHandler;
 import granitainterpreter.GranitaException;
 import java.util.ArrayList;
@@ -20,7 +20,7 @@ import java.util.ArrayList;
  *
  * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
  */
-public class FieldDeclarationStatement extends Statement {
+public class FieldDeclarationStatement extends DeclarationStatement {
 
     private ArrayList<Field> declarations;
     Type type;
@@ -63,6 +63,26 @@ public class FieldDeclarationStatement extends Statement {
 
     @Override
     public void validateSemantics() throws GranitaException {
+        SymbolTableNode node = SymbolTableTree.getInstance().getGlobal();
+
+        for (Field f : this.declarations) {
+            SymbolTableEntry v = node.findInThisTable(f.getFieldName());
+            if (v != null) {
+                ErrorHandler.handle("already defined variable '" + f.getFieldName()
+                        + "': line " + f.getLine());
+            } else {
+                if (f instanceof ArrayField) {
+                    ArrayField af = (ArrayField) f;
+                    node.addEntry(f.getFieldName(), new ArrayVariable(type, af.getSize()));
+                } else {
+                    node.addEntry(f.getFieldName(), new SimpleVariable(type, null));
+                }
+            }
+        }
+    }
+
+    @Override
+    public void register() throws GranitaException {
         SymbolTableNode node = SymbolTableTree.getInstance().getGlobal();
 
         for (Field f : this.declarations) {

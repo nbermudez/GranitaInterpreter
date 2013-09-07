@@ -4,10 +4,13 @@
  */
 package granita.Parser.Statements;
 
+import granita.IR.LeftValues.D_LeftValue;
+import granita.IR.Statements.D_Read;
+import granita.IR.Statements.D_Statement;
 import granita.Parser.LeftValues.LeftValue;
-import granita.Semantic.Types.BoolType;
-import granita.Semantic.Types.IntType;
-import granita.Semantic.Types.Type;
+import granita.Types.BoolType;
+import granita.Types.IntType;
+import granita.Types.Type;
 import granitainterpreter.ErrorHandler;
 import granitainterpreter.GranitaException;
 import granitainterpreter.SemanticUtils;
@@ -52,12 +55,12 @@ public class ReadStatement extends Statement {
 
     @Override
     public void validateSemantics() throws GranitaException {
-        super.validateSemantics();
+        /*super.validateSemantics();
         SemanticUtils.getInstance().setInsideRead(true);
         for (LeftValue lv : leftValues){
             lv.validateSemantics();
         }
-        SemanticUtils.getInstance().setInsideRead(false);
+        SemanticUtils.getInstance().setInsideRead(false);*/
     }
 
     @Override
@@ -78,6 +81,20 @@ public class ReadStatement extends Statement {
                         + ": line " + line);
             }
         }
+    }
+
+    @Override
+    public D_Statement getIR() {
+        checkForUnreachableStatement();
+        
+        ArrayList<D_LeftValue> variables = new ArrayList<D_LeftValue>();
+        SemanticUtils.getInstance().setInsideRead(true);
+        for (LeftValue lValue : this.leftValues) {
+            variables.add(lValue.getIR());
+        }
+        SemanticUtils.getInstance().setInsideRead(false);
+        
+        return new D_Read(variables);
     }
     
 }

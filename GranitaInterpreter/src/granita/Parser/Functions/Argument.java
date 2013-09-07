@@ -7,7 +7,7 @@ package granita.Parser.Functions;
 import granita.IR.Expressions.D_Expression;
 import granita.IR.Functions.D_Argument;
 import granita.Parser.Expressions.Expression;
-import granita.Semantic.Types.Type;
+import granita.Types.Type;
 import granitainterpreter.GranitaException;
 
 /**
@@ -42,11 +42,6 @@ public class Argument extends Expression {
     @Override
     public Type validateSemantics() throws GranitaException {
         return value.validateSemantics();
-    }
-
-    @Override
-    public Object evaluate() throws GranitaException {
-        return value.evaluate();
     }
 
     @Override

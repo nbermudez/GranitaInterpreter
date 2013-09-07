@@ -8,11 +8,11 @@ import granita.IR.Expressions.D_Expression;
 import granita.IR.Statements.D_Return;
 import granita.IR.Statements.D_Statement;
 import granita.Parser.Expressions.Expression;
-import granita.Semantic.Types.BoolType;
-import granita.Semantic.Types.ErrorType;
-import granita.Semantic.Types.IntType;
-import granita.Semantic.Types.Type;
-import granita.Semantic.Types.VoidType;
+import granita.Types.BoolType;
+import granita.Types.ErrorType;
+import granita.Types.IntType;
+import granita.Types.Type;
+import granita.Types.VoidType;
 import granitainterpreter.ErrorHandler;
 import granitainterpreter.GranitaException;
 import granitainterpreter.Interpreter;
@@ -53,12 +53,11 @@ public class ReturnStatement extends Statement {
 
     @Override
     public void validateSemantics() throws GranitaException {
-        super.validateSemantics();
+        /*super.validateSemantics();
         if (!SemanticUtils.getInstance().mustReturnExpression()
                 && returnExpression != null) {
             ErrorHandler.handle("cannot return a value from method whose result"
                     + " type is void: line " + returnExpression.getLine());
-            SemanticUtils.getInstance().setErrored();
         }
         if (returnExpression != null) {
             if (returnType == null) {
@@ -66,11 +65,10 @@ public class ReturnStatement extends Statement {
             }
             if (returnType instanceof VoidType) {
                 ErrorHandler.handle("return value cannot be void: line " + line);
-                SemanticUtils.getInstance().setErrored();
             }
 
         }
-        SemanticUtils.getInstance().setUnreachableStatement();
+        SemanticUtils.getInstance().setUnreachableStatement();*/
     }
 
     @Override
@@ -93,20 +91,25 @@ public class ReturnStatement extends Statement {
     }
 
     @Override
-    public void execute() throws GranitaException {
-        if (returnType instanceof BoolType || returnType instanceof IntType) {
-            Interpreter.getInstance().setReturnValue(returnExpression.evaluate());
-        } else  {
-            Interpreter.getInstance().setReturnReached(true);
-        }
-    }
-
-    @Override
     public D_Statement getIR() {
+        checkForUnreachableStatement();
+        
+        if (!SemanticUtils.getInstance().mustReturnExpression()
+                && returnExpression != null) {
+            ErrorHandler.handle("cannot return a value from method whose result"
+                    + " type is void: line " + returnExpression.getLine());
+        }
+        
         D_Expression retExp = null;
         if (returnExpression != null) {
             retExp = returnExpression.getIR();
+            
+            returnType = retExp.getExpressionType();
+            if (returnType instanceof VoidType) {
+                ErrorHandler.handle("return value cannot be void: line " + line);
+            }
         }
+        SemanticUtils.getInstance().setUnreachableStatement();
         return new D_Return(retExp);
     }
     

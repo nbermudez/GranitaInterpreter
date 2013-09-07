@@ -12,7 +12,7 @@ import granita.Parser.Statements.ClassStatement;
  */
 public class IntermediateRepresentation {
     public static D_Program validateAndGenerate(ClassStatement st) {
-        D_Program program = (D_Program) st.getIR();
+        D_Program program = new D_Program(st.getIR());
         return program;
     }
 }

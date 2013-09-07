@@ -2,10 +2,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package granita.Semantic.SymbolTable;
+package granita.DataLayout;
 
 import granita.Parser.Expressions.Expression;
-import granita.Semantic.Types.Type;
+import granita.Types.Type;
 
 /**
  *
@@ -18,7 +18,7 @@ public class SimpleVariable extends Variable {
         super(type);
         this.value = value;
         if (value != null) {
-            this.initialized = true;
+            this.setInitialized(true);
         }
         this.previousValue = value;
     }
@@ -35,7 +35,7 @@ public class SimpleVariable extends Variable {
     public SimpleVariable getCopy() {
         SimpleVariable v = new SimpleVariable(type.getCopy(), value);
         v.setVarName(varName);
-        v.setInitialized(initialized);
+        v.setInitialized(this.isInitialized());
         return v;
     }
 }

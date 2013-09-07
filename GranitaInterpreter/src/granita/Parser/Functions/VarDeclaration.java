@@ -6,8 +6,8 @@ package granita.Parser.Functions;
 
 import granita.Parser.Statements.BlockStatement;
 import granita.Parser.Statements.Statement;
-import granita.Semantic.SymbolTable.SimpleVariable;
-import granita.Semantic.Types.Type;
+import granita.DataLayout.SimpleVariable;
+import granita.Types.Type;
 import granitainterpreter.ErrorHandler;
 import granitainterpreter.GranitaException;
 import granitainterpreter.SemanticUtils;

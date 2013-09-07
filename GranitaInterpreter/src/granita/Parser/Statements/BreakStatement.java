@@ -37,15 +37,20 @@ public class BreakStatement extends Statement {
 
     @Override
     public void validateSemantics() throws GranitaException {
-        super.validateSemantics();
+        /*super.validateSemantics();
         if (!isInsideLoop) {
             ErrorHandler.handle("break statement must be inside a loop");
         }
-        SemanticUtils.getInstance().setUnreachableStatement();
+        SemanticUtils.getInstance().setUnreachableStatement();*/
     }
 
     @Override
     public D_Statement getIR() {
+        checkForUnreachableStatement();
+        if (!isInsideLoop) {
+            ErrorHandler.handle("break statement must be inside a loop");
+        }
+        SemanticUtils.getInstance().setUnreachableStatement();
         return new D_Break();
     }
 }

@@ -42,29 +42,26 @@ public class PrintStatement extends Statement {
 
     @Override
     public void validateSemantics() throws GranitaException {
-        super.validateSemantics();
+        /*super.validateSemantics();
         
         SemanticUtils.getInstance().setInsidePrint(true);
         for (Argument st : arguments){
             st.validateSemantics();
         }
-        SemanticUtils.getInstance().setInsidePrint(false);
-    }
-
-    @Override
-    public void execute() throws GranitaException {
-        for (Argument argument : arguments) {
-            System.out.print(argument.evaluate());
-        }
+        SemanticUtils.getInstance().setInsidePrint(false);*/
     }
 
     @Override
     public D_Statement getIR() {
+        checkForUnreachableStatement();
+        
         ArrayList<D_Argument> args = new ArrayList<D_Argument>();
         
+        SemanticUtils.getInstance().setInsidePrint(true);
         for (Argument arg : arguments) {
             args.add(arg.getIR());
         }
+        SemanticUtils.getInstance().setInsidePrint(false);
         
         return new D_Print(args);
     }

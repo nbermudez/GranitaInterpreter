@@ -5,10 +5,10 @@
 package granita.Parser.Functions;
 
 import granita.Parser.Statements.Statement;
-import granita.Semantic.SymbolTable.Function;
-import granita.Semantic.SymbolTable.SimpleVariable;
-import granita.Semantic.SymbolTable.SymbolTableTree;
-import granita.Semantic.Types.Type;
+import granita.DataLayout.Function;
+import granita.DataLayout.SimpleVariable;
+import granita.SymbolTable.SymbolTableTree;
+import granita.Types.Type;
 import granitainterpreter.ErrorHandler;
 import granitainterpreter.GranitaException;
 import granitainterpreter.SemanticUtils;

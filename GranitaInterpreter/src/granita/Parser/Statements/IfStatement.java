@@ -9,8 +9,8 @@ import granita.IR.Statements.D_Block;
 import granita.IR.Statements.D_If;
 import granita.IR.Statements.D_Statement;
 import granita.Parser.Expressions.Expression;
-import granita.Semantic.Types.BoolType;
-import granita.Semantic.Types.Type;
+import granita.Types.BoolType;
+import granita.Types.Type;
 import granitainterpreter.ErrorHandler;
 import granitainterpreter.GranitaException;
 import granitainterpreter.SemanticUtils;
@@ -98,18 +98,15 @@ public class IfStatement extends Statement {
     }
 
     @Override
-    public void execute() throws GranitaException {
-        Boolean ret = (Boolean) conditional.evaluate();
-        if (ret) {
-            trueBlock.execute();
-        } else if (falseBlock != null) {
-            falseBlock.execute();
-        }
-    }
-
-    @Override
     public D_Statement getIR() {
+        checkForUnreachableStatement();
+        
         D_Expression cond = conditional.getIR();
+        if (cond != null && !(cond.getExpressionType() instanceof BoolType)) {
+            ErrorHandler.handle("if condition must evaluate to bool: line "
+                    + conditional.getLine());
+        }
+        
         D_Statement tBlock = trueBlock.getIR();
         if (tBlock != null && tBlock instanceof D_Block) {
             if (falseBlock != null) {

@@ -6,9 +6,9 @@ package granita.Parser.Expressions;
 
 import granita.IR.Expressions.D_And;
 import granita.IR.Expressions.D_Expression;
-import granita.Semantic.Types.BoolType;
-import granita.Semantic.Types.ErrorType;
-import granita.Semantic.Types.Type;
+import granita.Types.BoolType;
+import granita.Types.ErrorType;
+import granita.Types.Type;
 import granitainterpreter.ErrorHandler;
 import granitainterpreter.GranitaException;
 
@@ -49,14 +49,6 @@ public class And extends BinaryExpression {
                     + LHS.toString() + " and " + RHS.toString()
                     + ": line " + line);
         }
-    }
-    
-    @Override
-    public Boolean evaluate() throws GranitaException {
-        Boolean l = (Boolean) left.evaluate();
-        Boolean r = (Boolean) right.evaluate();
-        
-        return l && r;
     }
 
     @Override

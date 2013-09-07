@@ -1,12 +1,19 @@
 class justScopes{
+	int xx;
+	bool xx;
 	void main(){
 		int x;
-		x = 0;
+		bool x;
+		vacio();
+		return;
+		xx = true;
 		{
-			print "primer x ", x, "\n";
+			print "primer x ", xx, "\n";
 			x = 10;
 			print "segundo x ", x, "\n";
 		}
 		print "tercer x ", x, "\n";
 	}
+	
+	void vacio2(){}
 }

@@ -5,7 +5,7 @@
 package granitainterpreter;
 
 import granita.Parser.Statements.BlockStatement;
-import granita.Semantic.Types.Type;
+import granita.Types.Type;
 
 /**
  *
@@ -13,7 +13,6 @@ import granita.Semantic.Types.Type;
  */
 public class SemanticUtils {
     private boolean mustReturnExpression = false;
-    private boolean errored = false;
     private int unreachableStatement = 0;
     private Type expectedReturnType = null;
     private boolean leftValueAsLocation = false;
@@ -38,15 +37,6 @@ public class SemanticUtils {
 
     public void setMustReturnExpression(boolean mustReturnExpression) {
         this.mustReturnExpression = mustReturnExpression;
-    }
-
-    public boolean isErrored() {
-        errored = !errored;
-        return !errored;
-    }
-
-    public void setErrored() {
-        this.errored = true;
     }
 
     public Type getExpectedReturnType() {

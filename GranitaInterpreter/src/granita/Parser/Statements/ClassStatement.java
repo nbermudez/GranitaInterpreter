@@ -4,11 +4,12 @@
  */
 package granita.Parser.Statements;
 
+import granita.IR.Statements.D_Block;
 import granita.IR.Statements.D_Statement;
-import granita.Semantic.SymbolTable.Function;
-import granita.Semantic.SymbolTable.SymbolTableNode;
-import granita.Semantic.SymbolTable.SymbolTableTree;
-import granita.Semantic.Types.VoidType;
+import granita.DataLayout.Function;
+import granita.SymbolTable.SymbolTableNode;
+import granita.SymbolTable.SymbolTableTree;
+import granita.Types.VoidType;
 import granitainterpreter.ErrorHandler;
 import granitainterpreter.GranitaException;
 import granitainterpreter.Interpreter;
@@ -81,7 +82,6 @@ public class ClassStatement extends Statement {
     @Override
     public void validateSemantics() throws GranitaException {
         //<editor-fold defaultstate="collapsed" desc="Validate fields">
-        SymbolTableNode root = SymbolTableTree.getInstance().getGlobal();
 
         for (Statement st : fieldDecls) {
             st.validateSemantics();
@@ -105,7 +105,7 @@ public class ClassStatement extends Statement {
                     ErrorHandler.handle("'main' method cannot have parameters ");
                 }
             }
-            m.initialize();
+            m.register();
         }
         //</editor-fold>
 
@@ -143,7 +143,49 @@ public class ClassStatement extends Statement {
     }
 
     @Override
-    public D_Statement getIR() {
-        return super.getIR();
+    public D_Block getIR() {
+        //<editor-fold defaultstate="collapsed" desc="Register fields">
+        for (Statement statement : fieldDecls) {
+            try {
+                ((DeclarationStatement) statement).register();
+            } catch (GranitaException ex) {
+                return null;
+            }
+        }
+        //</editor-fold>        
+
+        //<editor-fold defaultstate="collapsed" desc="Register methods">
+        boolean mainFound = false;
+        for (Statement statement : methodDecls) {
+            try {
+                MethodDeclarationStatement method = (MethodDeclarationStatement) statement;
+                if (method.isMain()) {
+                    mainFound = true;
+                    if (!method.getType().equivalent(new VoidType())) {
+                        ErrorHandler.handle("'main' method must be void");
+                    }
+                    if (!method.getParameters().isEmpty()) {
+                        ErrorHandler.handle("'main' method cannot have parameters ");
+                    }
+                }
+                method.register();
+            } catch (GranitaException ex) {
+                return null;
+            }
+        }
+        //</editor-fold>
+
+        if (!mainFound) {
+            ErrorHandler.handle("class must contain a method 'main'");
+            return null;
+        } else {
+            for (Statement statement : methodDecls) {
+                MethodDeclarationStatement method = (MethodDeclarationStatement) statement;
+                method.checkBody();
+            }
+
+            Function f = (Function) SymbolTableTree.getInstance().lookupFunction("main");
+            return f.getBody();
+        }
     }
 }

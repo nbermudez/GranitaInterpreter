@@ -4,13 +4,14 @@
  */
 package granita.Parser.Statements;
 
+import granita.IR.Statements.D_Block;
 import granita.Parser.Functions.ParameterDeclaration;
-import granita.Semantic.SymbolTable.Function;
-import granita.Semantic.SymbolTable.SymbolTableNode;
-import granita.Semantic.SymbolTable.SymbolTableTree;
-import granita.Semantic.SymbolTable.SymbolTableEntry;
-import granita.Semantic.Types.Type;
-import granita.Semantic.Types.VoidType;
+import granita.DataLayout.Function;
+import granita.SymbolTable.SymbolTableEntry;
+import granita.SymbolTable.SymbolTableNode;
+import granita.SymbolTable.SymbolTableTree;
+import granita.Types.Type;
+import granita.Types.VoidType;
 import granitainterpreter.ErrorHandler;
 import granitainterpreter.GranitaException;
 import granitainterpreter.SemanticUtils;
@@ -20,7 +21,7 @@ import java.util.ArrayList;
  *
  * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
  */
-public class MethodDeclarationStatement extends Statement {
+public class MethodDeclarationStatement extends DeclarationStatement {
 
     private String identifier;
     private ArrayList<ParameterDeclaration> parameters;
@@ -97,24 +98,6 @@ public class MethodDeclarationStatement extends Statement {
         return method;
     }
 
-    public void initialize() throws GranitaException {
-        SymbolTableNode root = SymbolTableTree.getInstance().getGlobal();
-        SymbolTableEntry val = root.getFunction(identifier);
-        if (val == null) {
-            root.addFunction(identifier, new Function(type, this.block));
-        } else {
-            ErrorHandler.handle("function '" + identifier + "' is already defined:"
-                    + " line " + this.getLine());
-        }
-
-        SemanticUtils.getInstance().setCurrentBlock(block);
-
-        for (ParameterDeclaration st : parameters) {
-            st.validateSemantics();
-        }
-        SemanticUtils.getInstance().setCurrentBlock(block);
-    }
-
     @Override
     public void validateSemantics() throws GranitaException {
         //<editor-fold defaultstate="collapsed" desc="Validate block">
@@ -151,6 +134,38 @@ public class MethodDeclarationStatement extends Statement {
     public void execute() throws GranitaException {
         for (Statement st : this.block.getStatements()) {
             st.execute();
+        }
+    }
+
+    @Override
+    public void register() throws GranitaException {
+        SymbolTableNode root = SymbolTableTree.getInstance().getGlobal();
+        SymbolTableEntry val = root.getFunction(identifier);
+        if (val == null) {
+            root.addFunction(identifier, new Function(type, this.block));
+        } else {
+            ErrorHandler.handle("function '" + identifier + "' is already defined:"
+                    + " line " + this.getLine());
+        }
+
+        SemanticUtils.getInstance().setCurrentBlock(block);
+
+        for (ParameterDeclaration st : parameters) {
+            st.validateSemantics();
+        }
+        SemanticUtils.getInstance().setCurrentBlock(block);
+    }
+    
+    public void checkBody() {
+        SymbolTableNode root = SymbolTableTree.getInstance().getGlobal();
+        SymbolTableEntry val = root.getFunction(identifier);
+        
+        if (val == null) {
+            ErrorHandler.handle("function '" + identifier + "' is not defined:"
+                    + " line " + this.getLine());
+        } else {
+            Function f = (Function) val;
+            f.setBody(block.getIR());
         }
     }
 }

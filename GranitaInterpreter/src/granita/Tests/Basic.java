@@ -6,10 +6,10 @@ package granita.Tests;
 
 import granita.Parser.Statements.BlockStatement;
 import granita.Parser.Statements.IfStatement;
-import granita.Semantic.SymbolTable.Function;
-import granita.Semantic.SymbolTable.SimpleVariable;
-import granita.Semantic.Types.BoolType;
-import granita.Semantic.Types.IntType;
+import granita.DataLayout.Function;
+import granita.DataLayout.SimpleVariable;
+import granita.Types.BoolType;
+import granita.Types.IntType;
 
 /**
  *

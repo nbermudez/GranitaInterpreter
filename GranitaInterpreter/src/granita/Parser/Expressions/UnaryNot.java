@@ -5,8 +5,8 @@
 package granita.Parser.Expressions;
 
 import granita.IR.Expressions.D_Expression;
-import granita.Semantic.Types.BoolType;
-import granita.Semantic.Types.Type;
+import granita.Types.BoolType;
+import granita.Types.Type;
 import granitainterpreter.ErrorHandler;
 import granitainterpreter.GranitaException;
 
@@ -42,12 +42,6 @@ public class UnaryNot extends Expression {
             throw new GranitaException("'not' cannot be applied to "
                     + tvalue.toString() + ": line " + line);
         }
-    }
-
-    @Override
-    public Boolean evaluate() throws GranitaException {
-        Boolean r = (Boolean) value.evaluate();
-        return !r;
     }
 
     @Override

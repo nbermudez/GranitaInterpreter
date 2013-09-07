@@ -4,9 +4,9 @@
  */
 package granita.Parser.LeftValues;
 
-import granita.IR.Expressions.D_Expression;
+import granita.IR.LeftValues.D_LeftValue;
 import granita.Parser.Expressions.Expression;
-import granita.Semantic.Types.Type;
+import granita.Types.Type;
 import granitainterpreter.GranitaException;
 
 /**
@@ -22,8 +22,5 @@ public abstract class LeftValue extends Expression {
     public abstract void initializeVariable();
     
     @Override
-    public abstract Object evaluate() throws GranitaException;
-    
-    @Override
-    public abstract D_Expression getIR();
+    public abstract D_LeftValue getIR();
 }
