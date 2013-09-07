@@ -6,7 +6,7 @@ package granita.Tests;
 
 import granita.IR.General.D_Program;
 import granita.IR.General.IntermediateRepresentation;
-import granita.IR.General.Interpreter;
+import granita.Interpreter.Interpreter;
 import granita.Lexer.Lexer;
 import granita.Parser.ParserTree;
 import granita.Parser.Statements.ClassStatement;

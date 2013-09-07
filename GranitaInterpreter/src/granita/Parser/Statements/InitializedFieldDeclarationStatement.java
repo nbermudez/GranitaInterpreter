@@ -38,7 +38,7 @@ public class InitializedFieldDeclarationStatement extends DeclarationStatement {
 
     @Override
     public void validateSemantics() throws GranitaException {
-        SymbolTableNode node = SymbolTableTree.getInstance().getGlobal();
+        /*SymbolTableNode node = SymbolTableTree.getInstance().getGlobal();
         Type result = this.initValue.validateSemantics();
 
         SymbolTableEntry v = node.findInThisTable(fieldName);
@@ -52,9 +52,9 @@ public class InitializedFieldDeclarationStatement extends DeclarationStatement {
         } else {
             type.setValue(result.getValue());
             if (v == null){
-                node.addEntry(fieldName, new SimpleVariable(type, initValue));
+                //node.addEntry(fieldName, new SimpleVariable(type, initValue.getIR()));
             }
-        }
+        }*/
     }
 
     public Expression getInitValue() {

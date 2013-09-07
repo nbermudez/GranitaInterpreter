@@ -4,7 +4,7 @@
  */
 package granita.DataLayout;
 
-import granita.Parser.Expressions.LitInt;
+import granita.IR.Expressions.D_LitInt;
 import granita.Types.Type;
 
 /**
@@ -12,10 +12,10 @@ import granita.Types.Type;
  * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
  */
 public class ArrayVariable extends Variable {
-    LitInt size;
+    D_LitInt size;
     Type items[];
 
-    public ArrayVariable(Type type, LitInt size) {
+    public ArrayVariable(Type type, D_LitInt size) {
         super(type);
         this.size = size;
         this.items = new Type[size.getValue()];
@@ -24,11 +24,11 @@ public class ArrayVariable extends Variable {
         }
     }
     
-    public LitInt getSize() {
+    public D_LitInt getSize() {
         return size;
     }
 
-    public void setSize(LitInt size) {
+    public void setSize(D_LitInt size) {
         this.size = size;
     }
 
@@ -38,6 +38,11 @@ public class ArrayVariable extends Variable {
 
     public void setItems(Type[] items) {
         this.items = items;
+    }
+
+    @Override
+    public String toString() {
+        return "Array of Size " + size.getValue();
     }
 
     @Override

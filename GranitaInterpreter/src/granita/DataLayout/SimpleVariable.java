@@ -4,7 +4,7 @@
  */
 package granita.DataLayout;
 
-import granita.Parser.Expressions.Expression;
+import granita.IR.Expressions.D_Expression;
 import granita.Types.Type;
 
 /**
@@ -12,9 +12,9 @@ import granita.Types.Type;
  * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
  */
 public class SimpleVariable extends Variable {
-    Expression value, previousValue;
+    D_Expression value, previousValue;
 
-    public SimpleVariable(Type type, Expression value) {
+    public SimpleVariable(Type type, D_Expression value) {
         super(type);
         this.value = value;
         if (value != null) {
@@ -23,11 +23,11 @@ public class SimpleVariable extends Variable {
         this.previousValue = value;
     }
     
-    public Expression getValue() {
+    public D_Expression getValue() {
         return value;
     }
 
-    public void setValue(Expression value) {
+    public void setValue(D_Expression value) {
         this.value = value;
     }
 

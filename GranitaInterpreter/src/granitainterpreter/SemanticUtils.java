@@ -4,6 +4,7 @@
  */
 package granitainterpreter;
 
+import granita.DataLayout.ContextStack;
 import granita.Parser.Statements.BlockStatement;
 import granita.Types.Type;
 
@@ -12,6 +13,8 @@ import granita.Types.Type;
  * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
  */
 public class SemanticUtils {
+    //<editor-fold defaultstate="collapsed" desc="Instance Attributes">
+
     private boolean mustReturnExpression = false;
     private int unreachableStatement = 0;
     private Type expectedReturnType = null;
@@ -19,13 +22,17 @@ public class SemanticUtils {
     private boolean insidePrint = false;
     private boolean insideRead = false;
     private BlockStatement currentBlock = null;
+    private ContextStack contextStack;
+    //</editor-fold>    
+
     private SemanticUtils() {
+        contextStack = new ContextStack();
     }
-    
+
     public static SemanticUtils getInstance() {
         return UtilsHolder.INSTANCE;
     }
-    
+
     private static class UtilsHolder {
 
         private static final SemanticUtils INSTANCE = new SemanticUtils();
@@ -54,11 +61,11 @@ public class SemanticUtils {
     public void setUnreachableStatement() {
         this.unreachableStatement++;
     }
-    
+
     public void unsetUnreachableStatement() {
         this.unreachableStatement--;
     }
-    
+
     public void resetUnreachableStatement() {
         this.unreachableStatement = 0;
     }
@@ -93,5 +100,13 @@ public class SemanticUtils {
 
     public void setCurrentBlock(BlockStatement currentBlock) {
         this.currentBlock = currentBlock;
+    }
+    
+    public void saveContext() {
+        this.contextStack.saveContext();
+    }
+    
+    public void loadContext() {
+        this.contextStack.loadContext();
     }
 }

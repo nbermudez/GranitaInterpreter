@@ -14,6 +14,14 @@ public class D_LitInt extends D_Expression {
     public D_LitInt(int value) {
         this.value = value;
     }
+
+    public int getValue() {
+        return value;
+    }
+
+    public void setValue(int value) {
+        this.value = value;
+    }
     
     @Override
     public Object evaluate() {

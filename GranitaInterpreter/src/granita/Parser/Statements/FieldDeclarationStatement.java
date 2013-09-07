@@ -73,7 +73,7 @@ public class FieldDeclarationStatement extends DeclarationStatement {
             } else {
                 if (f instanceof ArrayField) {
                     ArrayField af = (ArrayField) f;
-                    node.addEntry(f.getFieldName(), new ArrayVariable(type, af.getSize()));
+                    //node.addEntry(f.getFieldName(), new ArrayVariable(type, af.getSize()));
                 } else {
                     node.addEntry(f.getFieldName(), new SimpleVariable(type, null));
                 }
@@ -93,7 +93,7 @@ public class FieldDeclarationStatement extends DeclarationStatement {
             } else {
                 if (f instanceof ArrayField) {
                     ArrayField af = (ArrayField) f;
-                    node.addEntry(f.getFieldName(), new ArrayVariable(type, af.getSize()));
+                    //node.addEntry(f.getFieldName(), new ArrayVariable(type, af.getSize()));
                 } else {
                     node.addEntry(f.getFieldName(), new SimpleVariable(type, null));
                 }
