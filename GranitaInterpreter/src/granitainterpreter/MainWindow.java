@@ -132,7 +132,6 @@ public class MainWindow extends javax.swing.JFrame {
     }
     
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        // TODO add your handling code here:
         JFileChooser j = new JFileChooser();
         int res = j.showOpenDialog(this);
         
@@ -148,7 +147,6 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-        // TODO add your handling code here:
         this.compilerOutput.setText(lexer.toString());
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 

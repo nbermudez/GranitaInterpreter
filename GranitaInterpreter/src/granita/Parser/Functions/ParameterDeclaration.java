@@ -4,13 +4,12 @@
  */
 package granita.Parser.Functions;
 
-import granita.Parser.Statements.Statement;
 import granita.DataLayout.Function;
 import granita.DataLayout.SimpleVariable;
+import granita.Parser.Statements.Statement;
 import granita.SymbolTable.SymbolTableTree;
 import granita.Types.Type;
 import granitainterpreter.ErrorHandler;
-import granitainterpreter.GranitaException;
 import granitainterpreter.SemanticUtils;
 
 /**
@@ -21,7 +20,6 @@ public class ParameterDeclaration extends Statement {
 
     Type type;
     String name, methodName;
-    int scopeId;
 
     public ParameterDeclaration(int line) {
         super(line);
@@ -51,14 +49,6 @@ public class ParameterDeclaration extends Statement {
         this.name = name;
     }
 
-    public int getScopeId() {
-        return scopeId;
-    }
-
-    public void setScopeId(int scopeId) {
-        this.scopeId = scopeId;
-    }
-
     public String getMethodName() {
         return methodName;
     }
@@ -70,26 +60,6 @@ public class ParameterDeclaration extends Statement {
     @Override
     public String toString() {
         return type + " " + name;
-    }
-
-    @Override
-    public void validateSemantics() throws GranitaException {
-        //SymbolTableNode current = SymbolTableTree.getInstance().getCurrentNode();
-        
-        Function f = (Function)SymbolTableTree.getInstance().lookupFunction(methodName);
-        SimpleVariable v = new SimpleVariable(type, null);
-        v.setInitialized(true);
-        f.getParameters().add(v);
-        if (SemanticUtils.getInstance().getCurrentBlock().alreadyRegistered(name)) {
-            ErrorHandler.handle("duplicated parameter '" + name + "': line " + this.getLine());
-        } else {
-            SemanticUtils.getInstance().getCurrentBlock().registerVariable(name, v);
-        }
-        /*if (current.findInThisTable(name) != null) {
-            ErrorHandler.handle("duplicated parameter '" + name + "': line " + this.getLine());
-        } else {            
-            current.addEntry(name, v);
-        }*/
     }
     
     public void register() {        

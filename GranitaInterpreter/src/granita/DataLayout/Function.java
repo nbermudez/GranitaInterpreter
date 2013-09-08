@@ -5,7 +5,6 @@
 package granita.DataLayout;
 
 import granita.IR.Statements.D_Block;
-import granita.Parser.Statements.BlockStatement;
 import granita.SymbolTable.SymbolTableEntry;
 import granita.Types.Type;
 import java.util.ArrayList;
@@ -16,14 +15,11 @@ import java.util.ArrayList;
  */
 public class Function extends SymbolTableEntry {
     private Type type;
-    //private HashMap<String, SimpleVariable> localSymbolTable;
     private ArrayList<SimpleVariable> parameters;
-    private BlockStatement block;
     private D_Block body;
     
     public Function(Type type){
         this.type = type;
-        //this.localSymbolTable = new HashMap<String, SimpleVariable>();
         this.parameters = new ArrayList<SimpleVariable>();
     }
     
@@ -32,15 +28,8 @@ public class Function extends SymbolTableEntry {
         for (SimpleVariable simpleVariable : parameters) {
             copy.parameters.add(simpleVariable.getCopy());
         }
-        copy.setBlock(block.getCopy());
+        //copy.setBlock(body.getCopy());
         return copy;
-    }
-    
-    public Function(Type type, BlockStatement block){
-        this.type = type;
-        //this.localSymbolTable = new HashMap<String, SimpleVariable>();
-        this.parameters = new ArrayList<SimpleVariable>();
-        this.block = block;
     }
 
     public Function(Type type, ArrayList<SimpleVariable> parameters) {
@@ -64,23 +53,11 @@ public class Function extends SymbolTableEntry {
         this.parameters = parameters;
     }
 
-    public BlockStatement getBlock() {
-        return this.block;
-    }
-
-    public void setBlock(BlockStatement block) {
-        this.block = block;
-    }
-
     public D_Block getBody() {
         return body;
     }
 
     public void setBody(D_Block body) {
         this.body = body;
-    }
-    
-    public Variable getVariable(String id) {
-        return this.block.getVariable(id);
     }
 }

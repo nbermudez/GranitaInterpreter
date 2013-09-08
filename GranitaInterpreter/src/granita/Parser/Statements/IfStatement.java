@@ -20,8 +20,10 @@ import granitainterpreter.GranitaException;
  */
 public class IfStatement extends Statement {
 
+    //<editor-fold defaultstate="collapsed" desc="Instance Attributes">
     Expression conditional;
     BlockStatement trueBlock, falseBlock;
+    //</editor-fold>    
 
     //<editor-fold defaultstate="collapsed" desc="Constructors">
     public IfStatement(int line) {

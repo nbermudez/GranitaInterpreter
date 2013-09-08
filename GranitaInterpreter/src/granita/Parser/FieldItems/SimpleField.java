@@ -22,10 +22,5 @@ public class SimpleField extends Field {
     public String toString() {
         return fieldName;
     }
-
-    @Override
-    public void validateSemantics() throws GranitaException {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
     
 }

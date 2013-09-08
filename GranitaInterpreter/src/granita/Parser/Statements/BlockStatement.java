@@ -7,34 +7,30 @@ package granita.Parser.Statements;
 import granita.DataLayout.Context;
 import granita.IR.Statements.D_Block;
 import granita.IR.Statements.D_Statement;
-import granita.SymbolTable.SymbolTableTree;
-import granita.DataLayout.Variable;
 import granita.Parser.Functions.VarDeclaration;
 import granita.Types.Type;
 import granitainterpreter.ErrorHandler;
 import granitainterpreter.GranitaException;
-import granitainterpreter.Interpreter;
 import granitainterpreter.SemanticUtils;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Set;
 
 /**
  *
  * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
  */
 public class BlockStatement extends Statement {
-
+    
+    //<editor-fold defaultstate="collapsed" desc="Instance Attributes">
     ArrayList<Statement> statements;
     BlockStatement parentBlock = null;
-    private HashMap<String, Variable> localSymbolTable;
-
+    //</editor-fold>
+    
     public BlockStatement(int line) {
         super(line);
         this.statements = new ArrayList<Statement>();
-        this.localSymbolTable = new HashMap<String, Variable>();
     }
-
+    
+    //<editor-fold defaultstate="collapsed" desc="Getters and Setters">
     public ArrayList<Statement> getStatements() {
         return statements;
     }
@@ -54,26 +50,7 @@ public class BlockStatement extends Statement {
     public void setParentBlock(BlockStatement parentBlock) {
         this.parentBlock = parentBlock;
     }
-    
-    public Variable getVariable(String id) {
-        Variable v = this.localSymbolTable.get(id);
-        if (v == null) {
-            if (this.parentBlock != null){
-                return this.parentBlock.getVariable(id);
-            } else {
-                return (Variable) SymbolTableTree.getInstance().getGlobal().getEntry(id);
-            }
-        }return v;
-    }
-    
-    public boolean alreadyRegistered(String id) {
-        return localSymbolTable.containsKey(id);
-    }
-    
-    public void registerVariable(String id, Variable var) {
-        var.setVarName(id);
-        this.localSymbolTable.put(id, var);
-    }
+    //</editor-fold>    
 
     @Override
     public String toString() {
@@ -105,43 +82,6 @@ public class BlockStatement extends Statement {
         }
     }
 
-    @Override
-    public void validateSemantics() throws GranitaException {
-        checkForUnreachableStatement();
-        
-        BlockStatement blk = SemanticUtils.getInstance().getCurrentBlock();
-        BlockStatement back_up = this;
-        for (Statement st : statements) {
-            SemanticUtils.getInstance().setCurrentBlock(this);
-            if (st instanceof BlockStatement) {
-                BlockStatement bl = (BlockStatement) st;
-                bl.setParentBlock(this);
-                back_up = this.getCopy();
-            } else if (st instanceof WhileStatement) {
-                WhileStatement w = (WhileStatement) st;
-                w.block.setParentBlock(this);
-            } else if (st instanceof ForStatement) {
-                ForStatement f = (ForStatement) st;
-                f.block.setParentBlock(this);
-            } else if (st instanceof IfStatement) {
-                IfStatement ifS = (IfStatement) st;
-                ifS.trueBlock.setParentBlock(this);
-                if (ifS.falseBlock != null) {
-                    ifS.falseBlock.setParentBlock(this);
-                }
-            }
-            
-            st.validateSemantics();
-            
-            if (st instanceof BlockStatement) {
-                this.localSymbolTable = back_up.localSymbolTable;
-            }
-        }
-        SemanticUtils.getInstance().setCurrentBlock(blk);
-        SemanticUtils.getInstance().resetUnreachableStatement();
-        
-    }
-
     private Statement firstStatement() {
         Statement st;
         for (Statement statement : statements) {
@@ -155,19 +95,6 @@ public class BlockStatement extends Statement {
             }
         }
         return this;
-    }
-    
-    public BlockStatement getCopy() {
-        BlockStatement block = new BlockStatement(line);
-        block.setStatements(statements);
-        Set<String> keys = localSymbolTable.keySet();
-        for (String name : keys) {
-            block.registerVariable(name, localSymbolTable.get(name).getCopy());
-        }
-        if (this.parentBlock != null) {
-            block.parentBlock = this.parentBlock.getCopy();
-        }
-        return block;
     }
 
     @Override
@@ -207,7 +134,7 @@ public class BlockStatement extends Statement {
 
     @Override
     public void execute() throws GranitaException {
-        BlockStatement back_up = this.getCopy();
+        /*BlockStatement back_up = this.getCopy();
         Interpreter.getInstance().pushBlockToFunction(back_up);
         
         for (Statement st : statements) {
@@ -229,18 +156,18 @@ public class BlockStatement extends Statement {
                 }
             }
             st.execute();
-            /*if (st instanceof BlockStatement 
+            if (st instanceof BlockStatement 
                     || st instanceof IfStatement
                     || st instanceof WhileStatement
                     || st instanceof ForStatement) {
                 this.localSymbolTable = back_up.localSymbolTable;
-            }*/
+            }
             if (Interpreter.getInstance().returnReached()) {
                 break;
             }
         }
         Interpreter.getInstance().popBlockToFunction();
-        
+        */
         
     }
 

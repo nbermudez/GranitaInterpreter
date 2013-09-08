@@ -19,7 +19,8 @@ public class D_Block extends D_Statement {
         this.statements = statements;
         this.context = context;
     }
-
+    
+    //<editor-fold defaultstate="collapsed" desc="Getters and Setters">
     public ArrayList<D_Statement> getStatements() {
         return statements;
     }
@@ -27,6 +28,15 @@ public class D_Block extends D_Statement {
     public void setStatements(ArrayList<D_Statement> statements) {
         this.statements = statements;
     }
+    
+    public Context getContext() {
+        return context;
+    }
+
+    public void setContext(Context context) {
+        this.context = context;
+    }
+    //</editor-fold>
     
     @Override
     public void execute() {

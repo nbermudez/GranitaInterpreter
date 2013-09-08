@@ -4,12 +4,10 @@
  */
 package granita.Parser.Statements;
 
-import granita.IR.Expressions.D_Expression;
 import granita.IR.Functions.D_Argument;
 import granita.IR.Statements.D_Print;
 import granita.IR.Statements.D_Statement;
 import granita.Parser.Functions.Argument;
-import granitainterpreter.GranitaException;
 import granitainterpreter.SemanticUtils;
 import java.util.ArrayList;
 
@@ -18,8 +16,12 @@ import java.util.ArrayList;
  * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
  */
 public class PrintStatement extends Statement {
-    ArrayList<Argument> arguments;
     
+    //<editor-fold defaultstate="collapsed" desc="Instance Attributes">
+    ArrayList<Argument> arguments;
+    //</editor-fold>    
+    
+    //<editor-fold defaultstate="collapsed" desc="Constructors">
     public PrintStatement(int line) {
         super(line);
         arguments = new ArrayList<Argument>();
@@ -29,6 +31,7 @@ public class PrintStatement extends Statement {
         super(line);
         this.arguments = arguments;
     }
+    //</editor-fold>    
 
     @Override
     public String toString() {
@@ -38,17 +41,6 @@ public class PrintStatement extends Statement {
         }
         print += arguments.get(arguments.size() - 1).toString();
         return print;
-    }
-
-    @Override
-    public void validateSemantics() throws GranitaException {
-        /*super.validateSemantics();
-        
-        SemanticUtils.getInstance().setInsidePrint(true);
-        for (Argument st : arguments){
-            st.validateSemantics();
-        }
-        SemanticUtils.getInstance().setInsidePrint(false);*/
     }
 
     @Override

@@ -51,12 +51,12 @@ public class SimpleValue extends LeftValue {
             val.setInitialized(true);
         }
     }
-
+/*
     @Override
     public Type getLocation() {
         Variable var = Interpreter.getInstance().getVariable(id);
         return var.getType();
-    }
+    }*/
 
     @Override
     public D_LeftValue getIR() {

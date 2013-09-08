@@ -5,7 +5,6 @@
 package granita.Parser.Statements;
 
 import granita.IR.Expressions.D_Expression;
-import granita.IR.LeftValues.D_ArrayLeftValue;
 import granita.IR.LeftValues.D_LeftValue;
 import granita.IR.Statements.D_Assign;
 import granita.IR.Statements.D_Statement;
@@ -14,7 +13,6 @@ import granita.Parser.LeftValues.LeftValue;
 import granita.Types.ErrorType;
 import granita.Types.Type;
 import granitainterpreter.ErrorHandler;
-import granitainterpreter.GranitaException;
 import granitainterpreter.SemanticUtils;
 
 /**
@@ -23,9 +21,12 @@ import granitainterpreter.SemanticUtils;
  */
 public class AssignStatement extends Statement {
 
+    //<editor-fold defaultstate="collapsed" desc="Instance Attributes">
     LeftValue left;
     Expression value;
+    //</editor-fold>    
 
+    //<editor-fold defaultstate="collapsed" desc="Constructors">
     public AssignStatement(int line) {
         super(line);
     }
@@ -35,7 +36,9 @@ public class AssignStatement extends Statement {
         this.left = left;
         this.value = value;
     }
-
+    //</editor-fold>    
+    
+    //<editor-fold defaultstate="collapsed" desc="Getters and Setters">
     public LeftValue getLeft() {
         return left;
     }
@@ -51,35 +54,11 @@ public class AssignStatement extends Statement {
     public void setValue(Expression value) {
         this.value = value;
     }
+    //</editor-fold>    
 
     @Override
     public String toString() {
         return left.toString() + " = " + value.toString();
-    }
-
-    @Override
-    public void validateSemantics() throws GranitaException {
-        /*super.validateSemantics();
-        
-        SemanticUtils.getInstance().setLeftValueAsLocation(true);
-        Type LHS = left.validateSemantics();
-        SemanticUtils.getInstance().setLeftValueAsLocation(false);
-        left.initializeVariable();
-        
-        Type RHS = value.validateSemantics();
-
-        if (!(LHS instanceof ErrorType)
-                && !(RHS instanceof ErrorType) 
-                && !LHS.equivalent(RHS)) {
-            ErrorHandler.handle("cannot assign " + RHS.toString() + " to "
-                    + LHS.toString() + " variable: line " + value.getLine());
-        }*/
-    }
-
-    @Override
-    public void execute() throws GranitaException {
-        /*Type ret = left.getLocation();
-        ret.setValue(value.evaluate());*/
     }
 
     @Override

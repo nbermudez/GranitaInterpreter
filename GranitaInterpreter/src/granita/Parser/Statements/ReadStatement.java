@@ -8,14 +8,9 @@ import granita.IR.LeftValues.D_LeftValue;
 import granita.IR.Statements.D_Read;
 import granita.IR.Statements.D_Statement;
 import granita.Parser.LeftValues.LeftValue;
-import granita.Types.BoolType;
-import granita.Types.IntType;
-import granita.Types.Type;
-import granitainterpreter.ErrorHandler;
 import granitainterpreter.GranitaException;
 import granitainterpreter.SemanticUtils;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 /**
  *
@@ -23,8 +18,11 @@ import java.util.Scanner;
  */
 public class ReadStatement extends Statement {
     
+    //<editor-fold defaultstate="collapsed" desc="Instance Attributes">
     ArrayList<LeftValue> leftValues;
-
+    //</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="Constructors">
     public ReadStatement(int line) {
         super(line);
         leftValues = new ArrayList<LeftValue>();
@@ -34,6 +32,7 @@ public class ReadStatement extends Statement {
         super(line);
         this.leftValues = leftValues;
     }
+    //</editor-fold>    
 
     @Override
     public String toString() {
@@ -54,18 +53,8 @@ public class ReadStatement extends Statement {
     }
 
     @Override
-    public void validateSemantics() throws GranitaException {
-        /*super.validateSemantics();
-        SemanticUtils.getInstance().setInsideRead(true);
-        for (LeftValue lv : leftValues){
-            lv.validateSemantics();
-        }
-        SemanticUtils.getInstance().setInsideRead(false);*/
-    }
-
-    @Override
     public void execute() throws GranitaException {
-        Scanner scanner = new Scanner(System.in);
+        /*Scanner scanner = new Scanner(System.in);
         for (LeftValue leftValue : leftValues) {
             Type t = leftValue.getLocation();
             try {
@@ -80,7 +69,7 @@ public class ReadStatement extends Statement {
                 ErrorHandler.handleFatalError("incompatible types, expected "+ t
                         + ": line " + line);
             }
-        }
+        }*/
     }
 
     @Override

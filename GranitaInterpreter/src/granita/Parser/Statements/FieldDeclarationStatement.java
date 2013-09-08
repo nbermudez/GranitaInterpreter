@@ -4,10 +4,10 @@
  */
 package granita.Parser.Statements;
 
-import granita.Parser.FieldItems.ArrayField;
-import granita.Parser.FieldItems.Field;
 import granita.DataLayout.ArrayVariable;
 import granita.DataLayout.SimpleVariable;
+import granita.Parser.FieldItems.ArrayField;
+import granita.Parser.FieldItems.Field;
 import granita.SymbolTable.SymbolTableEntry;
 import granita.SymbolTable.SymbolTableNode;
 import granita.SymbolTable.SymbolTableTree;
@@ -35,6 +35,7 @@ public class FieldDeclarationStatement extends DeclarationStatement {
         this.declarations.add(st);
     }
 
+    //<editor-fold defaultstate="collapsed" desc="Getters and Setters">
     public ArrayList<Field> getDeclarations() {
         return declarations;
     }
@@ -50,6 +51,7 @@ public class FieldDeclarationStatement extends DeclarationStatement {
     public void setType(Type type) {
         this.type = type;
     }
+    //</editor-fold>    
 
     @Override
     public String toString() {
@@ -59,26 +61,6 @@ public class FieldDeclarationStatement extends DeclarationStatement {
         }
         fd += declarations.get(declarations.size() - 1).toString();
         return fd;
-    }
-
-    @Override
-    public void validateSemantics() throws GranitaException {
-        SymbolTableNode node = SymbolTableTree.getInstance().getGlobal();
-
-        for (Field f : this.declarations) {
-            SymbolTableEntry v = node.findInThisTable(f.getFieldName());
-            if (v != null) {
-                ErrorHandler.handle("already defined variable '" + f.getFieldName()
-                        + "': line " + f.getLine());
-            } else {
-                if (f instanceof ArrayField) {
-                    ArrayField af = (ArrayField) f;
-                    //node.addEntry(f.getFieldName(), new ArrayVariable(type, af.getSize()));
-                } else {
-                    node.addEntry(f.getFieldName(), new SimpleVariable(type, null));
-                }
-            }
-        }
     }
 
     @Override

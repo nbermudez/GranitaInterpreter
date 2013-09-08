@@ -20,9 +20,12 @@ import granitainterpreter.GranitaException;
  */
 public class WhileStatement extends Statement {
 
+    //<editor-fold defaultstate="collapsed" desc="Instance Attributes">
     Expression exp;
     BlockStatement block;
+    //</editor-fold>    
 
+    //<editor-fold defaultstate="collapsed" desc="Constructors">
     public WhileStatement(int line) {
         super(line);
     }
@@ -32,7 +35,9 @@ public class WhileStatement extends Statement {
         this.exp = exp;
         this.block = block;
     }
+    //</editor-fold>    
 
+    //<editor-fold defaultstate="collapsed" desc="Getters and Setters">
     public void setExpression(Expression exp) {
         this.exp = exp;
     }
@@ -40,6 +45,7 @@ public class WhileStatement extends Statement {
     public void setBlock(BlockStatement block) {
         this.block = block;
     }
+    //</editor-fold>    
 
     @Override
     public String toString() {
@@ -49,16 +55,6 @@ public class WhileStatement extends Statement {
         w += block.toString();
 
         return w;
-    }
-
-    @Override
-    public void validateSemantics() throws GranitaException {
-        /*super.validateSemantics();
-        Type rtype = exp.validateSemantics();
-        if (!(rtype instanceof BoolType)) {
-            ErrorHandler.handle("while condition must evaluate to bool: line " + this.getLine());
-        }
-        block.validateSemantics();*/
     }
 
     @Override

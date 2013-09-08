@@ -21,11 +21,14 @@ import java.util.ArrayList;
  */
 public class ForStatement extends Statement {
 
+    //<editor-fold defaultstate="collapsed" desc="Instance Attributes">
     BlockStatement block;
     ArrayList<Expression> initializations;
     Expression termination;
     ArrayList<Statement> increments;
+    //</editor-fold>    
 
+    //<editor-fold defaultstate="collapsed" desc="Constructors">
     public ForStatement(int line) {
         super(line);
         this.initializations = new ArrayList<Expression>();
@@ -40,6 +43,7 @@ public class ForStatement extends Statement {
         this.termination = termination;
         this.increments = increments;
     }
+    //</editor-fold>    
 
     public void setBlock(BlockStatement st) {
         this.block = st;

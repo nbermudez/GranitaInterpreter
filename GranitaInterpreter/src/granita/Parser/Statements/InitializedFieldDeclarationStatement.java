@@ -4,8 +4,8 @@
  */
 package granita.Parser.Statements;
 
-import granita.Parser.Expressions.Expression;
 import granita.DataLayout.SimpleVariable;
+import granita.Parser.Expressions.Expression;
 import granita.SymbolTable.SymbolTableEntry;
 import granita.SymbolTable.SymbolTableNode;
 import granita.SymbolTable.SymbolTableTree;
@@ -19,10 +19,13 @@ import granitainterpreter.GranitaException;
  */
 public class InitializedFieldDeclarationStatement extends DeclarationStatement {
 
+    //<editor-fold defaultstate="collapsed" desc="Instance Attributes">
     Expression initValue;
     String fieldName;
     Type type;
-
+    //</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="Constructors">
     public InitializedFieldDeclarationStatement(Type type,
             String fieldName, Expression initValue, int line) {
         super(line);
@@ -30,6 +33,7 @@ public class InitializedFieldDeclarationStatement extends DeclarationStatement {
         this.fieldName = fieldName;
         this.type = type;
     }
+    //</editor-fold>    
 
     @Override
     public String toString() {

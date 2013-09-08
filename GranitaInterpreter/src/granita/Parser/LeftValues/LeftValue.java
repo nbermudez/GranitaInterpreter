@@ -7,7 +7,6 @@ package granita.Parser.LeftValues;
 import granita.IR.LeftValues.D_LeftValue;
 import granita.Parser.Expressions.Expression;
 import granita.Types.Type;
-import granitainterpreter.GranitaException;
 
 /**
  *
@@ -18,8 +17,8 @@ public abstract class LeftValue extends Expression {
         super(line);
     }   
     
-    public abstract Type getLocation();
-    public abstract void initializeVariable();
+    public Type getLocation() {return null;}
+    public void initializeVariable() {}
     
     @Override
     public abstract D_LeftValue getIR();

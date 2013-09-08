@@ -5,7 +5,6 @@
 package granita.Parser.LeftValues;
 
 import granita.DataLayout.ArrayVariable;
-import granita.DataLayout.Variable;
 import granita.IR.Expressions.D_Expression;
 import granita.IR.LeftValues.D_ArrayLeftValue;
 import granita.IR.LeftValues.D_LeftValue;
@@ -14,7 +13,6 @@ import granita.SymbolTable.SymbolTableEntry;
 import granita.Types.IntType;
 import granita.Types.Type;
 import granitainterpreter.ErrorHandler;
-import granitainterpreter.Interpreter;
 import granitainterpreter.SemanticUtils;
 
 /**
@@ -25,7 +23,6 @@ public class ArrayLeftValue extends LeftValue {
 
     String id;
     Expression index;
-    int calculatedIndex = -1;
 
     public ArrayLeftValue(int line) {
         super(line);
@@ -57,18 +54,14 @@ public class ArrayLeftValue extends LeftValue {
     public String toString() {
         return id + "[" + index.toString() + "]";
     }
-
-    @Override
-    public void initializeVariable() {
-    }
-
+/*
     @Override
     public Type getLocation() {
         Variable var = Interpreter.getInstance().getVariable(id);
         ArrayVariable arrVar = (ArrayVariable) var;
         //calculatedIndex = (Integer) index.evaluate();
         return arrVar.getItems()[calculatedIndex];
-    }
+    }*/
 
     @Override
     public D_LeftValue getIR() {

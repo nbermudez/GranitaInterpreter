@@ -28,7 +28,7 @@ public class D_ArrayLeftValue extends D_LeftValue {
     
     @Override
     public Object evaluate() {
-        ArrayVariable value = (ArrayVariable) Interpreter.getInstance().getVariable(identifier);
+        /*ArrayVariable value = (ArrayVariable) Interpreter.getInstance().getVariable(identifier);
         Integer calculatedIndex = (Integer) index.evaluate();
         if (calculatedIndex >= value.getSize().getValue()) {
             try {
@@ -40,7 +40,7 @@ public class D_ArrayLeftValue extends D_LeftValue {
         }
         Type[] items = value.getItems();
         Type item = items[calculatedIndex];
-        return item.getValue();
+        return item.getValue();*/return null;
     }
     
 }

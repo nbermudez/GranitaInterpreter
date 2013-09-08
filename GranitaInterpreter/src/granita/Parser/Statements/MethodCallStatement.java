@@ -21,9 +21,12 @@ import java.util.ArrayList;
  */
 public class MethodCallStatement extends Statement {
 
+    //<editor-fold defaultstate="collapsed" desc="Instance Attributes">
     ArrayList<Expression> params;
     String id;
+    //</editor-fold>    
 
+    //<editor-fold defaultstate="collapsed" desc="Constructors">
     public MethodCallStatement(int line) {
         super(line);
     }
@@ -33,6 +36,7 @@ public class MethodCallStatement extends Statement {
         this.params = params;
         this.id = id;
     }
+    //</editor-fold>    
 
     @Override
     public String toString() {

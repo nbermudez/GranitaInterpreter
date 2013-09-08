@@ -54,7 +54,7 @@ public class Interpreter {
     public boolean breakFound() {
         return this.breakFound;
     }
-    
+    /*
     public Variable getVariable(String id) {
         Function f = this.stackFrames.peek();
         return f.getVariable(id);
@@ -69,7 +69,7 @@ public class Interpreter {
         if (block != null){
             this.stackFrames.peek().setBlock(block.getParentBlock());
         }
-    }
+    }*/
 
     public boolean returnReached() {
         return returnReached;

@@ -4,15 +4,12 @@
  */
 package granita.Parser.Statements;
 
-import granita.IR.Statements.D_Block;
-import granita.IR.Statements.D_Statement;
 import granita.DataLayout.Function;
-import granita.SymbolTable.SymbolTableNode;
+import granita.IR.Statements.D_Block;
 import granita.SymbolTable.SymbolTableTree;
 import granita.Types.VoidType;
 import granitainterpreter.ErrorHandler;
 import granitainterpreter.GranitaException;
-import granitainterpreter.Interpreter;
 import java.util.ArrayList;
 
 /**
@@ -122,24 +119,6 @@ public class ClassStatement extends Statement {
             ErrorHandler.handle("class must contain a method 'main'");
         }
         //</editor-fold>
-    }
-
-    @Override
-    public void execute() throws GranitaException {
-        for (Statement statement : fieldDecls) {
-            statement.execute();
-        }
-        for (Statement statement : methodDecls) {
-            MethodDeclarationStatement md = (MethodDeclarationStatement) statement;
-            if (md.isMain()) {
-                Function f = (Function) SymbolTableTree.getInstance().lookupFunction("main");
-                Function AR = f.getCopy();
-                Interpreter.getInstance().register(AR);
-                BlockStatement block = AR.getBlock();
-                block.execute();
-                break;
-            }
-        }
     }
 
     @Override

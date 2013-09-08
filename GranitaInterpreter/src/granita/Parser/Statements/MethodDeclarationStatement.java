@@ -5,9 +5,8 @@
 package granita.Parser.Statements;
 
 import granita.DataLayout.Context;
-import granita.IR.Statements.D_Block;
-import granita.Parser.Functions.ParameterDeclaration;
 import granita.DataLayout.Function;
+import granita.Parser.Functions.ParameterDeclaration;
 import granita.SymbolTable.SymbolTableEntry;
 import granita.SymbolTable.SymbolTableNode;
 import granita.SymbolTable.SymbolTableTree;
@@ -34,13 +33,16 @@ public class MethodDeclarationStatement extends DeclarationStatement {
     private Context tmp;
     //</editor-fold>    
 
+    //<editor-fold defaultstate="collapsed" desc="Constructors">
     public MethodDeclarationStatement(Type type, String identifier, int line) {
         super(line);
         this.type = type;
         this.identifier = identifier;
         this.parameters = new ArrayList<ParameterDeclaration>();
     }
+    //</editor-fold>    
 
+    //<editor-fold defaultstate="collapsed" desc="Getters and Setters">
     public Type getType() {
         return type;
     }
@@ -72,15 +74,7 @@ public class MethodDeclarationStatement extends DeclarationStatement {
     public void setBlock(BlockStatement block) {
         this.block = block;
     }
-
-    public void addParameter(ParameterDeclaration param) {
-        this.parameters.add(param);
-    }
-
-    public boolean isMain() {
-        return this.identifier.equals("main");
-    }
-
+    
     public SymbolTableNode getParamsEntry() {
         return paramsEntry;
     }
@@ -88,6 +82,15 @@ public class MethodDeclarationStatement extends DeclarationStatement {
     public void setParamsEntry(SymbolTableNode paramsEntry) {
         this.paramsEntry = paramsEntry;
     }
+    //</editor-fold>    
+
+    public void addParameter(ParameterDeclaration param) {
+        this.parameters.add(param);
+    }
+
+    public boolean isMain() {
+        return this.identifier.equals("main");
+    }    
 
     @Override
     public String toString() {
@@ -103,6 +106,7 @@ public class MethodDeclarationStatement extends DeclarationStatement {
         return method;
     }
 
+    // TODO: eliminar esto cuando el getIR sea equivalente
     @Override
     public void validateSemantics() throws GranitaException {
         //<editor-fold defaultstate="collapsed" desc="Validate block">
@@ -140,7 +144,7 @@ public class MethodDeclarationStatement extends DeclarationStatement {
         SymbolTableNode root = SymbolTableTree.getInstance().getGlobal();
         SymbolTableEntry val = root.getFunction(identifier);
         if (val == null) {
-            root.addFunction(identifier, new Function(type, this.block));
+            root.addFunction(identifier, new Function(type));
         } else {
             ErrorHandler.handle("function '" + identifier + "' is already defined:"
                     + " line " + this.getLine());

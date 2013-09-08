@@ -24,6 +24,7 @@ public class ArrayVariable extends Variable {
         }
     }
     
+    //<editor-fold defaultstate="collapsed" desc="Getters and Setters">
     public D_LitInt getSize() {
         return size;
     }
@@ -39,6 +40,7 @@ public class ArrayVariable extends Variable {
     public void setItems(Type[] items) {
         this.items = items;
     }
+    //</editor-fold>    
 
     @Override
     public String toString() {

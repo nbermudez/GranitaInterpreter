@@ -5,10 +5,7 @@
 package granita.Parser.FieldItems;
 
 import granita.IR.Expressions.D_LitInt;
-import granita.Parser.Expressions.LitInt;
-import granita.Types.Type;
 import granitainterpreter.ErrorHandler;
-import granitainterpreter.GranitaException;
 
 /**
  *
@@ -21,6 +18,11 @@ public class ArrayField extends Field {
         super(fieldName, line);
         this.fieldName = fieldName;
         this.size = size;
+        
+        if (size.getValue() <= 0) {
+            ErrorHandler.handle("array size must be greater than zero: line " 
+                    + this.getLine());
+        }
     }
 
     public D_LitInt getSize() {
@@ -34,14 +36,5 @@ public class ArrayField extends Field {
     @Override
     public String toString() {
         return fieldName + "[" + size.toString() + "]";
-    }
-
-    @Override
-    public void validateSemantics() throws GranitaException {
-        if (size.getValue() <= 0) {
-            ErrorHandler.handle("array size must be greater than zero: line " 
-                    + this.getLine());
-        }
-    }
-    
+    }    
 }

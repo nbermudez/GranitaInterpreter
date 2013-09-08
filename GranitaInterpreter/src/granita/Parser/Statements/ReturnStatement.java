@@ -21,15 +21,19 @@ import granitainterpreter.SemanticUtils;
  */
 public class ReturnStatement extends Statement {
 
+    //<editor-fold defaultstate="collapsed" desc="Instance Attributes">
     private boolean isInsideFunction;
     private Expression returnExpression;
     private Type returnType = null;
+    //</editor-fold>    
 
+    //<editor-fold defaultstate="collapsed" desc="Constructors">
     public ReturnStatement(boolean isInsideFunction, Expression returnExpression, int line) {
         super(line);
         this.isInsideFunction = isInsideFunction;
         this.returnExpression = returnExpression;
     }
+    //</editor-fold>    
 
     public boolean isIsInsideFunction() {
         return isInsideFunction;
