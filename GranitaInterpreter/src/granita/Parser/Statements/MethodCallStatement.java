@@ -4,18 +4,15 @@
  */
 package granita.Parser.Statements;
 
+import granita.DataLayout.Function;
 import granita.IR.Expressions.D_Expression;
 import granita.IR.Statements.D_MethodCall;
 import granita.IR.Statements.D_Statement;
 import granita.Parser.Expressions.Expression;
-import granita.DataLayout.Function;
 import granita.SymbolTable.SymbolTableEntry;
 import granita.SymbolTable.SymbolTableTree;
-import granita.DataLayout.Variable;
 import granita.Types.Type;
 import granitainterpreter.ErrorHandler;
-import granitainterpreter.GranitaException;
-import granitainterpreter.Interpreter;
 import java.util.ArrayList;
 
 /**
@@ -50,40 +47,6 @@ public class MethodCallStatement extends Statement {
 
         t = t + ")";
         return t;
-    }
-
-    @Override
-    public void validateSemantics() throws GranitaException {
-        super.validateSemantics();        
-        SymbolTableEntry val = SymbolTableTree.getInstance().lookupFunction(id);
-        Function f;
-        if (val == null) {
-            ErrorHandler.handle("no such method '" + id + "': line " 
-                    + this.getLine());
-            return;
-        } else {
-            f = (Function) val;
-        }
-        Type t = f.getType();
-        if (t == null) {
-            ErrorHandler.handle("undefined method " + id + ": line " + line);
-        } else {
-            if (params.size() != f.getParameters().size()) {
-                ErrorHandler.handle("actual and formal argument list differ in length "
-                        + ": line " + this.getLine());
-            }
-            int min = params.size()<f.getParameters().size()?
-                    params.size():f.getParameters().size();
-            for (int i = 0; i < min; i++) {
-                Expression ex = params.get(i);
-                Type ret = ex.validateSemantics();
-                Type o = f.getParameters().get(i).getType();
-                if (!o.equivalent(ret)) {
-                    ErrorHandler.handle("incompatible types in method call's arg " + i
-                            + ": line " + ex.getLine());
-                }
-            }
-        }
     }
 
     @Override

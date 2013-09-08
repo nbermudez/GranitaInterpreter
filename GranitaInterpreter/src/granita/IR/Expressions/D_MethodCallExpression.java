@@ -20,9 +20,10 @@ public class D_MethodCallExpression extends D_Expression {
     private String methodName;
     private ArrayList<D_Expression> arguments;
 
-    public D_MethodCallExpression(String methodName, ArrayList<D_Expression> arguments) {
+    public D_MethodCallExpression(Type type, String methodName, ArrayList<D_Expression> arguments) {
         this.methodName = methodName;
         this.arguments = arguments;
+        this.expressionType = type;
     }    
 
     @Override

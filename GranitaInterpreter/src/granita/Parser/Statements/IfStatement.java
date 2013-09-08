@@ -13,7 +13,6 @@ import granita.Types.BoolType;
 import granita.Types.Type;
 import granitainterpreter.ErrorHandler;
 import granitainterpreter.GranitaException;
-import granitainterpreter.SemanticUtils;
 
 /**
  *
@@ -63,22 +62,6 @@ public class IfStatement extends Statement {
             i += falseBlock.toString();
         }
         return i;
-    }
-
-    @Override
-    public void validateSemantics() throws GranitaException {
-        super.validateSemantics();
-        Type c = conditional.validateSemantics();
-        if (!(c instanceof BoolType)) {
-            ErrorHandler.handle("if condition must evaluate to bool: line "
-                    + conditional.getLine());
-        }
-        trueBlock.parentBlock = SemanticUtils.getInstance().getCurrentBlock();
-        trueBlock.validateSemantics();
-        if (falseBlock != null) {
-            falseBlock.parentBlock = SemanticUtils.getInstance().getCurrentBlock();
-            falseBlock.validateSemantics();
-        }
     }
 
     @Override

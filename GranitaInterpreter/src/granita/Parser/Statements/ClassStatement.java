@@ -162,10 +162,10 @@ public class ClassStatement extends Statement {
                 if (method.isMain()) {
                     mainFound = true;
                     if (!method.getType().equivalent(new VoidType())) {
-                        ErrorHandler.handle("'main' method must be void");
+                        ErrorHandler.handle("'main' method must be void: line " + method.getLine());
                     }
                     if (!method.getParameters().isEmpty()) {
-                        ErrorHandler.handle("'main' method cannot have parameters ");
+                        ErrorHandler.handle("'main' method cannot have parameters: line " + method.getLine());
                     }
                 }
                 method.register();

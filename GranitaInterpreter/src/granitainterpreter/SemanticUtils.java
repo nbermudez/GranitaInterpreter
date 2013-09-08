@@ -4,6 +4,7 @@
  */
 package granitainterpreter;
 
+import granita.DataLayout.Context;
 import granita.DataLayout.ContextStack;
 import granita.Parser.Statements.BlockStatement;
 import granita.Types.Type;
@@ -21,8 +22,10 @@ public class SemanticUtils {
     private boolean leftValueAsLocation = false;
     private boolean insidePrint = false;
     private boolean insideRead = false;
+    private boolean mustMergeWithTemp = false;
     private BlockStatement currentBlock = null;
     private ContextStack contextStack;
+    private Context tmp;
     //</editor-fold>    
 
     private SemanticUtils() {
@@ -102,6 +105,7 @@ public class SemanticUtils {
         this.currentBlock = currentBlock;
     }
     
+    //<editor-fold defaultstate="collapsed" desc="Second version, Good to go">
     public void saveContext() {
         this.contextStack.saveContext();
     }
@@ -109,4 +113,34 @@ public class SemanticUtils {
     public void loadContext() {
         this.contextStack.loadContext();
     }
+    
+    public Context currentContext() {
+        return this.contextStack.peek();
+    }
+    
+    public void registerContext(Context context) {
+        this.contextStack.push(context);
+    }
+    
+    public void unregisterContext() {
+        this.contextStack.pop().setParent(null);
+    }
+    
+    public void mustMergeWithTempContext(boolean mustMerge) {
+        this.mustMergeWithTemp = mustMerge;
+    }
+    
+    public boolean mustMergeWithTempContext() {
+        return this.mustMergeWithTemp;
+    }
+    
+    public void setTmpContext(Context tmp) {
+        this.tmp = tmp;
+    }
+    
+    public Context getTmpContext() {
+        return this.tmp;
+    }
+    //</editor-fold>
+    
 }

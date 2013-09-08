@@ -4,11 +4,7 @@
  */
 package granita.Parser.Expressions;
 
-import granita.IR.Expressions.D_Expression;
 import granita.IR.Expressions.D_LitInt;
-import granita.Types.IntType;
-import granita.Types.Type;
-import granitainterpreter.GranitaException;
 
 /**
  *
@@ -47,12 +43,7 @@ public class LitInt extends Expression {
     }
 
     @Override
-    public Type validateSemantics() throws GranitaException {
-        return new IntType(value);
-    }
-
-    @Override
-    public D_Expression getIR() {
+    public D_LitInt getIR() {
         return new D_LitInt(value);
     }
 }

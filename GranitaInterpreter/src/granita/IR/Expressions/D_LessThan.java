@@ -4,6 +4,8 @@
  */
 package granita.IR.Expressions;
 
+import granita.Types.BoolType;
+
 /**
  *
  * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
@@ -12,6 +14,7 @@ public class D_LessThan extends D_BinaryExpression {
 
     public D_LessThan(D_Expression left, D_Expression right) {
         super(left, right);
+        this.expressionType = new BoolType();
     }
 
     @Override

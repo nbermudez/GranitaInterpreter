@@ -27,7 +27,5 @@ public abstract class Expression {
         this.line = line;
     }
     
-    public abstract Type validateSemantics() throws GranitaException;    
-    
     public abstract D_Expression getIR();
 }

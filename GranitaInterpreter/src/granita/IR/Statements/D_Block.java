@@ -4,6 +4,7 @@
  */
 package granita.IR.Statements;
 
+import granita.DataLayout.Context;
 import java.util.ArrayList;
 
 /**
@@ -11,10 +12,12 @@ import java.util.ArrayList;
  * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
  */
 public class D_Block extends D_Statement {
-    ArrayList<D_Statement> statements;
+    private ArrayList<D_Statement> statements;
+    private Context context;
 
-    public D_Block(ArrayList<D_Statement> statements) {
+    public D_Block(ArrayList<D_Statement> statements, Context context) {
         this.statements = statements;
+        this.context = context;
     }
 
     public ArrayList<D_Statement> getStatements() {

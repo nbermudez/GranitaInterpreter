@@ -6,9 +6,6 @@ package granita.Parser.Expressions;
 
 import granita.IR.Expressions.D_Expression;
 import granita.IR.Expressions.D_LitBool;
-import granita.Types.BoolType;
-import granita.Types.Type;
-import granitainterpreter.GranitaException;
 
 /**
  *
@@ -38,11 +35,6 @@ public class LitBool extends Expression {
     @Override
     public String toString() {
         return Boolean.toString(value);
-    }
-
-    @Override
-    public Type validateSemantics() throws GranitaException {
-        return new BoolType(value);
     }
 
     @Override

@@ -74,7 +74,7 @@ class LlenaDeErrores {
 		//return method3();
 		//return method2(1,2,false);
 		//return method4();
-		if (1>2){
+		if (1<2){
 			return false;
 		}
 		return 1;
@@ -86,4 +86,7 @@ class LlenaDeErrores {
 	
 	bool method4(){ return 1>2;}
 	// return types end
+	
+	void main(){
+	}
 }

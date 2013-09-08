@@ -4,19 +4,18 @@
  */
 package granita.Parser.LeftValues;
 
+import granita.DataLayout.ArrayVariable;
+import granita.DataLayout.Variable;
 import granita.IR.Expressions.D_Expression;
 import granita.IR.LeftValues.D_ArrayLeftValue;
 import granita.IR.LeftValues.D_LeftValue;
 import granita.Parser.Expressions.Expression;
-import granita.DataLayout.ArrayVariable;
 import granita.SymbolTable.SymbolTableEntry;
-import granita.SymbolTable.SymbolTableTree;
-import granita.DataLayout.Variable;
 import granita.Types.IntType;
 import granita.Types.Type;
 import granitainterpreter.ErrorHandler;
-import granitainterpreter.GranitaException;
 import granitainterpreter.Interpreter;
+import granitainterpreter.SemanticUtils;
 
 /**
  *
@@ -55,30 +54,6 @@ public class ArrayLeftValue extends LeftValue {
     }
 
     @Override
-    public Type validateSemantics() throws GranitaException {
-        SymbolTableEntry value = SymbolTableTree.getInstance().getGlobal().getEntry(id);
-        if (value == null) {
-            return ErrorHandler.handle("undefined variable '" + id + "' in line "
-                    + this.getLine());
-        } else {
-            if (!(value instanceof ArrayVariable)) {
-                return ErrorHandler.handle("variable '" + id + "' is not an array: line "
-                        + this.getLine());
-            } else {
-                ArrayVariable array = (ArrayVariable) value;
-                Type it = this.index.validateSemantics();
-
-                if (!it.equivalent(new IntType())) {
-                    return ErrorHandler.handle("array index must be int: line "
-                            + this.getLine());
-                }
-                array.getType().setValue(it.getValue());
-                return array.getType();
-            }
-        }
-    }
-
-    @Override
     public String toString() {
         return id + "[" + index.toString() + "]";
     }
@@ -97,7 +72,7 @@ public class ArrayLeftValue extends LeftValue {
 
     @Override
     public D_LeftValue getIR() {
-        SymbolTableEntry value = SymbolTableTree.getInstance().getGlobal().getEntry(id);
+        SymbolTableEntry value = SemanticUtils.getInstance().currentContext().find(id);
         if (value == null) {
             ErrorHandler.handle("undefined variable '" + id + "' in line "
                     + this.getLine());

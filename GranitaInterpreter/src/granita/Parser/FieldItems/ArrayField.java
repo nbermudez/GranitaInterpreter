@@ -4,6 +4,7 @@
  */
 package granita.Parser.FieldItems;
 
+import granita.IR.Expressions.D_LitInt;
 import granita.Parser.Expressions.LitInt;
 import granita.Types.Type;
 import granitainterpreter.ErrorHandler;
@@ -14,19 +15,19 @@ import granitainterpreter.GranitaException;
  * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
  */
 public class ArrayField extends Field {
-    LitInt size;
+    D_LitInt size;
 
-    public ArrayField(String fieldName, LitInt size, int line) {
+    public ArrayField(String fieldName, D_LitInt size, int line) {
         super(fieldName, line);
         this.fieldName = fieldName;
         this.size = size;
     }
 
-    public LitInt getSize() {
+    public D_LitInt getSize() {
         return size;
     }
 
-    public void setSize(LitInt size) {
+    public void setSize(D_LitInt size) {
         this.size = size;
     }
 

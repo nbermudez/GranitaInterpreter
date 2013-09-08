@@ -91,4 +91,16 @@ public class ParameterDeclaration extends Statement {
             current.addEntry(name, v);
         }*/
     }
+    
+    public void register() {        
+        Function f = (Function)SymbolTableTree.getInstance().lookupFunction(methodName);
+        SimpleVariable v = new SimpleVariable(type, null);
+        v.setInitialized(true);
+        f.getParameters().add(v);
+        if (SemanticUtils.getInstance().getTmpContext().findLocally(name) != null) {
+            ErrorHandler.handle("duplicated parameter '" + name + "': line " + this.getLine());
+        } else {
+            SemanticUtils.getInstance().getTmpContext().add(name, v);
+        }
+    }
 }

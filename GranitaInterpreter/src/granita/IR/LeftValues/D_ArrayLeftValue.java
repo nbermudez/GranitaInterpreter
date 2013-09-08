@@ -10,6 +10,7 @@ import granita.Types.Type;
 import granitainterpreter.ErrorHandler;
 import granitainterpreter.GranitaException;
 import granitainterpreter.Interpreter;
+import granitainterpreter.SemanticUtils;
 
 /**
  *
@@ -21,7 +22,7 @@ public class D_ArrayLeftValue extends D_LeftValue {
     public D_ArrayLeftValue(D_Expression index, String identifier) {
         super(identifier);
         this.index = index;
-        ArrayVariable value = (ArrayVariable) Interpreter.getInstance().getVariable(identifier);
+        ArrayVariable value = (ArrayVariable) SemanticUtils.getInstance().currentContext().find(identifier);
         this.setExpressionType(value.getType());
     }
     

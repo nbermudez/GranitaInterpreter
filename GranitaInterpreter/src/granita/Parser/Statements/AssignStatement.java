@@ -5,6 +5,7 @@
 package granita.Parser.Statements;
 
 import granita.IR.Expressions.D_Expression;
+import granita.IR.LeftValues.D_ArrayLeftValue;
 import granita.IR.LeftValues.D_LeftValue;
 import granita.IR.Statements.D_Assign;
 import granita.IR.Statements.D_Statement;
@@ -89,7 +90,7 @@ public class AssignStatement extends Statement {
         D_LeftValue lValue = left.getIR();
         SemanticUtils.getInstance().setLeftValueAsLocation(false);
         D_Expression dValue = value.getIR();
-        //left.initializeVariable();
+        left.initializeVariable();
         
         if (lValue != null && dValue != null) {
             Type LHS = lValue.getExpressionType(), RHS = dValue.getExpressionType();

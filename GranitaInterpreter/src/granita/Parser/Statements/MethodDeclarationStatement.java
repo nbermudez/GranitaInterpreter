@@ -4,12 +4,14 @@
  */
 package granita.Parser.Statements;
 
+import granita.DataLayout.Context;
 import granita.IR.Statements.D_Block;
 import granita.Parser.Functions.ParameterDeclaration;
 import granita.DataLayout.Function;
 import granita.SymbolTable.SymbolTableEntry;
 import granita.SymbolTable.SymbolTableNode;
 import granita.SymbolTable.SymbolTableTree;
+import granita.Types.ErrorType;
 import granita.Types.Type;
 import granita.Types.VoidType;
 import granitainterpreter.ErrorHandler;
@@ -23,11 +25,14 @@ import java.util.ArrayList;
  */
 public class MethodDeclarationStatement extends DeclarationStatement {
 
+    //<editor-fold defaultstate="collapsed" desc="Instance attributes">
     private String identifier;
     private ArrayList<ParameterDeclaration> parameters;
     private BlockStatement block;
     private Type type;
     private SymbolTableNode paramsEntry;
+    private Context tmp;
+    //</editor-fold>    
 
     public MethodDeclarationStatement(Type type, String identifier, int line) {
         super(line);
@@ -131,13 +136,6 @@ public class MethodDeclarationStatement extends DeclarationStatement {
     }
 
     @Override
-    public void execute() throws GranitaException {
-        for (Statement st : this.block.getStatements()) {
-            st.execute();
-        }
-    }
-
-    @Override
     public void register() throws GranitaException {
         SymbolTableNode root = SymbolTableTree.getInstance().getGlobal();
         SymbolTableEntry val = root.getFunction(identifier);
@@ -149,9 +147,10 @@ public class MethodDeclarationStatement extends DeclarationStatement {
         }
 
         SemanticUtils.getInstance().setCurrentBlock(block);
-
+        tmp = new Context();
+        SemanticUtils.getInstance().setTmpContext(tmp);
         for (ParameterDeclaration st : parameters) {
-            st.validateSemantics();
+            st.register();
         }
         SemanticUtils.getInstance().setCurrentBlock(block);
     }
@@ -165,7 +164,22 @@ public class MethodDeclarationStatement extends DeclarationStatement {
                     + " line " + this.getLine());
         } else {
             Function f = (Function) val;
+            SemanticUtils.getInstance().mustMergeWithTempContext(true);
+            SemanticUtils.getInstance().setTmpContext(tmp);
+            
+            if (type instanceof VoidType || type instanceof ErrorType) {
+                SemanticUtils.getInstance().setMustReturnExpression(false);
+            } else {
+                SemanticUtils.getInstance().setMustReturnExpression(true);
+            }
+            SemanticUtils.getInstance().setExpectedReturnType(type);
             f.setBody(block.getIR());
+        }
+        
+        if (!this.getType().equivalent(new VoidType())) {
+            SemanticUtils.getInstance().setExpectedReturnType(type);
+            //checkear aki por returns en todos los path :S
+            SemanticUtils.getInstance().setExpectedReturnType(null);
         }
     }
 }

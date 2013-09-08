@@ -4,7 +4,6 @@
  */
 package granita.Parser.LeftValues;
 
-import granita.IR.Expressions.D_Expression;
 import granita.IR.LeftValues.D_LeftValue;
 import granita.IR.LeftValues.D_SimpleValue;
 import granita.DataLayout.ArrayVariable;
@@ -12,7 +11,6 @@ import granita.DataLayout.SimpleVariable;
 import granita.DataLayout.Variable;
 import granita.Types.Type;
 import granitainterpreter.ErrorHandler;
-import granitainterpreter.GranitaException;
 import granitainterpreter.Interpreter;
 import granitainterpreter.SemanticUtils;
 
@@ -47,35 +45,8 @@ public class SimpleValue extends LeftValue {
     }
 
     @Override
-    public Type validateSemantics() throws GranitaException {
-        Variable val = SemanticUtils.getInstance().getCurrentBlock().getVariable(id);
-        if (val == null) {
-            return ErrorHandler.handle("undefined variable '" + id + "': line "
-                    + this.getLine());
-        } else {
-            if (SemanticUtils.getInstance().isInsidePrint() 
-                    && val instanceof ArrayVariable) {
-                return ErrorHandler.handle("print can't be applied to an array "
-                        + "variable: line " + this.getLine());
-            }
-            if (SemanticUtils.getInstance().isInsideRead() 
-                    && val instanceof ArrayVariable) {
-                return ErrorHandler.handle("read can't be applied to an array "
-                        + "variable: line " + this.getLine());
-            }
-            if (!SemanticUtils.getInstance().isLeftValueAsLocation() 
-                    && !val.isInitialized()) {
-                return ErrorHandler.handle("variable '" + id + "' "
-                        + "must be initialized before use: line "
-                        + this.getLine());
-            }
-            return ((SimpleVariable) val).getType();
-        }
-    }
-
-    @Override
     public void initializeVariable() {
-        Variable val = SemanticUtils.getInstance().getCurrentBlock().getVariable(id);
+        Variable val = SemanticUtils.getInstance().currentContext().find(id);
         if (val != null && val instanceof SimpleVariable) {
             val.setInitialized(true);
         }
@@ -89,30 +60,30 @@ public class SimpleValue extends LeftValue {
 
     @Override
     public D_LeftValue getIR() {
-        Variable val = SemanticUtils.getInstance().getCurrentBlock().getVariable(id);
+        Variable val = SemanticUtils.getInstance().currentContext().find(id);
         if (val == null) {
             ErrorHandler.handle("undefined variable '" + id + "': line "
                     + this.getLine());
             return null;
         } else {
-            if (SemanticUtils.getInstance().isInsidePrint() 
+            if (SemanticUtils.getInstance().isInsidePrint()
                     && val instanceof ArrayVariable) {
                 ErrorHandler.handle("print can't be applied to an array "
                         + "variable: line " + this.getLine());
                 return null;
             }
-            if (SemanticUtils.getInstance().isInsideRead() 
+            if (SemanticUtils.getInstance().isInsideRead()
                     && val instanceof ArrayVariable) {
                 ErrorHandler.handle("read can't be applied to an array "
                         + "variable: line " + this.getLine());
                 return null;
             }
-            if (!SemanticUtils.getInstance().isLeftValueAsLocation() 
+            if (!SemanticUtils.getInstance().isLeftValueAsLocation()
                     && !val.isInitialized()) {
                 ErrorHandler.handle("variable '" + id + "' "
                         + "must be initialized before use: line "
                         + this.getLine());
-                return null;
+                return new D_SimpleValue(id);
             }
             return new D_SimpleValue(id);
         }

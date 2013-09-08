@@ -18,6 +18,7 @@ public class D_Eq extends D_BinaryExpression {
     public D_Eq(Type sideType, D_Expression left, D_Expression right) {
         super(left, right);
         this.sideType = sideType;
+        this.expressionType = new BoolType();
     }
     
     @Override

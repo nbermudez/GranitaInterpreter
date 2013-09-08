@@ -4,6 +4,7 @@
  */
 package granita.IR.Expressions;
 
+import granita.Types.BoolType;
 import granita.Types.Type;
 
 /**
@@ -16,6 +17,7 @@ public class D_NotEq extends D_BinaryExpression {
     public D_NotEq(Type sideType, D_Expression left, D_Expression right) {
         super(left, right);
         this.sideType = sideType;
+        this.expressionType = new BoolType();
     }
 
     @Override

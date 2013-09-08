@@ -258,7 +258,7 @@ public class ParserTree {
             match(Token.TK_INT_CONSTANT, "integer");
             
             LitInt arraySize = new LitInt(intValue, lexer.lineNumber());
-            ArrayField f = new ArrayField(id, arraySize, lexer.lineNumber());
+            ArrayField f = new ArrayField(id, arraySize.getIR(), lexer.lineNumber());
             FieldDeclarationStatement flist = new FieldDeclarationStatement(type, lexer.lineNumber());
             flist.addDeclaration(f);
             
@@ -272,7 +272,7 @@ public class ParserTree {
                 if (currentToken == Token.TK_LEFT_BRACKET) {
                     currentToken = lexer.nextToken();
                     arraySize = new LitInt(currentToken.lexeme, lexer.lineNumber());
-                    f = new ArrayField(fieldId, arraySize, lexer.lineNumber());
+                    f = new ArrayField(fieldId, arraySize.getIR(), lexer.lineNumber());
                     flist.addDeclaration(f);
                     match(Token.TK_INT_CONSTANT, "integer");
                     match(Token.TK_RIGHT_BRACKET, "]");
@@ -296,7 +296,7 @@ public class ParserTree {
                 if (currentToken == Token.TK_LEFT_BRACKET) {
                     currentToken = lexer.nextToken();
                     LitInt arraySize = new LitInt(currentToken.lexeme, lexer.lineNumber());
-                    ArrayField ff = new ArrayField(fieldId, arraySize, lexer.lineNumber());
+                    ArrayField ff = new ArrayField(fieldId, arraySize.getIR(), lexer.lineNumber());
                     flist.addDeclaration(ff);
                     match(Token.TK_INT_CONSTANT, "integer");
                     match(Token.TK_RIGHT_BRACKET, "]");

@@ -4,28 +4,25 @@
  */
 package granita.IR.Expressions;
 
+import granita.Types.IntType;
+
 /**
  *
  * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
  */
 public class D_LitInt extends D_Expression {
-    int value;
 
     public D_LitInt(int value) {
-        this.value = value;
+        this.expressionType = new IntType(value);
     }
-
+    
     public int getValue() {
-        return value;
-    }
-
-    public void setValue(int value) {
-        this.value = value;
+        return (Integer) this.expressionType.getValue();
     }
     
     @Override
     public Object evaluate() {
-        return value;
+        return this.expressionType.getValue();
     }
     
 }

@@ -4,9 +4,12 @@
  */
 package granita.Parser.Functions;
 
+import granita.DataLayout.Context;
 import granita.Parser.Statements.BlockStatement;
 import granita.Parser.Statements.Statement;
 import granita.DataLayout.SimpleVariable;
+import granita.DataLayout.Variable;
+import granita.IR.Statements.D_Statement;
 import granita.Types.Type;
 import granitainterpreter.ErrorHandler;
 import granitainterpreter.GranitaException;
@@ -56,7 +59,7 @@ public class VarDeclaration extends Statement {
 
     @Override
     public void validateSemantics() throws GranitaException {
-        super.validateSemantics();
+        /*super.validateSemantics();
         BlockStatement currentBlock = SemanticUtils.getInstance().getCurrentBlock();
         for (String name : varNames) {
             if (currentBlock.alreadyRegistered(name)) {
@@ -65,7 +68,24 @@ public class VarDeclaration extends Statement {
             } else {
                 currentBlock.registerVariable(name, new SimpleVariable(type, null));
             }
-        }
+        }*/
 
+    }
+
+    @Override
+    public D_Statement getIR() {
+        checkForUnreachableStatement();
+        
+        Context context = SemanticUtils.getInstance().currentContext();
+        
+        for (String key : varNames) {
+            if (context.findLocally(key) != null) {
+                ErrorHandler.handle("already defined variable '" + key
+                        + "': line " + this.getLine());
+            } else {
+                context.add(key, new SimpleVariable(type, null));
+            }
+        }
+        return null;
     }
 }

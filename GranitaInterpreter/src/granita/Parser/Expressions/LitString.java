@@ -6,9 +6,6 @@ package granita.Parser.Expressions;
 
 import granita.IR.Expressions.D_Expression;
 import granita.IR.Expressions.D_LitString;
-import granita.Types.StringType;
-import granita.Types.Type;
-import granitainterpreter.GranitaException;
 
 /**
  *
@@ -33,11 +30,6 @@ public class LitString extends Expression {
     @Override
     public String toString() {
         return "\"" + value.replace("\n", "\\n").replace("\t", "\\t") + "\"";
-    }
-
-    @Override
-    public Type validateSemantics() throws GranitaException {
-        return new StringType(value);
     }
 
     @Override

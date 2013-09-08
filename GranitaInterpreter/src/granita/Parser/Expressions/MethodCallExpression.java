@@ -4,17 +4,13 @@
  */
 package granita.Parser.Expressions;
 
+import granita.DataLayout.Function;
 import granita.IR.Expressions.D_Expression;
 import granita.IR.Expressions.D_MethodCallExpression;
-import granita.Parser.Statements.BlockStatement;
-import granita.DataLayout.Function;
 import granita.SymbolTable.SymbolTableEntry;
 import granita.SymbolTable.SymbolTableTree;
-import granita.DataLayout.Variable;
 import granita.Types.Type;
 import granitainterpreter.ErrorHandler;
-import granitainterpreter.GranitaException;
-import granitainterpreter.Interpreter;
 import java.util.ArrayList;
 
 /**
@@ -52,39 +48,6 @@ public class MethodCallExpression extends Expression {
     }
 
     @Override
-    public Type validateSemantics() throws GranitaException {
-        SymbolTableEntry val = SymbolTableTree.getInstance().lookupFunction(id);
-        Function f;
-        if (val == null) {
-            return ErrorHandler.handle("no such method '" + id + "': line " 
-                    + this.getLine());
-        } else {
-            f = (Function) val;
-        }
-        Type t = f.getType();
-        if (t == null) {
-            return ErrorHandler.handle("undefined method " + id + ": line " + line);
-        } else {
-            if (arguments.size() != f.getParameters().size()) {
-                ErrorHandler.handle("actual and formal argument list differ in length "
-                        + ": line " + this.getLine());
-            }
-            int min = arguments.size()<f.getParameters().size()?
-                    arguments.size():f.getParameters().size();
-            for (int i = 0; i < min; i++) {
-                Expression ex = arguments.get(i);
-                Type ret = ex.validateSemantics();
-                Type o = f.getParameters().get(i).getType();
-                if (!o.equivalent(ret)) {
-                    ErrorHandler.handle("incompatible types in method call's arg " + i
-                            + ": line " + ex.getLine());
-                }
-            }
-            return t;
-        }
-    }
-
-    @Override
     public D_Expression getIR() {
         SymbolTableEntry val = SymbolTableTree.getInstance().lookupFunction(id);
         Function f;
@@ -117,7 +80,7 @@ public class MethodCallExpression extends Expression {
                 }
                 d_args.add(ex);
             }
-            return new D_MethodCallExpression(id, d_args);
+            return new D_MethodCallExpression(t, id, d_args);
         }
     }
 }

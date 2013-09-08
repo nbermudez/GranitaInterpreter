@@ -4,10 +4,12 @@
  */
 package granita.Parser.Statements;
 
+import granita.DataLayout.Context;
 import granita.IR.Statements.D_Block;
 import granita.IR.Statements.D_Statement;
 import granita.SymbolTable.SymbolTableTree;
 import granita.DataLayout.Variable;
+import granita.Parser.Functions.VarDeclaration;
 import granita.Types.Type;
 import granitainterpreter.ErrorHandler;
 import granitainterpreter.GranitaException;
@@ -246,14 +248,28 @@ public class BlockStatement extends Statement {
     public D_Block getIR() {
         checkForUnreachableStatement();
         
+        Context thisContext = new Context();
+        if (SemanticUtils.getInstance().mustMergeWithTempContext()) {
+            thisContext.merge(SemanticUtils.getInstance().getTmpContext());
+            SemanticUtils.getInstance().mustMergeWithTempContext(false);
+            SemanticUtils.getInstance().setTmpContext(null);
+        }
+        
+        SemanticUtils.getInstance().registerContext(thisContext);
         ArrayList<D_Statement> dStatements = new ArrayList<D_Statement>();
         for (Statement statement : statements) {
             //switch dependiendo del tipo de statement.
-            dStatements.add(statement.getIR());
+            if (statement instanceof VarDeclaration) {
+                statement.getIR();
+            } else {
+                dStatements.add(statement.getIR());
+            }
         }
         
         SemanticUtils.getInstance().resetUnreachableStatement();
-        return new D_Block(dStatements);
+        D_Block dBlock = new D_Block(dStatements, thisContext);
+        SemanticUtils.getInstance().unregisterContext();
+        return dBlock;
     }
     
 }

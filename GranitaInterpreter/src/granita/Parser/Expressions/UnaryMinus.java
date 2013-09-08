@@ -8,7 +8,6 @@ import granita.IR.Expressions.D_Expression;
 import granita.Types.IntType;
 import granita.Types.Type;
 import granitainterpreter.ErrorHandler;
-import granitainterpreter.GranitaException;
 
 /**
  *
@@ -26,22 +25,6 @@ public class UnaryMinus extends Expression {
     @Override
     public String toString() {
         return "(" + "-" + value.toString() + ")";
-    }
-
-    @Override
-    public Type validateSemantics() throws GranitaException {
-        Type tvalue = value.validateSemantics();
-        if (tvalue == null) {
-            throw new GranitaException("undefined variable " + value.toString()
-                    + ": line " + line);
-        }
-
-        if (tvalue instanceof IntType) {
-            return tvalue;
-        } else {
-            throw new GranitaException("Operator - cannot be applied to "
-                    + tvalue.toString() + ": line " + line);
-        }
     }
 
     @Override

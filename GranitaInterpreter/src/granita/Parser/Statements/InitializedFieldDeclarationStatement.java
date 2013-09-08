@@ -83,6 +83,13 @@ public class InitializedFieldDeclarationStatement extends DeclarationStatement {
 
     @Override
     public void register() throws GranitaException {
-        throw new UnsupportedOperationException("Not supported yet.");
+        SymbolTableNode node = SymbolTableTree.getInstance().getGlobal();
+        SymbolTableEntry v = node.findInThisTable(fieldName);
+        if (v != null) {
+            ErrorHandler.handle("already defined variable '" + fieldName
+                        + "': line " + this.getLine());
+        } else {
+            node.addEntry(fieldName, new SimpleVariable(type, initValue.getIR()));
+        }        
     }
 }

@@ -4,9 +4,13 @@
  */
 package granita.IR.LeftValues;
 
+import granita.DataLayout.ArrayVariable;
 import granita.DataLayout.SimpleVariable;
+import granita.DataLayout.Variable;
 import granita.Types.Type;
+import granitainterpreter.ErrorHandler;
 import granitainterpreter.Interpreter;
+import granitainterpreter.SemanticUtils;
 
 
 /**
@@ -16,9 +20,9 @@ import granitainterpreter.Interpreter;
 public class D_SimpleValue extends D_LeftValue {
 
     public D_SimpleValue(String identifier) {
-        super(identifier);
-        //SimpleVariable val = (SimpleVariable) Interpreter.getInstance().getVariable(identifier);
-        //this.setExpressionType(val.getType());
+        super(identifier);        
+        SimpleVariable val = (SimpleVariable) SemanticUtils.getInstance().currentContext().find(identifier);
+        this.setExpressionType(val.getType());
     }
 
     @Override

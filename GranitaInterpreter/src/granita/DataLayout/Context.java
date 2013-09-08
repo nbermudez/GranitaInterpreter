@@ -4,6 +4,8 @@
  */
 package granita.DataLayout;
 
+import granita.SymbolTable.SymbolTableEntry;
+import granita.SymbolTable.SymbolTableTree;
 import java.util.HashMap;
 import java.util.Set;
 
@@ -33,7 +35,9 @@ public class Context {
     }
     
     public void add(String key, Variable value) {
-        this.variables.put(key, value);
+        if (!this.variables.containsKey(key)) {
+            this.variables.put(key, value);
+        }
     }
     
     private Variable get(String key) {
@@ -44,8 +48,17 @@ public class Context {
         Variable var = this.get(key);
         if (var == null && parentContext != null) {
             var = parentContext.find(key);
+        } else if (var == null && parentContext == null) {
+            SymbolTableEntry s = SymbolTableTree.getInstance().getGlobal().getEntry(key);
+            if (s instanceof Variable) {
+                var = (Variable) s;
+            }
         }
         return var;
+    }
+    
+    public Variable findLocally(String key) {
+        return this.get(key);
     }
     
     public void clear() {
@@ -72,6 +85,14 @@ public class Context {
         }
         
         this.parentContext = copy.parentContext;
+    }
+    
+    public void merge(Context other) {
+        Set<String> keys = other.variables.keySet();
+        
+        for (String key : keys) {
+            this.add(key, other.get(key).getCopy());
+        }
     }
     
     public void print() {

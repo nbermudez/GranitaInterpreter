@@ -59,7 +59,10 @@ public class PrintStatement extends Statement {
         
         SemanticUtils.getInstance().setInsidePrint(true);
         for (Argument arg : arguments) {
-            args.add(arg.getIR());
+            D_Argument dArg = arg.getIR();
+            if (dArg != null) {
+                args.add(dArg);
+            }
         }
         SemanticUtils.getInstance().setInsidePrint(false);
         

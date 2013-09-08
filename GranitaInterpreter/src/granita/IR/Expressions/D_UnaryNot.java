@@ -4,6 +4,8 @@
  */
 package granita.IR.Expressions;
 
+import granita.Types.BoolType;
+
 /**
  *
  * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
@@ -13,6 +15,7 @@ public class D_UnaryNot extends D_Expression{
 
     public D_UnaryNot(D_Expression value) {
         this.value = value;
+        this.expressionType = new BoolType();
     }
     
     @Override
