@@ -61,8 +61,8 @@ public class ReturnStatement extends Statement {
             //returnType = returnExpression.validateSemantics();
         }
         Type expectedType = SemanticUtils.getInstance().getExpectedReturnType();
-        if (expectedType != null 
-                && !returnType.equivalent(new ErrorType()) 
+        if (expectedType != null
+                && !returnType.equivalent(new ErrorType())
                 && !expectedType.equivalent(returnType)) {
             ErrorHandler.handle("return expression type must be "
                     + expectedType + " but found " + returnType + ": line "
@@ -74,24 +74,25 @@ public class ReturnStatement extends Statement {
     @Override
     public D_Statement getIR() {
         checkForUnreachableStatement();
-        
+
         if (!SemanticUtils.getInstance().mustReturnExpression()
                 && returnExpression != null) {
             ErrorHandler.handle("cannot return a value from method whose result"
                     + " type is void: line " + returnExpression.getLine());
         }
-        
+
         D_Expression retExp = null;
         if (returnExpression != null) {
             retExp = returnExpression.getIR();
-            
-            returnType = retExp.getExpressionType();
-            if (returnType instanceof VoidType) {
-                ErrorHandler.handle("return value cannot be void: line " + line);
+
+            if (retExp != null) {
+                returnType = retExp.getExpressionType();
+                if (returnType instanceof VoidType) {
+                    ErrorHandler.handle("return value cannot be void: line " + line);
+                }
             }
         }
         SemanticUtils.getInstance().setUnreachableStatement();
         return new D_Return(retExp);
     }
-    
 }

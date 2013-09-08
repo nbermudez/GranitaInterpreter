@@ -78,14 +78,17 @@ public class ArrayLeftValue extends LeftValue {
             } else {
                 ArrayVariable array = (ArrayVariable) value;
                 D_Expression arrIndex = this.index.getIR();
-                Type it = arrIndex.getExpressionType();
+                if (arrIndex != null) {
+                    Type it = arrIndex.getExpressionType();
 
-                if (!it.equivalent(new IntType())) {
-                    ErrorHandler.handle("array index must be int: line "
-                            + this.getLine());
+                    if (!it.equivalent(new IntType())) {
+                        ErrorHandler.handle("array index must be int: line "
+                                + this.getLine());
+                        return null;
+                    }
+                    array.getType().setValue(it.getValue());
                     return null;
                 }
-                array.getType().setValue(it.getValue());
                 return new D_ArrayLeftValue(arrIndex, id);
             }
         }

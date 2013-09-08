@@ -32,8 +32,7 @@ public class UnaryNot extends Expression {
         D_Expression ret = value.getIR();
         Type tvalue = ret.getExpressionType();
         if (tvalue == null) {
-            ErrorHandler.handle("undefined variable " + value.toString()
-                    + ": line " + line);
+            return null;
         }
 
         if (tvalue instanceof BoolType) {

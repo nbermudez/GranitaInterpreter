@@ -17,7 +17,6 @@ import granitainterpreter.ErrorHandler;
  * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
  */
 public class Eq extends BinaryExpression {
-    private Type resultType = null;
     
     public Eq(Expression left, Expression right, int line) {
         super(left, right, line);
@@ -31,15 +30,8 @@ public class Eq extends BinaryExpression {
     @Override
     public D_Expression getIR() {
         D_Expression LHS = left.getIR();
-        if (LHS == null) {
-            ErrorHandler.handle("undefined variable " + left.toString()
-                    + ": line " + line);
-            return null;
-        }
         D_Expression RHS = right.getIR();
-        if (RHS == null) {
-            ErrorHandler.handle("undefined variable " + right.toString()
-                    + ": line " + line);
+        if (RHS == null || LHS == null) {
             return null;
         }
         

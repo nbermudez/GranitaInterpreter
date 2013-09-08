@@ -29,17 +29,11 @@ public class Or extends BinaryExpression {
     @Override
     public D_Expression getIR() {
         D_Expression LHS = left.getIR();
-        if (LHS == null) {
-            ErrorHandler.handle("undefined variable " + left.toString()
-                    + ": line " + line);
-            return null;
-        }
         D_Expression RHS = right.getIR();
-        if (RHS == null) {
-            ErrorHandler.handle("undefined variable " + right.toString()
-                    + ": line " + line);
+        if (RHS == null || LHS == null) {
             return null;
         }
+        
         Type rType = RHS.getExpressionType(), lType = LHS.getExpressionType();
         if (rType instanceof BoolType && lType instanceof BoolType) {
             return new D_Or(LHS, RHS);

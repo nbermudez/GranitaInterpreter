@@ -79,7 +79,10 @@ public class ReadStatement extends Statement {
         ArrayList<D_LeftValue> variables = new ArrayList<D_LeftValue>();
         SemanticUtils.getInstance().setInsideRead(true);
         for (LeftValue lValue : this.leftValues) {
-            variables.add(lValue.getIR());
+            D_LeftValue dLvalue = lValue.getIR();
+            if (dLvalue != null) {
+                variables.add(dLvalue);
+            }
         }
         SemanticUtils.getInstance().setInsideRead(false);
         
