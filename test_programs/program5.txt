@@ -33,7 +33,7 @@ class _My_Class {
 		functiong();
 		print "hola mundo";
 		
-		potato = 1+2*3/4%5 rot 6 && true || false >> 1 << 3;
+		potato = 1+2*3/4%5 rot xk + 6 && true || false >> 1 << 3;
 		{
 			int __;
 			{
