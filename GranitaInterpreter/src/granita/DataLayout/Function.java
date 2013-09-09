@@ -28,7 +28,10 @@ public class Function extends SymbolTableEntry {
         for (SimpleVariable simpleVariable : parameters) {
             copy.parameters.add(simpleVariable.getCopy());
         }
-        //copy.setBlock(body.getCopy());
+        //Context cCopy = new Context();
+        //cCopy.copyFrom(body.getContext());
+        //D_Block tmp = new D_Block(body.getStatements(), cCopy);
+        copy.setBody(body);
         return copy;
     }
 

@@ -57,6 +57,7 @@ import granita.Types.BoolType;
 import granita.Types.IntType;
 import granita.Types.Type;
 import granita.Types.VoidType;
+import granitainterpreter.ErrorHandler;
 import granitainterpreter.GranitaException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -92,8 +93,9 @@ public class ParserTree {
     private ArrayList<ClassStatement> statements() throws GranitaException {
         ArrayList<ClassStatement> programs = new ArrayList<ClassStatement>();
         if (currentToken != Token.TK_KW_CLASS) {
-            throw new GranitaException("Expected class but found " + currentToken.lexeme
-                    + " in line " + this.lexer.lineNumber());
+            ErrorHandler.handleFatalError("Expected 'class' keyword but found '" + currentToken.lexeme
+                    + "': line " + this.lexer.lineNumber());
+            return null;
         }
         while (currentToken.type == Token.TokenType.KW_CLASS) {
             programs.add(P());
@@ -105,9 +107,11 @@ public class ParserTree {
     private void match(Token comp, String expected) throws GranitaException {
         if (currentToken.equals(comp)) {
             currentToken = lexer.nextToken();
+        } else if (currentToken.type != Token.TokenType.ERROR){
+            ErrorHandler.handleFatalError("Expected '" + expected + "' but found '" + currentToken.lexeme
+                    + "': line " + this.lexer.prevLine());
         } else {
-            throw new GranitaException("Expected " + expected + " but found " + currentToken.lexeme
-                    + " in line " + this.lexer.prevLine());
+            ErrorHandler.handleFatalError(currentToken.lexeme);
         }
     }
 

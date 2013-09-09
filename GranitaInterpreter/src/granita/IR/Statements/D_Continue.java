@@ -4,6 +4,8 @@
  */
 package granita.IR.Statements;
 
+import granita.Interpreter.Interpreter;
+
 /**
  *
  * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
@@ -12,7 +14,7 @@ public class D_Continue extends D_Statement{
 
     @Override
     public void execute() {
-        
+        Interpreter.continueWasReached(true);
     }
     
 }

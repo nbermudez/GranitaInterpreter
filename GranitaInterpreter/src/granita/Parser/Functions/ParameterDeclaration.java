@@ -66,6 +66,7 @@ public class ParameterDeclaration extends Statement {
         Function f = (Function)SymbolTableTree.getInstance().lookupFunction(methodName);
         SimpleVariable v = new SimpleVariable(type, null);
         v.setInitialized(true);
+        v.setVarName(name);
         f.getParameters().add(v);
         if (SemanticUtils.getInstance().getTmpContext().findLocally(name) != null) {
             ErrorHandler.handle("duplicated parameter '" + name + "': line " + this.getLine());

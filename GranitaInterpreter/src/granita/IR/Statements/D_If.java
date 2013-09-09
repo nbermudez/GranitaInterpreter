@@ -32,8 +32,10 @@ public class D_If extends D_Statement {
     public void execute() {
         Boolean ret = (Boolean) conditional.evaluate();
         if (ret) {
+            //System.out.println("TrueBlock ");
             trueBlock.execute();
         } else if (falseBlock != null) {
+            //System.out.println("FalseBlock");
             falseBlock.execute();
         }
     }

@@ -5,6 +5,7 @@
 package granita.IR.Statements;
 
 import granita.DataLayout.Context;
+import granita.Interpreter.Interpreter;
 import java.util.ArrayList;
 
 /**
@@ -12,6 +13,7 @@ import java.util.ArrayList;
  * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
  */
 public class D_Block extends D_Statement {
+    
     private ArrayList<D_Statement> statements;
     private Context context;
 
@@ -38,11 +40,52 @@ public class D_Block extends D_Statement {
     }
     //</editor-fold>
     
+    public D_Block getCopy() {
+        Context c = new Context(context.getParent());
+        c.copyFrom(context);
+        ArrayList<D_Statement> stats = new ArrayList<D_Statement>();
+        for (D_Statement d_Statement : statements) {
+            if (d_Statement instanceof D_Block) {
+                stats.add(((D_Block)d_Statement).getCopy());
+            } else if (d_Statement instanceof D_If){
+                D_If b = (D_If) d_Statement;
+                D_If dIf;
+                if (b.falseBlock == null) {
+                    dIf = new D_If(b.conditional, b.trueBlock.getCopy());
+                } else {
+                    dIf = new D_If(b.conditional, b.trueBlock.getCopy(), b.falseBlock.getCopy());
+                }
+                stats.add(dIf);
+            } else {
+                stats.add(d_Statement);
+            }
+        }
+        D_Block copy = new D_Block(stats, c);
+        
+        return copy;
+    }
+    
     @Override
     public void execute() {
+        Interpreter.saveContext();
+        Interpreter.registerContext(context);
         for (D_Statement d_Statement : statements) {
+            if (Interpreter.returnReached()) {
+                break;
+            }
+            if (d_Statement instanceof D_Block) {
+                //Interpreter.saveContext();
+            }
+            
             d_Statement.execute();
+            
+            if (d_Statement instanceof D_Block) {
+                //Interpreter.loadContext();
+            }
         }
+        Interpreter.unregisterContext();
+        Interpreter.loadContext();
+        
     }
     
 }

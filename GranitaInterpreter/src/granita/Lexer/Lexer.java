@@ -224,14 +224,14 @@ public class Lexer {
                     if (cs == '&') {
                         return Token.TK_OP_AND;
                     }
-                    return errorToken("Lexer error: & expected, found " + (char) cs + " in line " + this.lineNumber, true);
+                    return errorToken("Lexic error: & expected, found " + (char) cs + " in line " + this.lineNumber, true);
                 case '|':
                     result.lexeme += (char) cs;
                     cs = getSymbol();
                     if (cs == '|') {
                         return Token.TK_OP_OR;
                     }
-                    return errorToken("Lexer error: | expected, found " + (char) cs + " in line " + this.lineNumber, true);
+                    return errorToken("Lexic error: | expected, found " + (char) cs + " in line " + this.lineNumber, true);
                 case '{':
                     return Token.TK_LEFT_CURLY_BRACKET;
                 case '}':
@@ -249,7 +249,7 @@ public class Lexer {
                     cs = getSymbol();
                     while (cs != '"') {
                         if (cs == EOF) {
-                            return errorToken("Lexer error: \" expected: got EOF in line " + this.lineNumber, false);
+                            return errorToken("Lexic error: \" expected: got EOF in line " + this.lineNumber, false);
                         }
                         if (cs == '\\') {
                             //result.lexeme += (char) cs;
@@ -271,7 +271,7 @@ public class Lexer {
                                     cs = '\r';
                                     break;
                                 default:
-                                    return errorToken("Lexer error: invalid escaped character in line " + this.lineNumber, true);
+                                    return errorToken("Lexic error: invalid escaped character in line " + this.lineNumber, true);
                             }
                         }
                         result.lexeme += (char) cs;
@@ -285,7 +285,7 @@ public class Lexer {
                     if (cs == '\\') {
                         cs = getSymbol();
                         if (!isEscapedValid(cs)) {
-                            return errorToken("Lexer error: invalid escaped character in line " + this.lineNumber, true);
+                            return errorToken("Lexic error: invalid escaped character in line " + this.lineNumber, true);
                         }
                         result.lexeme += (char) cs;
                         cs = getSymbol();
@@ -294,7 +294,7 @@ public class Lexer {
                             result.type = Token.TokenType.CHAR_CONSTANT;
                             return result;
                         }
-                        return errorToken("Lexer error: expected ', got " + (char) cs + " in line " + this.lineNumber, true);
+                        return errorToken("Lexic error: expected ', got " + (char) cs + " in line " + this.lineNumber, true);
                     }
 
                     cs = getSymbol();
@@ -308,10 +308,10 @@ public class Lexer {
                             result.type = Token.TokenType.CHAR_CONSTANT;
                             return result;
                         }
-                        return errorToken("Lexer error: expected ', got " + (char) cs + " in line " + this.lineNumber, true);
+                        return errorToken("Lexic error: expected ', got " + (char) cs + " in line " + this.lineNumber, true);
                     }
 
-                    return errorToken("Lexer error: not a printable character in line " + this.lineNumber, true);
+                    return errorToken("Lexic error: not a printable character in line " + this.lineNumber, true);
                 case '0':
                     result.lexeme += (char) cs;
                     cs = getSymbol();
@@ -319,7 +319,7 @@ public class Lexer {
                         result.lexeme += (char) cs;
                         cs = getSymbol();
                         if (!isHexDigit(cs)) {
-                            return errorToken("Lexer error: not a valid hexadecimal number in line " + this.lineNumber, true);
+                            return errorToken("Lexic error: not a valid hexadecimal number in line " + this.lineNumber, true);
                         }
                         while (isHexDigit(cs)) {
                             result.lexeme += (char) cs;

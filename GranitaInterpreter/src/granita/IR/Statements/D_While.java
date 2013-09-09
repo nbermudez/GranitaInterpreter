@@ -5,6 +5,7 @@
 package granita.IR.Statements;
 
 import granita.IR.Expressions.D_Expression;
+import granita.Interpreter.Interpreter;
 
 /**
  *
@@ -28,10 +29,12 @@ public class D_While extends D_Statement {
                 break;
             }
             for (D_Statement st : block.getStatements()) {
-                if (st instanceof D_Continue) {
-                    continue;
-                } else if (st instanceof D_Break) {
+                if (Interpreter.breakReached()) {
+                    Interpreter.breakWasReached(false);
                     break;
+                } else if (Interpreter.continueReached()) {
+                    Interpreter.continueWasReached(false);
+                    continue;
                 } else {
                     st.execute();
                 }

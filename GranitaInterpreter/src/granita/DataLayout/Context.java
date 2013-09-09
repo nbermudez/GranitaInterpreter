@@ -30,6 +30,10 @@ public class Context {
         return this.parentContext != null;
     }
     
+    public Context getParent() {
+        return this.parentContext;
+    }
+    
     public void setParent(Context parent) {
         this.parentContext = parent;
     }
@@ -99,7 +103,7 @@ public class Context {
         Set<String> keys = this.variables.keySet();
         
         for (String key : keys) {
-            System.out.println(key + ", " + get(key));
+            System.out.println(key + ", " + get(key).getType().getValue());
         }
     }
 }

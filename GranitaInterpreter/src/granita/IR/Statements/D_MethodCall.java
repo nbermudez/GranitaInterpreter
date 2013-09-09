@@ -8,6 +8,7 @@ import granita.IR.Expressions.D_Expression;
 import granita.DataLayout.Function;
 import granita.SymbolTable.SymbolTableTree;
 import granita.DataLayout.Variable;
+import granita.Interpreter.Interpreter;
 import granita.Types.Type;
 import java.util.ArrayList;
 
@@ -35,16 +36,16 @@ public class D_MethodCall extends D_Statement {
             Object param = arg.evaluate();
             t.setValue(param);
             String varName = AR.getParameters().get(i).getVarName();
-            //Variable v = AR.getBlock().getVariable(varName);
-            //v.getType().setValue(param);
+            Variable v = AR.getBody().getContext().find(varName);
+            v.getType().setValue(param);
             
             i = i + 1;
         }
         //Interpreter.getInstance().register(AR);
         D_Block toRun = AR.getBody();
-        toRun.execute();
+        toRun.getCopy().execute();
+        Interpreter.returnWasReached(false);
         //Interpreter.getInstance().popFunction();
-        //Interpreter.getInstance().setReturnReached(false);
     }
     
 }

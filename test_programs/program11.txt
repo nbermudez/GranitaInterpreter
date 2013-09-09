@@ -2,9 +2,10 @@ class t {
 	int funct2(int n){
 		int x,y;
 		if (n == 1 || n == 0) {
+			//print 1, " ";
 			return 1;
-		} else {		
-			return funct2(n-1) + funct2(n-2);
+		} else {
+			return funct2(n-2) + funct2(n-1);
 		}
 		//return funct2(n-1) + funct2(n-2);
 	}
@@ -19,7 +20,7 @@ class t {
 				{
 					print x+y, "\n", "hola\n";
 				}
-				x = funct2(5);
+				//x = funct2(5);
 				print "fibonacci 5: ", x, "\n";
 				print y, "\n";
 				//print funct2(5);
@@ -34,19 +35,21 @@ class t {
 		}
 		if (n % 2 == 0){
 			print "hola";
+			printAll(n-1);
 		} else {
-			print " a todos \n";			
+			print " a todos \n";	
+			printAll(n-1);			
 		}
-		printAll(n-1);
+		
 		
 	}
 	
 	void main() {
-		int x;
+		/*int x;
 		x = test_unde_var1();
 		print x+x*x, "\n";
 		x = funct2(3);
-		print x, "\n";
+		print "antes del while: ", x, "\n";
 		while(x<=10){
 			print x, "\n";
 			x = x+1;
@@ -75,6 +78,9 @@ class t {
 		}
 		print "------------------------------------\n";
 		printAll(6);
+		print "------------------------------------\n";*/
+		//printAll(6);
+		print funct2(5);
 	}
 	
 	void t(int x){}
