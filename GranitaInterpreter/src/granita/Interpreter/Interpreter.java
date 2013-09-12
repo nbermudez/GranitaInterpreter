@@ -6,7 +6,9 @@ package granita.Interpreter;
 
 import granita.DataLayout.Context;
 import granita.DataLayout.ContextStack;
+import granita.DataLayout.Procedure;
 import granita.IR.General.D_Program;
+import java.util.ArrayList;
 
 /**
  *
@@ -74,4 +76,8 @@ public class Interpreter {
     public static void unregisterContext() {
         contextStack.pop().setParent(null);
     }
+    
+    //<editor-fold defaultstate="collapsed" desc="Doing interpretation again T.T">
+    private ArrayList<Procedure> procedures;
+    //</editor-fold> 
 }

@@ -73,15 +73,7 @@ public class D_Block extends D_Statement {
             if (Interpreter.returnReached()) {
                 break;
             }
-            if (d_Statement instanceof D_Block) {
-                //Interpreter.saveContext();
-            }
-            
             d_Statement.execute();
-            
-            if (d_Statement instanceof D_Block) {
-                //Interpreter.loadContext();
-            }
         }
         Interpreter.unregisterContext();
         Interpreter.loadContext();

@@ -52,7 +52,7 @@ public class D_MethodCallExpression extends D_Expression {
         //t.copyFrom(toRun.getContext());
         //toRun.setContext(t);
         //Interpreter.registerContext(toRun.getContext());
-        System.out.println("MC: " + methodName);
+        //System.out.println("MC: " + methodName);
         toRun.execute();
         Object res = Interpreter.returnedValue();
         Interpreter.returnedValue(null);
