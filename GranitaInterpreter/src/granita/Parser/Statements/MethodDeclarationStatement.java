@@ -152,6 +152,7 @@ public class MethodDeclarationStatement extends DeclarationStatement {
 
         SemanticUtils.getInstance().setCurrentBlock(block);
         tmp = new Context();
+        tmp.initialize(parameters.size());
         SemanticUtils.getInstance().setTmpContext(tmp);
         for (ParameterDeclaration st : parameters) {
             st.register();

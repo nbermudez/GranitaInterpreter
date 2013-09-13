@@ -4,8 +4,10 @@
  */
 package granita.IR.Statements;
 
+import granita.DataLayout.Variable;
 import granita.IR.Expressions.D_Expression;
 import granita.IR.LeftValues.D_LeftValue;
+import granita.Interpreter.Interpreter;
 import granita.Types.Type;
 
 /**
@@ -23,8 +25,8 @@ public class D_Assign extends D_Statement {
     
     @Override
     public void execute() {
-        Type ret = lSide.getExpressionType();
-        ret.setValue(value.evaluate());
+        Object result = value.evaluate();
+        Interpreter.currentContext().set(lSide.getIdentifier(), result);
     }
     
 }

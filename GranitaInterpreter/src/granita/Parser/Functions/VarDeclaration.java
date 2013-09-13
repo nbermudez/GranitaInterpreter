@@ -7,7 +7,10 @@ package granita.Parser.Functions;
 import granita.DataLayout.Context;
 import granita.DataLayout.SimpleVariable;
 import granita.IR.Statements.D_Statement;
+import granita.Interpreter.DataLayout.BoolVariable;
+import granita.Interpreter.DataLayout.IntVariable;
 import granita.Parser.Statements.Statement;
+import granita.Types.BoolType;
 import granita.Types.Type;
 import granitainterpreter.ErrorHandler;
 import granitainterpreter.SemanticUtils;
@@ -66,6 +69,11 @@ public class VarDeclaration extends Statement {
                         + "': line " + this.getLine());
             } else {
                 context.add(key, new SimpleVariable(type, null));
+                if (this.type instanceof BoolType) {
+                    context.add(context.getVariableIndex(), new BoolVariable(key, false));
+                } else {
+                    context.add(context.getVariableIndex(), new IntVariable(key, 0));
+                }
             }
         }
         return null;

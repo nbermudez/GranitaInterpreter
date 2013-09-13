@@ -5,8 +5,6 @@
 package granita.Parser.Expressions;
 
 import granita.IR.Expressions.D_Expression;
-import granita.Types.Type;
-import granitainterpreter.GranitaException;
 
 /**
  *

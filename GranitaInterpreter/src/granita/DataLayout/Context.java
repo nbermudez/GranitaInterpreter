@@ -4,6 +4,7 @@
  */
 package granita.DataLayout;
 
+import granita.Interpreter.DataLayout.RE_Variable;
 import granita.SymbolTable.SymbolTableEntry;
 import granita.SymbolTable.SymbolTableTree;
 import java.util.HashMap;
@@ -16,6 +17,8 @@ import java.util.Set;
 public class Context {
     private HashMap<String, Variable> variables;
     private Context parentContext;
+    private RE_Variable[] re_variables;
+    private int variableIndex = 0, size;
 
     public Context(Context parentContext) {
         this.variables = new HashMap<String, Variable>();
@@ -24,6 +27,11 @@ public class Context {
 
     public Context() {
         this.variables = new HashMap<String, Variable>();
+    }
+    
+    public void initialize(int size) {
+        this.size = size;
+        this.re_variables = new RE_Variable[size];
     }
     
     public boolean hasParent() {
@@ -42,6 +50,24 @@ public class Context {
         if (!this.variables.containsKey(key)) {
             this.variables.put(key, value);
         }
+    }
+    
+    public void add(int key, RE_Variable value) {
+        this.re_variables[key] = value;
+    }
+    
+    public void set(String key, Object value) {
+        if (this.variables.containsKey(key)) {
+            Variable v = this.variables.get(key);
+            v.type.setValue(value);
+        } else if (parentContext != null){
+            parentContext.set(key, value);
+        }
+    }
+    
+    public void set(String key, int index, Object value) {
+        ArrayVariable v = (ArrayVariable) SymbolTableTree.getInstance().getGlobal().getEntry(key);
+        v.items[index].setValue(value);
     }
     
     private Variable get(String key) {
@@ -65,6 +91,20 @@ public class Context {
         return this.get(key);
     }
     
+    public int getVariableIndex() {
+        int value = this.variableIndex;
+        this.variableIndex ++;
+        return value;
+    }
+    
+    public void setVariableIndexInitValue(int value) {
+        this.variableIndex = value;
+    }
+    
+    public int getSize() {
+        return this.size;
+    }
+    
     public void clear() {
         this.variables.clear();
     }
@@ -78,6 +118,14 @@ public class Context {
         }
         
         copy.parentContext = this.parentContext;
+        
+        //<editor-fold defaultstate="collapsed" desc="Nuevo">
+        copy.initialize(size);
+        for (int i = 0; i < re_variables.length; i++) {
+            RE_Variable rE_Variable = re_variables[i];
+            copy.add(i, rE_Variable);
+        }
+        //</editor-fold>
     }
     
     public void copyFrom(Context copy) {
@@ -88,7 +136,15 @@ public class Context {
             this.add(key, copy.get(key).getCopy());
         }
         
-        this.parentContext = copy.parentContext;
+        this.parentContext = copy.parentContext;     
+        
+        //<editor-fold defaultstate="collapsed" desc="Nuevo">
+        this.initialize(copy.size);
+        for (int i = 0; i < copy.re_variables.length; i++) {
+            RE_Variable rE_Variable = copy.re_variables[i];
+            this.add(i, rE_Variable);
+        }
+        //</editor-fold>
     }
     
     public void merge(Context other) {
@@ -96,6 +152,14 @@ public class Context {
         
         for (String key : keys) {
             this.add(key, other.get(key).getCopy());
+        }
+        
+        if (other.re_variables == null) {
+            return;
+        }
+        for (int i = 0; i < other.re_variables.length; i++) {
+            RE_Variable rE_Variable = other.re_variables[i];
+            this.add(i, rE_Variable);
         }
     }
     

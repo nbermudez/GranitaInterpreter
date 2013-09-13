@@ -133,59 +133,32 @@ public class BlockStatement extends Statement {
     }
 
     @Override
-    public void execute() throws GranitaException {
-        /*BlockStatement back_up = this.getCopy();
-        Interpreter.getInstance().pushBlockToFunction(back_up);
-        
-        for (Statement st : statements) {
-            if (st instanceof BlockStatement) {
-                BlockStatement bl = (BlockStatement) st;
-                bl.setParentBlock(back_up);
-                //back_up = this.getCopy();
-            } else if (st instanceof WhileStatement) {
-                WhileStatement w = (WhileStatement) st;
-                w.block.setParentBlock(back_up);
-            } else if (st instanceof ForStatement) {
-                ForStatement f = (ForStatement) st;
-                f.block.setParentBlock(back_up);
-            } else if (st instanceof IfStatement) {
-                IfStatement ifS = (IfStatement) st;
-                ifS.trueBlock.setParentBlock(back_up);
-                if (ifS.falseBlock != null) {
-                    ifS.falseBlock.setParentBlock(back_up);
-                }
-            }
-            st.execute();
-            if (st instanceof BlockStatement 
-                    || st instanceof IfStatement
-                    || st instanceof WhileStatement
-                    || st instanceof ForStatement) {
-                this.localSymbolTable = back_up.localSymbolTable;
-            }
-            if (Interpreter.getInstance().returnReached()) {
-                break;
-            }
-        }
-        Interpreter.getInstance().popBlockToFunction();
-        */
-        
-    }
-
-    @Override
     public D_Block getIR() {
         checkForUnreachableStatement();
         
         Context thisContext = new Context();
+        int count = 0;
+        for (Statement statement : statements) {
+            if (statement instanceof VarDeclaration) {
+                count += ((VarDeclaration) statement).getVarNames().size();
+            }
+        }
+        
         if (SemanticUtils.getInstance().mustMergeWithTempContext()) {
+            count += SemanticUtils.getInstance().getTmpContext().getSize();
+            thisContext.initialize(count);
+            thisContext.setVariableIndexInitValue(SemanticUtils.getInstance().getTmpContext().getSize());
             thisContext.merge(SemanticUtils.getInstance().getTmpContext());
             SemanticUtils.getInstance().mustMergeWithTempContext(false);
             SemanticUtils.getInstance().setTmpContext(null);
+        } else {
+            thisContext.initialize(count);
         }
+        
         
         SemanticUtils.getInstance().registerContext(thisContext);
         ArrayList<D_Statement> dStatements = new ArrayList<D_Statement>();
         for (Statement statement : statements) {
-            //switch dependiendo del tipo de statement.
             if (statement instanceof VarDeclaration) {
                 statement.getIR();
             } else {

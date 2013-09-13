@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package granita.DataLayout;
+package granita.Interpreter.DataLayout;
 
 /**
  *
@@ -17,11 +17,11 @@ public class Procedure {
         this.variablesCount = variablesCount;
     }    
     
-    public Variable[] createEnvironment() {
+    public RE_Variable[] createEnvironment() {
         int size = variablesCount;
         if (isFunction) {
             size += 1;
         }
-        return new Variable[size];
+        return new RE_Variable[size];
     }
 }

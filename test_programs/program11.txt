@@ -1,4 +1,5 @@
 class t {
+	int fuck[10];
 	int funct2(int n){
 		int x,y;
 		if (n == 1 || n == 0) {
@@ -50,10 +51,10 @@ class t {
 		print x+x*x, "\n";
 		x = funct2(3);
 		print "antes del while: ", x, "\n";
-		/*while(x<=10){
+		while(x<=10){
 			print x, "\n";
 			x = x+1;
-		}*/
+		}
 		x = x+100;
 		if (x<100) {
 			{
@@ -64,23 +65,29 @@ class t {
 			print "x mayor a 100\n";
 			{
 				int x;
+				x = 1000;
 				{
 					x = 999;
 					print "otro x: ", x, "\n";
-				}
-				x = 1000;
+				}				
 				print "hmmm: ", x, "\n";
 			}
 		}
 		x = 1;
-		/*for(x; x<20; x=x+1){
+		for(x; x<20; x=x+1){
 			print "potato", x, "\n";
-		}*/
+		}
 		print "------------------------------------\n";
 		printAll(6);
 		print "------------------------------------\n";
 		//printAll(6);
 		print "fibonacci(5)=", funct2(5);
+		print "------------------------------------\n";
+		//read x;
+		//print "after read ", x, "\n";
+		read fuck[0], fuck[1], fuck[0];
+		print fuck[0], "\n";
+		
 	}
 	
 	void t(int x){}

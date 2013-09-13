@@ -34,4 +34,12 @@ public class SymbolTableTree {
     public SymbolTableEntry lookupFunction(String functionName) {
         return this.root.getFunction(functionName);
     }    
+    
+    public int getFunctionsCount() {
+        return this.root.getFunctionCount();
+    }
+    
+    public int getGlobalCount() {
+        return this.root.getGlobalCount();
+    }
 }

@@ -23,11 +23,9 @@ public class D_While extends D_Statement {
     
     @Override
     public void execute() {
-        while (true) {
-            Boolean ret = (Boolean) expression.evaluate();
-            if (!ret) {
-                break;
-            }
+        Interpreter.registerContext(block.getContext());
+        Boolean ret = (Boolean) expression.evaluate();
+        while (ret) {
             for (D_Statement st : block.getStatements()) {
                 if (Interpreter.breakReached()) {
                     Interpreter.breakWasReached(false);
@@ -39,7 +37,9 @@ public class D_While extends D_Statement {
                     st.execute();
                 }
             }
+            ret = (Boolean) expression.evaluate();
         }
+        Interpreter.unregisterContext();
     }
     
 }

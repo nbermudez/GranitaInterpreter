@@ -4,10 +4,14 @@
  */
 package granita.Parser.Functions;
 
+import granita.DataLayout.Context;
 import granita.DataLayout.Function;
 import granita.DataLayout.SimpleVariable;
+import granita.Interpreter.DataLayout.BoolVariable;
+import granita.Interpreter.DataLayout.IntVariable;
 import granita.Parser.Statements.Statement;
 import granita.SymbolTable.SymbolTableTree;
+import granita.Types.IntType;
 import granita.Types.Type;
 import granitainterpreter.ErrorHandler;
 import granitainterpreter.SemanticUtils;
@@ -71,7 +75,13 @@ public class ParameterDeclaration extends Statement {
         if (SemanticUtils.getInstance().getTmpContext().findLocally(name) != null) {
             ErrorHandler.handle("duplicated parameter '" + name + "': line " + this.getLine());
         } else {
-            SemanticUtils.getInstance().getTmpContext().add(name, v);
+            Context tmp = SemanticUtils.getInstance().getTmpContext();
+            tmp.add(name, v);
+            if (type instanceof IntType) {
+                tmp.add(tmp.getVariableIndex(), new IntVariable(name, 0));
+            } else {
+                tmp.add(tmp.getVariableIndex(), new BoolVariable(name, false));
+            }
         }
     }
 }

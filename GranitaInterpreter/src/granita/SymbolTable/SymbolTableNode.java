@@ -98,4 +98,12 @@ public class SymbolTableNode {
     public void deleteFunction(String methodName) {
         this.functions.remove(methodName);
     }
+    
+    public int getFunctionCount() {
+        return this.functions.size();
+    }
+    
+    public int getGlobalCount() {
+        return this.table.size();
+    }
 }

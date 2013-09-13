@@ -54,14 +54,6 @@ public class ArrayLeftValue extends LeftValue {
     public String toString() {
         return id + "[" + index.toString() + "]";
     }
-/*
-    @Override
-    public Type getLocation() {
-        Variable var = Interpreter.getInstance().getVariable(id);
-        ArrayVariable arrVar = (ArrayVariable) var;
-        //calculatedIndex = (Integer) index.evaluate();
-        return arrVar.getItems()[calculatedIndex];
-    }*/
 
     @Override
     public D_LeftValue getIR() {
@@ -76,7 +68,6 @@ public class ArrayLeftValue extends LeftValue {
                         + this.getLine());
                 return null;
             } else {
-                ArrayVariable array = (ArrayVariable) value;
                 D_Expression arrIndex = this.index.getIR();
                 if (arrIndex != null) {
                     Type it = arrIndex.getExpressionType();
@@ -86,10 +77,8 @@ public class ArrayLeftValue extends LeftValue {
                                 + this.getLine());
                         return null;
                     }
-                    array.getType().setValue(it.getValue());
-                    return null;
                 }
-                return new D_ArrayLeftValue(arrIndex, id);
+                return new D_ArrayLeftValue(arrIndex, id, SemanticUtils.getInstance().currentContext().getVariableIndex());
             }
         }
     }

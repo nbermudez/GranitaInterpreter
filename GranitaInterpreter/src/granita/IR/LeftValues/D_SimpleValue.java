@@ -25,6 +25,12 @@ public class D_SimpleValue extends D_LeftValue {
         this.setExpressionType(val.getType());
     }
 
+    public D_SimpleValue(String identifier, int contextPosition) {
+        super(identifier, contextPosition);
+        SimpleVariable val = (SimpleVariable) SemanticUtils.getInstance().currentContext().find(identifier);
+        this.setExpressionType(val.getType());
+    }
+
     @Override
     public Object evaluate() {
         
