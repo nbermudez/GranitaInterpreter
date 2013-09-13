@@ -4,6 +4,9 @@
  */
 package granita.IR.Expressions;
 
+import granita.Interpreter.Results.IntResult;
+import granita.Interpreter.Results.Result;
+
 /**
  *
  * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
@@ -22,4 +25,11 @@ public class D_Mult extends D_BinaryExpression {
         return l * r;
     }
     
+    @Override
+    public Result eval() {
+        IntResult l = (IntResult) left.eval();
+        IntResult r = (IntResult) right.eval();
+        
+        return new IntResult(l.getValue() * r.getValue());
+    }
 }

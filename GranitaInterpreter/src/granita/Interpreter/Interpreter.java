@@ -9,7 +9,8 @@ import granita.DataLayout.ContextStack;
 import granita.IR.General.D_Program;
 import granita.Interpreter.DataLayout.Procedure;
 import granita.Interpreter.DataLayout.RE_Variable;
-import granita.SymbolTable.SymbolTableTree;
+import granita.Interpreter.Results.Result;
+import granitainterpreter.SemanticUtils;
 import java.util.Stack;
 
 /**
@@ -88,17 +89,18 @@ public class Interpreter {
     
     //<editor-fold defaultstate="collapsed" desc="Doing interpretation again T.T">
     private static Procedure[] procedures;
-    private static RE_Variable[] global;
+    private static Context global;
     private static int procedureIndex = 0;
     private static Stack<Integer> variableIndex = new Stack<Integer>();
     
     public static void setInitialEnvironment() {
-        //tomar la tabla de simbolos y generar Procedure[] y global[]
-        int sizeFunctions = SymbolTableTree.getInstance().getFunctionsCount();
-        procedures = new Procedure[sizeFunctions];
+        procedures = SemanticUtils.getInstance().getProcedures();
         
-        int sizeGlobal = SymbolTableTree.getInstance().getGlobalCount();
-        global = new RE_Variable[sizeGlobal];
+        RE_Variable[] globalA = SemanticUtils.getInstance().getGlobal();
+        global = new Context();
+        global.setContextId(0);
+        global.setRuntimeEnvironment(globalA);
+        registerContext(global);
     }
     
     public static int getProcedureIndex() {
@@ -111,6 +113,18 @@ public class Interpreter {
         int value = variableIndex.pop();
         variableIndex.push(value + 1);
         return value;
+    }
+    
+    public static RE_Variable getVariableRE(int index) {
+        return global.getVariableRE(index);
+    }
+    
+    public static Procedure getProcedure(int index) {
+        return procedures[index];
+    }
+    
+    public static Result getReturnValue() {
+        return currentContext().getVariableRE(0).getValue();
     }
     //</editor-fold> 
 }

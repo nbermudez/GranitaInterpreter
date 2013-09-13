@@ -5,6 +5,7 @@
 package granita.IR.Functions;
 
 import granita.IR.Expressions.D_Expression;
+import granita.Interpreter.Results.Result;
 
 /**
  *
@@ -20,6 +21,11 @@ public class D_Argument extends D_Expression {
     @Override
     public Object evaluate() {
         return value.evaluate();
+    }
+
+    @Override
+    public Result eval() {
+        return value.eval();
     }
     
 }

@@ -19,7 +19,8 @@ public class D_Program {
     
     public void execute() {
         if (startPoint != null) {
-            startPoint.execute();
+            //startPoint.execute();
+            startPoint.exec();
         }
     }
     

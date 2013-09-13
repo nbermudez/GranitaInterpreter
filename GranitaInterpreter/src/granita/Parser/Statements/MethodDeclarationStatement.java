@@ -6,11 +6,16 @@ package granita.Parser.Statements;
 
 import granita.DataLayout.Context;
 import granita.DataLayout.Function;
+import granita.IR.Statements.D_Block;
+import granita.Interpreter.DataLayout.BoolVariable;
+import granita.Interpreter.DataLayout.IntVariable;
+import granita.Interpreter.DataLayout.Procedure;
 import granita.Parser.Functions.ParameterDeclaration;
 import granita.SymbolTable.SymbolTableEntry;
 import granita.SymbolTable.SymbolTableNode;
 import granita.SymbolTable.SymbolTableTree;
 import granita.Types.ErrorType;
+import granita.Types.IntType;
 import granita.Types.Type;
 import granita.Types.VoidType;
 import granitainterpreter.ErrorHandler;
@@ -106,39 +111,6 @@ public class MethodDeclarationStatement extends DeclarationStatement {
         return method;
     }
 
-    // TODO: eliminar esto cuando el getIR sea equivalente
-    @Override
-    public void validateSemantics() throws GranitaException {
-        //<editor-fold defaultstate="collapsed" desc="Validate block">
-        SemanticUtils.getInstance().setExpectedReturnType(this.type);
-
-        if (this.getType().equivalent(new VoidType())) {
-            SemanticUtils.getInstance().setMustReturnExpression(false);
-        } else {
-            SemanticUtils.getInstance().setMustReturnExpression(true);
-        }
-        SemanticUtils.getInstance().setCurrentBlock(block);
-        this.block.validateSemantics();
-        SemanticUtils.getInstance().setCurrentBlock(block.parentBlock);
-        //</editor-fold>
-
-        //<editor-fold defaultstate="collapsed" desc="Return type checks">
-        if (!this.getType().equivalent(new VoidType())) {
-            SemanticUtils.getInstance().setExpectedReturnType(this.type);
-
-            Type hasReturn = this.getBlock().hasReturn(this.getType());
-            if (hasReturn == null) {
-                ErrorHandler.handle("missing return statement in method '"
-                        + this.getIdentifier()
-                        + "': line " + this.line);
-            }
-
-            SemanticUtils.getInstance().setExpectedReturnType(null);
-        }
-        //</editor-fold>
-
-    }
-
     @Override
     public void register() throws GranitaException {
         SymbolTableNode root = SymbolTableTree.getInstance().getGlobal();
@@ -150,14 +122,26 @@ public class MethodDeclarationStatement extends DeclarationStatement {
                     + " line " + this.getLine());
         }
 
-        SemanticUtils.getInstance().setCurrentBlock(block);
-        tmp = new Context();
-        tmp.initialize(parameters.size());
+        tmp = new Context();        
+        
+        if (!(type instanceof VoidType)) {
+            tmp.initialize(parameters.size() + 1);
+            if (type instanceof IntType) {
+                tmp.add(tmp.getVariableIndex(), new IntVariable("retValue", 0));
+            } else {
+                tmp.add(tmp.getVariableIndex(), new BoolVariable("retValue", false));
+            }
+            
+        } else {
+            tmp.initialize(parameters.size());
+        }
+        
         SemanticUtils.getInstance().setTmpContext(tmp);
         for (ParameterDeclaration st : parameters) {
             st.register();
         }
-        SemanticUtils.getInstance().setCurrentBlock(block);
+        Procedure thisProc = new Procedure(identifier);
+        SemanticUtils.getInstance().addProcedure(thisProc);
     }
     
     public void checkBody() {
@@ -178,7 +162,10 @@ public class MethodDeclarationStatement extends DeclarationStatement {
                 SemanticUtils.getInstance().setMustReturnExpression(true);
             }
             SemanticUtils.getInstance().setExpectedReturnType(type);
-            f.setBody(block.getIR());
+            D_Block dBlock = block.getIR();
+            f.setBody(dBlock);
+            Procedure proc = SemanticUtils.getInstance().findProcedure(identifier);
+            proc.setBody(dBlock);
         }
         
         if (!this.getType().equivalent(new VoidType())) {

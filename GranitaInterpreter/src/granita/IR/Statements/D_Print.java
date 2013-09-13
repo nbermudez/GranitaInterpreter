@@ -24,5 +24,12 @@ public class D_Print extends D_Statement {
             System.out.print(argument.evaluate());
         }
     }
+
+    @Override
+    public void exec() {
+        for (D_Argument argument : arguments) {
+            System.out.print(argument.eval().getValue());
+        }
+    }
     
 }

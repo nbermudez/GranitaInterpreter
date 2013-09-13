@@ -16,5 +16,10 @@ public class D_Break extends D_Statement {
     public void execute() {
         Interpreter.breakWasReached(true);
     }
+
+    @Override
+    public void exec() {
+        Interpreter.breakWasReached(true);
+    }
     
 }

@@ -5,15 +5,21 @@
 package granita.Parser.Statements;
 
 import granita.DataLayout.ArrayVariable;
+import granita.DataLayout.Context;
 import granita.DataLayout.SimpleVariable;
+import granita.Interpreter.DataLayout.BoolVariable;
+import granita.Interpreter.DataLayout.IntVariable;
+import granita.Interpreter.DataLayout.RE_Variable;
 import granita.Parser.FieldItems.ArrayField;
 import granita.Parser.FieldItems.Field;
 import granita.SymbolTable.SymbolTableEntry;
 import granita.SymbolTable.SymbolTableNode;
 import granita.SymbolTable.SymbolTableTree;
+import granita.Types.BoolType;
 import granita.Types.Type;
 import granitainterpreter.ErrorHandler;
 import granitainterpreter.GranitaException;
+import granitainterpreter.SemanticUtils;
 import java.util.ArrayList;
 
 /**
@@ -76,8 +82,24 @@ public class FieldDeclarationStatement extends DeclarationStatement {
                 if (f instanceof ArrayField) {
                     ArrayField af = (ArrayField) f;
                     node.addEntry(f.getFieldName(), new ArrayVariable(type, af.getSize()));
+                    if (this.type instanceof BoolType) {
+                        SemanticUtils.getInstance().addVariableRE(
+                                new granita.Interpreter.DataLayout.ArrayVariable(
+                                RE_Variable.Type.BOOL_VARIABLE, af.getFieldName(),
+                                af.getSize().getValue()));
+                    } else {
+                        SemanticUtils.getInstance().addVariableRE(
+                                new granita.Interpreter.DataLayout.ArrayVariable(
+                                RE_Variable.Type.INT_VARIABLE, af.getFieldName(),
+                                af.getSize().getValue()));
+                    }
                 } else {
                     node.addEntry(f.getFieldName(), new SimpleVariable(type, null));
+                    if (this.type instanceof BoolType) {
+                        SemanticUtils.getInstance().addVariableRE(new BoolVariable(f.getFieldName(), false));
+                    } else {
+                        SemanticUtils.getInstance().addVariableRE(new IntVariable(f.getFieldName(), 0));
+                    }
                 }
             }
         }

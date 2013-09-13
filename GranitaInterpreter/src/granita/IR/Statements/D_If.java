@@ -5,6 +5,7 @@
 package granita.IR.Statements;
 
 import granita.IR.Expressions.D_Expression;
+import granita.Interpreter.Results.BoolResult;
 
 /**
  *
@@ -40,4 +41,15 @@ public class D_If extends D_Statement {
         }
     }
     
+    @Override
+    public void exec() {
+        BoolResult ret = (BoolResult) conditional.eval();
+        if (ret.getValue()) {
+            //System.out.println("TrueBlock ");
+            trueBlock.exec();
+        } else if (falseBlock != null) {
+            //System.out.println("FalseBlock");
+            falseBlock.exec();
+        }
+    }
 }

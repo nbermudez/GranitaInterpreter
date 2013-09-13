@@ -11,6 +11,7 @@ import granita.SymbolTable.SymbolTableEntry;
 import granita.SymbolTable.SymbolTableTree;
 import granita.Types.Type;
 import granitainterpreter.ErrorHandler;
+import granitainterpreter.SemanticUtils;
 import java.util.ArrayList;
 
 /**
@@ -50,6 +51,7 @@ public class MethodCallExpression extends Expression {
     @Override
     public D_Expression getIR() {
         SymbolTableEntry val = SymbolTableTree.getInstance().lookupFunction(id);
+        int proc = SemanticUtils.getInstance().findProcedureIndex(id);
         Function f;
         if (val == null) {
             ErrorHandler.handle("no such method '" + id + "': line " 
@@ -80,7 +82,7 @@ public class MethodCallExpression extends Expression {
                 }
                 d_args.add(ex);
             }
-            return new D_MethodCallExpression(t, id, d_args);
+            return new D_MethodCallExpression(t, id, d_args, proc);
         }
     }
 }

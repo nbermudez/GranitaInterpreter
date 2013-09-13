@@ -4,6 +4,8 @@
  */
 package granita.IR.Expressions;
 
+import granita.Interpreter.Results.BoolResult;
+import granita.Interpreter.Results.Result;
 import granita.Types.BoolType;
 
 /**
@@ -19,6 +21,11 @@ public class D_LitBool extends D_Expression {
     @Override
     public Object evaluate() {
         return this.expressionType.getValue();
+    }
+
+    @Override
+    public Result eval() {
+        return new BoolResult((Boolean)this.expressionType.getValue());
     }
     
 }

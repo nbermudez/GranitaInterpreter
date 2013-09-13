@@ -7,7 +7,9 @@ package granita.IR.LeftValues;
 import granita.DataLayout.ArrayVariable;
 import granita.DataLayout.SimpleVariable;
 import granita.DataLayout.Variable;
+import granita.Interpreter.DataLayout.RE_Variable;
 import granita.Interpreter.Interpreter;
+import granita.Interpreter.Results.Result;
 import granita.Types.Type;
 import granitainterpreter.ErrorHandler;
 import granitainterpreter.SemanticUtils;
@@ -19,6 +21,7 @@ import granitainterpreter.SemanticUtils;
  */
 public class D_SimpleValue extends D_LeftValue {
 
+    //<editor-fold defaultstate="collapsed" desc="Constructors">
     public D_SimpleValue(String identifier) {
         super(identifier);        
         SimpleVariable val = (SimpleVariable) SemanticUtils.getInstance().currentContext().find(identifier);
@@ -31,14 +34,26 @@ public class D_SimpleValue extends D_LeftValue {
         this.setExpressionType(val.getType());
     }
 
+    public D_SimpleValue(String identifier, int contextPosition, int contextId) {
+        super(identifier, contextPosition, contextId);
+        SimpleVariable val = (SimpleVariable) SemanticUtils.getInstance().currentContext().find(identifier);
+        this.setExpressionType(val.getType());
+    }
+    //</editor-fold>    
+
     @Override
     public Object evaluate() {
         
         SimpleVariable val = (SimpleVariable) Interpreter.currentContext().find(identifier);
         Type t = val.getType();
         return t.getValue();
-         
-        //return this.getExpressionType().getValue();
+    }
+
+    @Override
+    public Result eval() {
+        RE_Variable var = Interpreter.currentContext().findVariableInRE(contextId, contextPosition);
+        
+        return var.getValue();
     }
     
 }

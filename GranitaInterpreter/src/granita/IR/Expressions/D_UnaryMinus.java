@@ -4,6 +4,9 @@
  */
 package granita.IR.Expressions;
 
+import granita.Interpreter.Results.IntResult;
+import granita.Interpreter.Results.Result;
+
 /**
  *
  * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
@@ -19,6 +22,11 @@ public class D_UnaryMinus extends D_Expression {
     public Object evaluate() {
         Integer r = (Integer) value.evaluate();
         return -r;
+    }
+
+    @Override
+    public Result eval() {
+        return new IntResult(-1 * (Integer)value.eval().getValue());
     }
     
 }

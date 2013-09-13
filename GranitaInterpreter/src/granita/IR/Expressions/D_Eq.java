@@ -4,6 +4,9 @@
  */
 package granita.IR.Expressions;
 
+import granita.Interpreter.Results.BoolResult;
+import granita.Interpreter.Results.IntResult;
+import granita.Interpreter.Results.Result;
 import granita.Types.BoolType;
 import granita.Types.IntType;
 import granita.Types.Type;
@@ -36,4 +39,16 @@ public class D_Eq extends D_BinaryExpression {
         }
     }
     
+    @Override
+    public Result eval() {
+        Result l = left.eval();
+        Result r = right.eval();
+        if (l instanceof IntResult && r instanceof IntResult) {
+            return new BoolResult(((IntResult) l).getValue().intValue() == ((IntResult) r).getValue().intValue());
+        } else if (l instanceof BoolResult && r instanceof BoolResult) {
+            return new BoolResult(((BoolResult) l).getValue().booleanValue() == ((BoolResult) r).getValue().booleanValue());
+        } else {
+            return new BoolResult(false);
+        }
+    }
 }

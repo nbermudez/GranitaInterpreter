@@ -6,6 +6,7 @@ package granita.IR.Statements;
 
 import granita.IR.Expressions.D_Expression;
 import granita.Interpreter.Interpreter;
+import granita.Interpreter.Results.BoolResult;
 
 /**
  *
@@ -42,4 +43,24 @@ public class D_While extends D_Statement {
         Interpreter.unregisterContext();
     }
     
+    @Override
+    public void exec() {
+        Interpreter.registerContext(block.getContext());
+        BoolResult ret = (BoolResult) expression.eval();
+        while (ret.getValue()) {
+            for (D_Statement st : block.getStatements()) {
+                if (Interpreter.breakReached()) {
+                    Interpreter.breakWasReached(false);
+                    break;
+                } else if (Interpreter.continueReached()) {
+                    Interpreter.continueWasReached(false);
+                    continue;
+                } else {
+                    st.exec();
+                }
+            }
+            ret = (BoolResult) expression.eval();
+        }
+        Interpreter.unregisterContext();
+    }
 }

@@ -6,6 +6,7 @@ package granita.IR.Statements;
 
 import granita.IR.Expressions.D_Expression;
 import granita.Interpreter.Interpreter;
+import granita.Interpreter.Results.Result;
 import granita.Types.BoolType;
 import granita.Types.IntType;
 import granita.Types.Type;
@@ -33,6 +34,16 @@ public class D_Return extends D_Statement {
             } else {
                 Interpreter.returnWasReached(true);
             }
+        }
+    }
+    
+    @Override
+    public void exec() {
+        if (this.returnExpression == null) {
+            Interpreter.returnWasReached(true);
+        } else {
+            Result ret = returnExpression.eval();
+            Interpreter.currentContext().setVariableInRE(Interpreter.currentContext().getContextId(), 0, ret);
         }
     }
 }

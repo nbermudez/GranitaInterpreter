@@ -4,6 +4,8 @@
  */
 package granita.IR.Expressions;
 
+import granita.Interpreter.Results.IntResult;
+import granita.Interpreter.Results.Result;
 import granita.Types.IntType;
 
 /**
@@ -23,6 +25,11 @@ public class D_LitInt extends D_Expression {
     @Override
     public Object evaluate() {
         return this.expressionType.getValue();
+    }
+
+    @Override
+    public Result eval() {
+        return new IntResult((Integer) this.expressionType.getValue());
     }
     
 }

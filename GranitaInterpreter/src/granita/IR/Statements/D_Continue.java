@@ -17,4 +17,8 @@ public class D_Continue extends D_Statement{
         Interpreter.continueWasReached(true);
     }
     
+    @Override
+    public void exec() {
+        Interpreter.continueWasReached(true);
+    }
 }

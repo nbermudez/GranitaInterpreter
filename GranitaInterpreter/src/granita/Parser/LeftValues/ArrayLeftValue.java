@@ -58,6 +58,8 @@ public class ArrayLeftValue extends LeftValue {
     @Override
     public D_LeftValue getIR() {
         SymbolTableEntry value = SemanticUtils.getInstance().currentContext().find(id);
+        int position = SemanticUtils.getInstance().findInRE(id);
+        int contextId = SemanticUtils.getInstance().getContextId(id);
         if (value == null) {
             ErrorHandler.handle("undefined variable '" + id + "' in line "
                     + this.getLine());
@@ -78,7 +80,7 @@ public class ArrayLeftValue extends LeftValue {
                         return null;
                     }
                 }
-                return new D_ArrayLeftValue(arrIndex, id, SemanticUtils.getInstance().currentContext().getVariableIndex());
+                return new D_ArrayLeftValue(arrIndex, id, position, contextId);
             }
         }
     }

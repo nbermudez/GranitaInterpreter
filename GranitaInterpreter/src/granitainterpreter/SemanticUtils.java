@@ -6,8 +6,10 @@ package granitainterpreter;
 
 import granita.DataLayout.Context;
 import granita.DataLayout.ContextStack;
-import granita.Parser.Statements.BlockStatement;
+import granita.Interpreter.DataLayout.Procedure;
+import granita.Interpreter.DataLayout.RE_Variable;
 import granita.Types.Type;
+import java.util.ArrayList;
 
 /**
  *
@@ -23,7 +25,6 @@ public class SemanticUtils {
     private boolean insidePrint = false;
     private boolean insideRead = false;
     private boolean mustMergeWithTemp = false;
-    private BlockStatement currentBlock = null;
     private ContextStack contextStack;
     private Context tmp;
     //</editor-fold>    
@@ -96,14 +97,6 @@ public class SemanticUtils {
     public void setInsideRead(boolean insideRead) {
         this.insideRead = insideRead;
     }
-
-    public BlockStatement getCurrentBlock() {
-        return currentBlock;
-    }
-
-    public void setCurrentBlock(BlockStatement currentBlock) {
-        this.currentBlock = currentBlock;
-    }
     
     //<editor-fold defaultstate="collapsed" desc="Second version, Good to go">
     public void saveContext() {
@@ -141,6 +134,88 @@ public class SemanticUtils {
     public Context getTmpContext() {
         return this.tmp;
     }
+    
+    private ArrayList<RE_Variable> global = new ArrayList<RE_Variable>();    
+    
+    public void addVariableRE(RE_Variable newVar) {
+        this.global.add(newVar);
+    }
+    
+    public RE_Variable getVariableRE(int index) {
+        return global.get(index);
+    }
+    
+    public RE_Variable[] getGlobal() {
+        RE_Variable[] newArr = new RE_Variable[global.size()];
+        for (int i = 0; i < global.size(); i++) {
+            RE_Variable rE_Variable = global.get(i);
+            newArr[i] = rE_Variable;
+        }
+        return newArr;
+    }
+    
+    public int findInRE(String name) {
+        int res = currentContext().findInRE(name);
+        if (res < 0) {
+            for (int i = 0; i < global.size(); i++) {
+                RE_Variable object = global.get(i);
+                if (object.getName().equals(name)) {
+                    return i;
+                }
+            }
+        }
+        return res;
+    }
+    
+    public int getContextId(String name) {
+        return currentContext().getContextId(name);
+    }
+    
+    private ArrayList<Procedure> procedures = new ArrayList<Procedure>();
+    
+    public void addProcedure(Procedure p) {
+        procedures.add(p);
+    }
+    
+    public Procedure getProcedure(int index) {
+        return procedures.get(index);
+    }
+    
+    public Procedure[] getProcedures() {
+        Procedure[] procs = new Procedure[procedures.size()];
+        for (int i = 0; i < procedures.size(); i++) {
+            Procedure procedure = procedures.get(i);
+            procs[i] = procedure;
+        }
+        return procs;
+    }
+    
+    public int findProcedureIndex(String name) {
+        for (int i = 0; i < procedures.size(); i++) {
+            Procedure object = procedures.get(i);
+            if (object.getName().equals(name)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+    
+    public Procedure findProcedure(String name) {
+        for (int i = 0; i < procedures.size(); i++) {
+            Procedure object = procedures.get(i);
+            if (object.getName().equals(name)) {
+                return object;
+            }
+        }
+        return null;
+    }
+    
+    int contextId = 1;
+    public int generateContextId() {
+        return contextId++;
+    }
     //</editor-fold>
+
+    
     
 }

@@ -4,6 +4,8 @@
  */
 package granita.IR.Expressions;
 
+import granita.Interpreter.Results.BoolResult;
+import granita.Interpreter.Results.Result;
 import granita.Types.BoolType;
 
 /**
@@ -23,6 +25,14 @@ public class D_And extends D_BinaryExpression {
         Boolean r = (Boolean) right.evaluate();
         
         return l && r;
+    }
+
+    @Override
+    public Result eval() {
+        BoolResult l = (BoolResult) left.eval();
+        BoolResult r = (BoolResult) right.eval();
+        
+        return new BoolResult(l.getValue() && r.getValue());
     }
     
 }

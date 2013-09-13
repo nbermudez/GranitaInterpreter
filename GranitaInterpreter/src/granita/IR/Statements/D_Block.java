@@ -79,5 +79,19 @@ public class D_Block extends D_Statement {
         Interpreter.loadContext();
         
     }
+
+    @Override
+    public void exec() {
+        Interpreter.saveContext();
+        Interpreter.registerContext(context);
+        for (D_Statement d_Statement : statements) {
+            if (Interpreter.returnReached()) {
+                break;
+            }
+            d_Statement.exec();
+        }
+        Interpreter.unregisterContext();
+        Interpreter.loadContext();
+    }
     
 }

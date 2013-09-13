@@ -8,11 +8,13 @@ import granita.DataLayout.Function;
 import granita.IR.Expressions.D_Expression;
 import granita.IR.Statements.D_MethodCall;
 import granita.IR.Statements.D_Statement;
+import granita.Interpreter.DataLayout.Procedure;
 import granita.Parser.Expressions.Expression;
 import granita.SymbolTable.SymbolTableEntry;
 import granita.SymbolTable.SymbolTableTree;
 import granita.Types.Type;
 import granitainterpreter.ErrorHandler;
+import granitainterpreter.SemanticUtils;
 import java.util.ArrayList;
 
 /**
@@ -56,6 +58,7 @@ public class MethodCallStatement extends Statement {
     @Override
     public D_Statement getIR() {
         SymbolTableEntry val = SymbolTableTree.getInstance().lookupFunction(id);
+        int proc = SemanticUtils.getInstance().findProcedureIndex(id);
         Function f;
         if (val == null) {
             ErrorHandler.handle("no such method '" + id + "': line " 
@@ -86,7 +89,7 @@ public class MethodCallStatement extends Statement {
                 }
                 dParams.add(dExp);
             }
-            return new D_MethodCall(id, dParams);
+            return new D_MethodCall(id, dParams, proc);
         }
     }
 }

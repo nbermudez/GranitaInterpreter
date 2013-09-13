@@ -10,4 +10,5 @@ package granita.IR.Statements;
  */
 public abstract class D_Statement {
     public abstract void execute();
+    public abstract void exec();
 }

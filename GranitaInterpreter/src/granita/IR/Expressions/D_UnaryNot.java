@@ -4,6 +4,8 @@
  */
 package granita.IR.Expressions;
 
+import granita.Interpreter.Results.BoolResult;
+import granita.Interpreter.Results.Result;
 import granita.Types.BoolType;
 
 /**
@@ -22,6 +24,11 @@ public class D_UnaryNot extends D_Expression{
     public Object evaluate() {
         Boolean r = (Boolean) value.evaluate();
         return !r;
+    }
+
+    @Override
+    public Result eval() {
+        return new BoolResult(!(Boolean) value.eval().getValue());
     }
     
 }

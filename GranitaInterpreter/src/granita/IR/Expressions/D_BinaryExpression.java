@@ -4,6 +4,7 @@
  */
 package granita.IR.Expressions;
 
+import granita.Interpreter.Results.Result;
 import granita.Types.ErrorType;
 
 /**
@@ -39,4 +40,5 @@ public abstract class D_BinaryExpression extends D_Expression {
         this.right = right;
     }
     
+    public abstract Result eval();
 }

@@ -1,5 +1,6 @@
 class t {
 	int fuck[10];
+	int xxxxx;
 	int funct2(int n){
 		int x,y;
 		if (n == 1 || n == 0) {
@@ -46,14 +47,15 @@ class t {
 	}
 	
 	void main() {
-		int x;
+		int x, k;
 		x = test_unde_var1();
 		print x+x*x, "\n";
 		x = funct2(3);
 		print "antes del while: ", x, "\n";
-		while(x<=10){
-			print x, "\n";
-			x = x+1;
+		k = 3;
+		while(k<=10){
+			print k, "\n";
+			k = k+1;
 		}
 		x = x+100;
 		if (x<100) {
@@ -81,12 +83,12 @@ class t {
 		printAll(6);
 		print "------------------------------------\n";
 		//printAll(6);
-		print "fibonacci(5)=", funct2(5);
+		print "fibonacci(5) = ", funct2(5), "\n";
 		print "------------------------------------\n";
 		//read x;
 		//print "after read ", x, "\n";
-		read fuck[0], fuck[1], fuck[0];
-		print fuck[0], "\n";
+		//read fuck[0], fuck[1], fuck[0];
+		//print fuck[0], "\n";
 		
 	}
 	

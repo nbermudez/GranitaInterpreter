@@ -9,6 +9,7 @@ import granita.IR.LeftValues.D_SimpleValue;
 import granita.DataLayout.ArrayVariable;
 import granita.DataLayout.SimpleVariable;
 import granita.DataLayout.Variable;
+import granita.Interpreter.DataLayout.RE_Variable;
 import granita.Types.Type;
 import granitainterpreter.ErrorHandler;
 import granitainterpreter.Interpreter;
@@ -55,6 +56,11 @@ public class SimpleValue extends LeftValue {
     @Override
     public D_LeftValue getIR() {
         Variable val = SemanticUtils.getInstance().currentContext().find(id);
+        int position = SemanticUtils.getInstance().currentContext().findInRE(id);
+        int contextId = SemanticUtils.getInstance().currentContext().getContextId(id);
+        if (contextId == 13) {
+            SemanticUtils.getInstance().currentContext().getContextId(id);
+        }
         if (val == null) {
             ErrorHandler.handle("undefined variable '" + id + "': line "
                     + this.getLine());
@@ -77,9 +83,9 @@ public class SimpleValue extends LeftValue {
                 ErrorHandler.handle("variable '" + id + "' "
                         + "must be initialized before use: line "
                         + this.getLine());
-                return new D_SimpleValue(id);
+                return new D_SimpleValue(id, position, contextId);
             }
-            return new D_SimpleValue(id, SemanticUtils.getInstance().currentContext().getVariableIndex());
+            return new D_SimpleValue(id, position, contextId);
         }
     }
 }

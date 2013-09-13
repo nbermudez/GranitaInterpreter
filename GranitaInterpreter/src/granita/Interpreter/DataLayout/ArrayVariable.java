@@ -31,9 +31,12 @@ public class ArrayVariable extends RE_Variable {
         this.items = items;
     }
     
-    public RE_Variable getItem(int index) throws GranitaException {
+    public RE_Variable getItem(int index) {
         if (index > items.length) {
-            ErrorHandler.handleFatalError("index out of bound in " + name);
+            try {
+                ErrorHandler.handleFatalError("index out of bound in " + name);
+            } catch (GranitaException ex) {                
+            }
             return null; //unreachable but needed
         } else {
             return items[index];

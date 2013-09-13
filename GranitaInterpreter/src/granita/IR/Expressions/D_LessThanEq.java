@@ -4,6 +4,9 @@
  */
 package granita.IR.Expressions;
 
+import granita.Interpreter.Results.BoolResult;
+import granita.Interpreter.Results.IntResult;
+import granita.Interpreter.Results.Result;
 import granita.Types.BoolType;
 
 /**
@@ -25,4 +28,11 @@ public class D_LessThanEq extends D_BinaryExpression {
         return l <= r;
     }
     
+    @Override
+    public Result eval() {
+        IntResult l = (IntResult) left.eval();
+        IntResult r = (IntResult) right.eval();
+        
+        return new BoolResult(l.getValue() <= r.getValue());
+    }
 }

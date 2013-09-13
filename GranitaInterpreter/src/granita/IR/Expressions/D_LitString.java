@@ -4,6 +4,8 @@
  */
 package granita.IR.Expressions;
 
+import granita.Interpreter.Results.Result;
+import granita.Interpreter.Results.StringResult;
 import granita.Types.StringType;
 
 /**
@@ -19,6 +21,11 @@ public class D_LitString extends D_Expression {
     @Override
     public Object evaluate() {
         return this.expressionType.getValue();
+    }
+
+    @Override
+    public Result eval() {
+        return new StringResult((String)this.expressionType.getValue());
     }
     
 }

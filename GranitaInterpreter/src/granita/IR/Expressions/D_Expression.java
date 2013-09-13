@@ -4,6 +4,7 @@
  */
 package granita.IR.Expressions;
 
+import granita.Interpreter.Results.Result;
 import granita.Types.Type;
 
 /**
@@ -22,4 +23,6 @@ public abstract class D_Expression {
     }
     
     public abstract Object evaluate();
+    
+    public abstract Result eval();
 }

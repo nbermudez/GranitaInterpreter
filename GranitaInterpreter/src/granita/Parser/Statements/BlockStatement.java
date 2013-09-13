@@ -137,6 +137,7 @@ public class BlockStatement extends Statement {
         checkForUnreachableStatement();
         
         Context thisContext = new Context();
+        thisContext.setContextId(SemanticUtils.getInstance().generateContextId());
         int count = 0;
         for (Statement statement : statements) {
             if (statement instanceof VarDeclaration) {

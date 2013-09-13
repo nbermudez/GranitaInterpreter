@@ -10,7 +10,9 @@ import granita.DataLayout.Function;
 import granita.SymbolTable.SymbolTableTree;
 import granita.DataLayout.Variable;
 import granita.IR.Statements.D_Block;
+import granita.Interpreter.DataLayout.Procedure;
 import granita.Interpreter.Interpreter;
+import granita.Interpreter.Results.Result;
 import granita.Types.Type;
 import java.util.ArrayList;
 
@@ -21,12 +23,20 @@ import java.util.ArrayList;
 public class D_MethodCallExpression extends D_Expression {
     private String methodName;
     private ArrayList<D_Expression> arguments;
+    private int procedureIndex;
 
     public D_MethodCallExpression(Type type, String methodName, ArrayList<D_Expression> arguments) {
         this.methodName = methodName;
         this.arguments = arguments;
         this.expressionType = type;
     }    
+
+    public D_MethodCallExpression(Type type, String methodName, ArrayList<D_Expression> arguments, int procedureIndex) {
+        this.methodName = methodName;
+        this.arguments = arguments;
+        this.procedureIndex = procedureIndex;
+        this.expressionType = type;
+    }
 
     @Override
     public Object evaluate() {
@@ -62,5 +72,20 @@ public class D_MethodCallExpression extends D_Expression {
         //Interpreter.getInstance().popFunction();
         //Interpreter.getInstance().setReturnReached(false);
         //return null;
+    }
+
+    @Override
+    public Result eval() {
+        Procedure proc = Interpreter.getProcedure(procedureIndex);
+        int i = 0;
+        for (D_Expression arg : arguments) {
+            Result param = arg.eval();
+            proc.getBody().getContext().setVariableInRE(proc.getBody().getContext().getContextId(), i, param);            
+            i = i + 1;
+        }
+        D_Block toRun = proc.getBody().getCopy();
+        toRun.execute();
+        
+        return Interpreter.getReturnValue();
     }
 }

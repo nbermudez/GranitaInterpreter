@@ -5,6 +5,7 @@
 package granita.IR.Statements;
 
 import granita.IR.Expressions.D_Expression;
+import granita.Interpreter.Results.BoolResult;
 import java.util.ArrayList;
 
 /**
@@ -12,7 +13,7 @@ import java.util.ArrayList;
  * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
  */
 public class D_For extends D_Statement {
-    
+
     ArrayList<D_Expression> initializations;
     D_Expression termination;
     ArrayList<D_Statement> increments;
@@ -25,7 +26,7 @@ public class D_For extends D_Statement {
         this.increments = increments;
         this.block = block;
     }
-    
+
     @Override
     public void execute() {
         while (true) {
@@ -36,7 +37,6 @@ public class D_For extends D_Statement {
             if (!ret) {
                 break;
             }
-            //Interpreter.getInstance().pushBlockToFunction(block);
             for (D_Statement st : block.getStatements()) {
                 if (st instanceof D_Continue) {
                     continue;
@@ -46,11 +46,34 @@ public class D_For extends D_Statement {
                     st.execute();
                 }
             }
-            //Interpreter.getInstance().popBlockToFunction();
             for (D_Statement st : increments) {
                 st.execute();
             }
         }
     }
-    
+
+    @Override
+    public void exec() {
+        for (D_Expression expression : initializations) {
+            expression.eval();
+        }
+        while (true) {
+            BoolResult ret = (BoolResult) termination.eval();
+            if (!ret.getValue()) {
+                break;
+            }
+            for (D_Statement st : block.getStatements()) {
+                if (st instanceof D_Continue) {
+                    continue;
+                } else if (st instanceof D_Break) {
+                    break;
+                } else {
+                    st.exec();
+                }
+            }
+            for (D_Statement st : increments) {
+                st.exec();
+            }
+        }
+    }
 }
