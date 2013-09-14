@@ -12,7 +12,7 @@ import granita.Parser.Expressions.Expression;
 import granita.Semantic.SymbolTable.SymbolTableEntry;
 import granita.Semantic.Types.IntType;
 import granita.Semantic.Types.Type;
-import granitainterpreter.ErrorHandler;
+import granita.Misc.ErrorHandler;
 import granita.Semantics.SemanticUtils;
 
 /**

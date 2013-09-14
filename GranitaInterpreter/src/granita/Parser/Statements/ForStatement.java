@@ -11,8 +11,8 @@ import granita.IR.Statements.D_Statement;
 import granita.Parser.Expressions.Expression;
 import granita.Semantic.Types.BoolType;
 import granita.Semantic.Types.Type;
-import granitainterpreter.ErrorHandler;
-import granitainterpreter.GranitaException;
+import granita.Misc.ErrorHandler;
+import granita.Misc.GranitaException;
 import java.util.ArrayList;
 
 /**

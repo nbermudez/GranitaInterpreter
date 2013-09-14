@@ -10,7 +10,7 @@ import granita.IR.Expressions.D_MethodCallExpression;
 import granita.Semantic.SymbolTable.SymbolTableEntry;
 import granita.Semantic.SymbolTable.SymbolTableTree;
 import granita.Semantic.Types.Type;
-import granitainterpreter.ErrorHandler;
+import granita.Misc.ErrorHandler;
 import granita.Semantics.SemanticUtils;
 import java.util.ArrayList;
 

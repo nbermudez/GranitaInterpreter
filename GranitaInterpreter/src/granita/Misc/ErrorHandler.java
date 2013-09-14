@@ -2,11 +2,15 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package granitainterpreter;
+package granita.Misc;
 
 import granita.Semantic.Types.ErrorType;
 import granita.Semantic.Types.Type;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -59,6 +63,39 @@ public class ErrorHandler {
         if (!warnings.isEmpty()) {
             printWarnings();
         }
+    }
+    
+    public static String getErrors() {
+        String result = "";
+        if (errors != null) {
+            result += errors.size() + " errors found: \n";
+            for (String string : errors) {
+                result += "\t" + string + "\n";
+            }
+        }
+        return result + "\n";
+    }
+    
+    public static String getWarnings() {
+        String result = "";
+        if (warnings != null) {
+            result += warnings.size() + " warnings found: \n";
+            for (String string : warnings) {
+                result += "\t" + string + "\n";
+            }
+        }
+        return result + "\n";
+    }
+    
+    public static String getAll() {
+        String r = "", r2 = "";
+        if (!errors.isEmpty()) {
+            r = getErrors();
+        }
+        if (!warnings.isEmpty()) {
+            r2 = getWarnings();
+        }
+        return r + r2;
     }
     
     public static boolean isEmpty() {

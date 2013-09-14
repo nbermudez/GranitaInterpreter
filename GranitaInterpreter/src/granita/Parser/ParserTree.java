@@ -57,8 +57,8 @@ import granita.Semantic.Types.BoolType;
 import granita.Semantic.Types.IntType;
 import granita.Semantic.Types.Type;
 import granita.Semantic.Types.VoidType;
-import granitainterpreter.ErrorHandler;
-import granitainterpreter.GranitaException;
+import granita.Misc.ErrorHandler;
+import granita.Misc.GranitaException;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -86,6 +86,7 @@ public class ParserTree {
     //</editor-fold>    
 
     public ArrayList<ClassStatement> parse() throws GranitaException {
+        lexer.rewind();
         currentToken = lexer.nextToken();
         return statements();
     }

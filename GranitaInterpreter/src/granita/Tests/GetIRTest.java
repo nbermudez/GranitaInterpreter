@@ -8,9 +8,9 @@ import granita.IR.General.D_Program;
 import granita.IR.General.IntermediateRepresentation;
 import granita.Interpreter.Interpreter;
 import granita.Lexer.Lexer;
+import granita.Misc.ErrorHandler;
 import granita.Parser.ParserTree;
 import granita.Parser.Statements.ClassStatement;
-import granitainterpreter.ErrorHandler;
 import java.util.ArrayList;
 
 /**

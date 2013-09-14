@@ -11,8 +11,8 @@ import granita.Parser.Expressions.Expression;
 import granita.Semantic.Types.ErrorType;
 import granita.Semantic.Types.Type;
 import granita.Semantic.Types.VoidType;
-import granitainterpreter.ErrorHandler;
-import granitainterpreter.GranitaException;
+import granita.Misc.ErrorHandler;
+import granita.Misc.GranitaException;
 import granita.Semantics.SemanticUtils;
 
 /**

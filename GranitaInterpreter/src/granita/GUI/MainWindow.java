@@ -2,22 +2,23 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package granitainterpreter;
+package granita.GUI;
 
-import granita.Parser.ParserTree;
+import granita.IR.General.D_Program;
+import granita.IR.General.IntermediateRepresentation;
+import granita.Interpreter.Interpreter;
 import granita.Lexer.Lexer;
+import granita.Misc.ErrorHandler;
+import granita.Misc.GranitaException;
+import granita.Parser.ParserTree;
 import granita.Parser.Statements.ClassStatement;
-import granita.Parser.Statements.Statement;
+import java.awt.Color;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.print.DocFlavor;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.plaf.FileChooserUI;
 
 /**
  *
@@ -33,6 +34,7 @@ public class MainWindow extends javax.swing.JFrame {
     }
     
     private Lexer lexer;
+    private D_Program validProgram;
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -54,7 +56,7 @@ public class MainWindow extends javax.swing.JFrame {
         jMenu2 = new javax.swing.JMenu();
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
-        jMenuItem5 = new javax.swing.JMenuItem();
+        MenuRun = new javax.swing.JMenuItem();
 
         jMenuItem2.setText("jMenuItem2");
 
@@ -62,7 +64,6 @@ public class MainWindow extends javax.swing.JFrame {
 
         jScrollPane1.setPreferredSize(new java.awt.Dimension(800, 420));
 
-        program.setEditable(false);
         program.setColumns(20);
         program.setRows(5);
         program.setRequestFocusEnabled(false);
@@ -81,6 +82,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         jMenu1.setText("File");
 
+        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem1.setText("Open");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -109,8 +111,14 @@ public class MainWindow extends javax.swing.JFrame {
         });
         jMenu2.add(jMenuItem4);
 
-        jMenuItem5.setText("Run");
-        jMenu2.add(jMenuItem5);
+        MenuRun.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_MASK));
+        MenuRun.setText("Run");
+        MenuRun.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MenuRunActionPerformed(evt);
+            }
+        });
+        jMenu2.add(MenuRun);
 
         jMenuBar1.add(jMenu2);
 
@@ -147,18 +155,47 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        clearOutput();
         this.compilerOutput.setText(lexer.toString());
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+        clearOutput();
         try {
             ParserTree parser = new ParserTree(lexer);
             ArrayList<ClassStatement> trees = parser.parse();
+            validProgram = IntermediateRepresentation.validateAndGenerate(trees.get(0));
             this.compilerOutput.setText(trees.get(0).toString());
         } catch (GranitaException ex) {
             Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jMenuItem4ActionPerformed
+
+    public void clearOutput() {
+        this.compilerOutput.setText("");
+        this.compilerOutput.setForeground(Color.BLUE);
+    }
+    
+    private void MenuRunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuRunActionPerformed
+        clearOutput();
+        
+        if (validProgram == null) {
+            try {
+                ParserTree parser = new ParserTree(lexer);
+                ArrayList<ClassStatement> trees = parser.parse();
+                validProgram = IntermediateRepresentation.validateAndGenerate(trees.get(0));
+            } catch (GranitaException ex) {
+                Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        if (ErrorHandler.isEmpty()) {
+            Interpreter.interpret(validProgram);
+        } else {
+            this.compilerOutput.setText(ErrorHandler.getAll());
+            this.compilerOutput.setForeground(Color.red);
+            ErrorHandler.cleanup();
+        }
+    }//GEN-LAST:event_MenuRunActionPerformed
 
     /**
      * @param args the command line arguments
@@ -195,6 +232,7 @@ public class MainWindow extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem MenuRun;
     private javax.swing.JTextArea compilerOutput;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
@@ -203,7 +241,6 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
-    private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextArea program;

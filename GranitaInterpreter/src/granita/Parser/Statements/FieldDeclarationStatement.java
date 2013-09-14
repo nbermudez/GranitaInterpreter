@@ -16,8 +16,8 @@ import granita.Semantic.SymbolTable.SymbolTableNode;
 import granita.Semantic.SymbolTable.SymbolTableTree;
 import granita.Semantic.Types.BoolType;
 import granita.Semantic.Types.Type;
-import granitainterpreter.ErrorHandler;
-import granitainterpreter.GranitaException;
+import granita.Misc.ErrorHandler;
+import granita.Misc.GranitaException;
 import granita.Semantics.SemanticUtils;
 import java.util.ArrayList;
 

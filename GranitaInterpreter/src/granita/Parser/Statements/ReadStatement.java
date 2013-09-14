@@ -8,7 +8,7 @@ import granita.IR.LeftValues.D_LeftValue;
 import granita.IR.Statements.D_Read;
 import granita.IR.Statements.D_Statement;
 import granita.Parser.LeftValues.LeftValue;
-import granitainterpreter.GranitaException;
+import granita.Misc.GranitaException;
 import granita.Semantics.SemanticUtils;
 import java.util.ArrayList;
 

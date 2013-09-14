@@ -8,8 +8,8 @@ import granita.Semantic.DataLayout.Function;
 import granita.IR.Statements.D_Block;
 import granita.Semantic.SymbolTable.SymbolTableTree;
 import granita.Semantic.Types.VoidType;
-import granitainterpreter.ErrorHandler;
-import granitainterpreter.GranitaException;
+import granita.Misc.ErrorHandler;
+import granita.Misc.GranitaException;
 import java.util.ArrayList;
 
 /**

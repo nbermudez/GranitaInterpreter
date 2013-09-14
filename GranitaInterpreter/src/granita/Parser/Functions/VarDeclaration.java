@@ -12,7 +12,7 @@ import granita.Interpreter.DataLayout.IntVariable;
 import granita.Parser.Statements.Statement;
 import granita.Semantic.Types.BoolType;
 import granita.Semantic.Types.Type;
-import granitainterpreter.ErrorHandler;
+import granita.Misc.ErrorHandler;
 import granita.Semantics.SemanticUtils;
 import java.util.ArrayList;
 

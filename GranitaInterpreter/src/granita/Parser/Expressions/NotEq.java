@@ -10,7 +10,7 @@ import granita.Semantic.Types.BoolType;
 import granita.Semantic.Types.ErrorType;
 import granita.Semantic.Types.IntType;
 import granita.Semantic.Types.Type;
-import granitainterpreter.ErrorHandler;
+import granita.Misc.ErrorHandler;
 
 /**
  *

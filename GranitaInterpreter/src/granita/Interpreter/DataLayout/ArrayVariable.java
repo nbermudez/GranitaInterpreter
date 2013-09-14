@@ -7,8 +7,8 @@ package granita.Interpreter.DataLayout;
 import granita.Interpreter.Results.BoolResult;
 import granita.Interpreter.Results.IntResult;
 import granita.Interpreter.Results.Result;
-import granitainterpreter.ErrorHandler;
-import granitainterpreter.GranitaException;
+import granita.Misc.ErrorHandler;
+import granita.Misc.GranitaException;
 
 /**
  *

@@ -9,7 +9,7 @@ import granita.Semantic.DataLayout.SimpleVariable;
 import granita.Semantic.DataLayout.Variable;
 import granita.IR.LeftValues.D_LeftValue;
 import granita.IR.LeftValues.D_SimpleValue;
-import granitainterpreter.ErrorHandler;
+import granita.Misc.ErrorHandler;
 import granita.Semantics.SemanticUtils;
 
 /**

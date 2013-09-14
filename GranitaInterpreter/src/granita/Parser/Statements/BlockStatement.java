@@ -9,8 +9,8 @@ import granita.IR.Statements.D_Block;
 import granita.IR.Statements.D_Statement;
 import granita.Parser.Functions.VarDeclaration;
 import granita.Semantic.Types.Type;
-import granitainterpreter.ErrorHandler;
-import granitainterpreter.GranitaException;
+import granita.Misc.ErrorHandler;
+import granita.Misc.GranitaException;
 import granita.Semantics.SemanticUtils;
 import java.util.ArrayList;
 

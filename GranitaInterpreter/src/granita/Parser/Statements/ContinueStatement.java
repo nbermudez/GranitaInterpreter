@@ -6,7 +6,7 @@ package granita.Parser.Statements;
 
 import granita.IR.Statements.D_Continue;
 import granita.IR.Statements.D_Statement;
-import granitainterpreter.ErrorHandler;
+import granita.Misc.ErrorHandler;
 import granita.Semantics.SemanticUtils;
 
 /**

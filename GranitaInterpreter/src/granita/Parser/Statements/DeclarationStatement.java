@@ -4,7 +4,7 @@
  */
 package granita.Parser.Statements;
 
-import granitainterpreter.GranitaException;
+import granita.Misc.GranitaException;
 
 /**
  *

@@ -8,7 +8,7 @@ import granita.IR.Expressions.D_Expression;
 import granita.IR.Expressions.D_UnaryMinus;
 import granita.Semantic.Types.IntType;
 import granita.Semantic.Types.Type;
-import granitainterpreter.ErrorHandler;
+import granita.Misc.ErrorHandler;
 
 /**
  *

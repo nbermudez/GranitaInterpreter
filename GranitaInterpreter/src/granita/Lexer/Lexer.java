@@ -117,6 +117,10 @@ public class Lexer {
     }
     //</editor-fold>  
 
+    public void rewind() {
+        this.in.rewind();
+    }
+    
     public int lineNumber() {
         return this.lineNumber;
     }
