@@ -9,8 +9,8 @@ import granita.IR.Statements.D_Block;
 import granita.IR.Statements.D_If;
 import granita.IR.Statements.D_Statement;
 import granita.Parser.Expressions.Expression;
-import granita.Types.BoolType;
-import granita.Types.Type;
+import granita.Semantic.Types.BoolType;
+import granita.Semantic.Types.Type;
 import granitainterpreter.ErrorHandler;
 import granitainterpreter.GranitaException;
 

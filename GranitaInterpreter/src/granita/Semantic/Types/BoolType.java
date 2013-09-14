@@ -2,30 +2,33 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package granita.Types;
+package granita.Semantic.Types;
 
 /**
  *
  * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
  */
-public class IntType extends Type{
-
+public class BoolType extends Type{
+    
+    public BoolType() {
+    }
+    
     @Override
     public boolean equivalent(Type t) {
-        return t instanceof IntType;
+        return t instanceof BoolType;
     }
 
     @Override
     public String toString() {
-        return "int";
+        return "bool";
     }
     
     public static String text(){
-        return "int";
+        return "bool";
     }
 
     @Override
     public Type getCopy() {
-        return new IntType();
+        return new BoolType();
     }
 }

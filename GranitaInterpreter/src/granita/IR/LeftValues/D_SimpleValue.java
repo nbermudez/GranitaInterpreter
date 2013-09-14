@@ -4,11 +4,11 @@
  */
 package granita.IR.LeftValues;
 
-import granita.DataLayout.SimpleVariable;
+import granita.Semantic.DataLayout.SimpleVariable;
 import granita.Interpreter.DataLayout.RE_Variable;
 import granita.Interpreter.Interpreter;
 import granita.Interpreter.Results.Result;
-import granitainterpreter.SemanticUtils;
+import granita.Semantics.SemanticUtils;
 
 
 /**

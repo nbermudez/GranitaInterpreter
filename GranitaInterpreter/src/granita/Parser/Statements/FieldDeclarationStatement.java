@@ -4,21 +4,21 @@
  */
 package granita.Parser.Statements;
 
-import granita.DataLayout.ArrayVariable;
-import granita.DataLayout.SimpleVariable;
+import granita.Semantic.DataLayout.ArrayVariable;
+import granita.Semantic.DataLayout.SimpleVariable;
 import granita.Interpreter.DataLayout.BoolVariable;
 import granita.Interpreter.DataLayout.IntVariable;
 import granita.Interpreter.DataLayout.RE_Variable;
 import granita.Parser.FieldItems.ArrayField;
 import granita.Parser.FieldItems.Field;
-import granita.SymbolTable.SymbolTableEntry;
-import granita.SymbolTable.SymbolTableNode;
-import granita.SymbolTable.SymbolTableTree;
-import granita.Types.BoolType;
-import granita.Types.Type;
+import granita.Semantic.SymbolTable.SymbolTableEntry;
+import granita.Semantic.SymbolTable.SymbolTableNode;
+import granita.Semantic.SymbolTable.SymbolTableTree;
+import granita.Semantic.Types.BoolType;
+import granita.Semantic.Types.Type;
 import granitainterpreter.ErrorHandler;
 import granitainterpreter.GranitaException;
-import granitainterpreter.SemanticUtils;
+import granita.Semantics.SemanticUtils;
 import java.util.ArrayList;
 
 /**

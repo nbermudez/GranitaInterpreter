@@ -6,7 +6,7 @@ package granita.Parser.LeftValues;
 
 import granita.IR.LeftValues.D_LeftValue;
 import granita.Parser.Expressions.Expression;
-import granita.Types.Type;
+import granita.Semantic.Types.Type;
 
 /**
  *

@@ -6,7 +6,7 @@ package granita.IR.Expressions;
 
 import granita.Interpreter.Results.IntResult;
 import granita.Interpreter.Results.Result;
-import granita.Types.IntType;
+import granita.Semantic.Types.IntType;
 
 /**
  *

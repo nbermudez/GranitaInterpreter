@@ -2,10 +2,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package granita.DataLayout;
+package granita.Semantic.DataLayout;
 
 import granita.IR.Expressions.D_LitInt;
-import granita.Types.Type;
+import granita.Semantic.Types.Type;
 
 /**
  *

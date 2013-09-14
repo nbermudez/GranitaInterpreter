@@ -4,16 +4,16 @@
  */
 package granita.Parser.LeftValues;
 
-import granita.DataLayout.ArrayVariable;
+import granita.Semantic.DataLayout.ArrayVariable;
 import granita.IR.Expressions.D_Expression;
 import granita.IR.LeftValues.D_ArrayLeftValue;
 import granita.IR.LeftValues.D_LeftValue;
 import granita.Parser.Expressions.Expression;
-import granita.SymbolTable.SymbolTableEntry;
-import granita.Types.IntType;
-import granita.Types.Type;
+import granita.Semantic.SymbolTable.SymbolTableEntry;
+import granita.Semantic.Types.IntType;
+import granita.Semantic.Types.Type;
 import granitainterpreter.ErrorHandler;
-import granitainterpreter.SemanticUtils;
+import granita.Semantics.SemanticUtils;
 
 /**
  *

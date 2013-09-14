@@ -8,7 +8,7 @@ import granita.IR.Functions.D_Argument;
 import granita.IR.Statements.D_Print;
 import granita.IR.Statements.D_Statement;
 import granita.Parser.Functions.Argument;
-import granitainterpreter.SemanticUtils;
+import granita.Semantics.SemanticUtils;
 import java.util.ArrayList;
 
 /**

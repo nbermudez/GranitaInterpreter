@@ -4,10 +4,10 @@
  */
 package granita.Parser.Statements;
 
-import granita.DataLayout.Function;
+import granita.Semantic.DataLayout.Function;
 import granita.IR.Statements.D_Block;
-import granita.SymbolTable.SymbolTableTree;
-import granita.Types.VoidType;
+import granita.Semantic.SymbolTable.SymbolTableTree;
+import granita.Semantic.Types.VoidType;
 import granitainterpreter.ErrorHandler;
 import granitainterpreter.GranitaException;
 import java.util.ArrayList;

@@ -5,10 +5,10 @@
 package granita.Parser.Statements;
 
 import granita.IR.Statements.D_Statement;
-import granita.Types.Type;
+import granita.Semantic.Types.Type;
 import granitainterpreter.ErrorHandler;
 import granitainterpreter.GranitaException;
-import granitainterpreter.SemanticUtils;
+import granita.Semantics.SemanticUtils;
 
 /**
  *

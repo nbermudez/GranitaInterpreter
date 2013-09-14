@@ -4,7 +4,7 @@
  */
 package granita.Interpreter.DataLayout;
 
-import granita.DataLayout.Context;
+import granita.Semantic.DataLayout.Context;
 import granita.IR.Statements.D_Block;
 
 /**

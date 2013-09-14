@@ -10,10 +10,10 @@ import granita.IR.Statements.D_Assign;
 import granita.IR.Statements.D_Statement;
 import granita.Parser.Expressions.Expression;
 import granita.Parser.LeftValues.LeftValue;
-import granita.Types.ErrorType;
-import granita.Types.Type;
+import granita.Semantic.Types.ErrorType;
+import granita.Semantic.Types.Type;
 import granitainterpreter.ErrorHandler;
-import granitainterpreter.SemanticUtils;
+import granita.Semantics.SemanticUtils;
 
 /**
  *

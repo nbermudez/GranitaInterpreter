@@ -4,16 +4,16 @@
  */
 package granita.Parser.Functions;
 
-import granita.DataLayout.Context;
-import granita.DataLayout.SimpleVariable;
+import granita.Semantic.DataLayout.Context;
+import granita.Semantic.DataLayout.SimpleVariable;
 import granita.IR.Statements.D_Statement;
 import granita.Interpreter.DataLayout.BoolVariable;
 import granita.Interpreter.DataLayout.IntVariable;
 import granita.Parser.Statements.Statement;
-import granita.Types.BoolType;
-import granita.Types.Type;
+import granita.Semantic.Types.BoolType;
+import granita.Semantic.Types.Type;
 import granitainterpreter.ErrorHandler;
-import granitainterpreter.SemanticUtils;
+import granita.Semantics.SemanticUtils;
 import java.util.ArrayList;
 
 /**

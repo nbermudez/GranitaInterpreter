@@ -6,7 +6,7 @@ package granita.IR.Expressions;
 
 import granita.Interpreter.Results.BoolResult;
 import granita.Interpreter.Results.Result;
-import granita.Types.BoolType;
+import granita.Semantic.Types.BoolType;
 
 /**
  *

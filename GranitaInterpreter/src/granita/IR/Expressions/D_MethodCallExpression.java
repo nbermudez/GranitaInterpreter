@@ -8,7 +8,7 @@ import granita.IR.Statements.D_Block;
 import granita.Interpreter.DataLayout.Procedure;
 import granita.Interpreter.Interpreter;
 import granita.Interpreter.Results.Result;
-import granita.Types.Type;
+import granita.Semantic.Types.Type;
 import java.util.ArrayList;
 
 /**

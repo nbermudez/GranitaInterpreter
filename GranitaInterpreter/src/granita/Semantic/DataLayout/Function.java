@@ -2,11 +2,11 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package granita.DataLayout;
+package granita.Semantic.DataLayout;
 
 import granita.IR.Statements.D_Block;
-import granita.SymbolTable.SymbolTableEntry;
-import granita.Types.Type;
+import granita.Semantic.SymbolTable.SymbolTableEntry;
+import granita.Semantic.Types.Type;
 import java.util.ArrayList;
 
 /**

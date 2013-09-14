@@ -4,7 +4,7 @@
  */
 package granita.IR.Statements;
 
-import granita.DataLayout.Context;
+import granita.Semantic.DataLayout.Context;
 import granita.Interpreter.Interpreter;
 import java.util.ArrayList;
 

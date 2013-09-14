@@ -2,14 +2,14 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package granitainterpreter;
+package granita.Semantics;
 
-import granita.DataLayout.Context;
-import granita.DataLayout.ContextStack;
+import granita.Semantic.DataLayout.Context;
+import granita.Semantic.DataLayout.ContextStack;
 import granita.Interpreter.DataLayout.Procedure;
 import granita.Interpreter.DataLayout.RE_Variable;
-import granita.SymbolTable.SymbolTableTree;
-import granita.Types.Type;
+import granita.Semantic.SymbolTable.SymbolTableTree;
+import granita.Semantic.Types.Type;
 import java.util.ArrayList;
 
 /**

@@ -2,27 +2,27 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package granita.Types;
+package granita.Semantic.Types;
 
 /**
  *
  * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
  */
-public class ErrorType extends Type{
-
+public class StringType extends Type {
+    
     @Override
     public boolean equivalent(Type t) {
-        return (t instanceof ErrorType);
+        return t instanceof StringType;
     }
 
     @Override
     public String toString() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return "string";
     }
 
     @Override
     public Type getCopy() {
-        return this;
+        return new StringType();
     }
     
 }

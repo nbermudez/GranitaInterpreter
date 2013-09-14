@@ -8,12 +8,12 @@ import granita.IR.Expressions.D_Expression;
 import granita.IR.Statements.D_Return;
 import granita.IR.Statements.D_Statement;
 import granita.Parser.Expressions.Expression;
-import granita.Types.ErrorType;
-import granita.Types.Type;
-import granita.Types.VoidType;
+import granita.Semantic.Types.ErrorType;
+import granita.Semantic.Types.Type;
+import granita.Semantic.Types.VoidType;
 import granitainterpreter.ErrorHandler;
 import granitainterpreter.GranitaException;
-import granitainterpreter.SemanticUtils;
+import granita.Semantics.SemanticUtils;
 
 /**
  *

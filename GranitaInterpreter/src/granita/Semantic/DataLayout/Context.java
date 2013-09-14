@@ -2,12 +2,12 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package granita.DataLayout;
+package granita.Semantic.DataLayout;
 
 import granita.Interpreter.DataLayout.RE_Variable;
 import granita.Interpreter.Results.Result;
-import granita.SymbolTable.SymbolTableEntry;
-import granita.SymbolTable.SymbolTableTree;
+import granita.Semantic.SymbolTable.SymbolTableEntry;
+import granita.Semantic.SymbolTable.SymbolTableTree;
 import java.util.HashMap;
 import java.util.Set;
 

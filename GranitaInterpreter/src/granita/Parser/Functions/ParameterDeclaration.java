@@ -4,17 +4,17 @@
  */
 package granita.Parser.Functions;
 
-import granita.DataLayout.Context;
-import granita.DataLayout.Function;
-import granita.DataLayout.SimpleVariable;
+import granita.Semantic.DataLayout.Context;
+import granita.Semantic.DataLayout.Function;
+import granita.Semantic.DataLayout.SimpleVariable;
 import granita.Interpreter.DataLayout.BoolVariable;
 import granita.Interpreter.DataLayout.IntVariable;
 import granita.Parser.Statements.Statement;
-import granita.SymbolTable.SymbolTableTree;
-import granita.Types.IntType;
-import granita.Types.Type;
+import granita.Semantic.SymbolTable.SymbolTableTree;
+import granita.Semantic.Types.IntType;
+import granita.Semantic.Types.Type;
 import granitainterpreter.ErrorHandler;
-import granitainterpreter.SemanticUtils;
+import granita.Semantics.SemanticUtils;
 
 /**
  *
