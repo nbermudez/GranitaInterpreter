@@ -56,11 +56,8 @@ public class SimpleValue extends LeftValue {
     @Override
     public D_LeftValue getIR() {
         Variable val = SemanticUtils.getInstance().currentContext().find(id);
-        int position = SemanticUtils.getInstance().currentContext().findInRE(id);
-        int contextId = SemanticUtils.getInstance().currentContext().getContextId(id);
-        if (contextId == 13) {
-            SemanticUtils.getInstance().currentContext().getContextId(id);
-        }
+        int position = SemanticUtils.getInstance().findInRE(id);
+        int contextId = SemanticUtils.getInstance().getContextId(id);
         if (val == null) {
             ErrorHandler.handle("undefined variable '" + id + "': line "
                     + this.getLine());
@@ -76,6 +73,14 @@ public class SimpleValue extends LeftValue {
                     && val instanceof ArrayVariable) {
                 ErrorHandler.handle("read can't be applied to an array "
                         + "variable: line " + this.getLine());
+                return null;
+            }
+            if (SemanticUtils.getInstance().isUsedAsArgument() && val instanceof ArrayVariable) {
+                ErrorHandler.handle("arrays can't be used as function arguments: line " + this.getLine());
+                return null;
+            }
+            if (val instanceof ArrayVariable) {
+                ErrorHandler.handle("single variable expected but found array: line " + this.getLine());
                 return null;
             }
             if (!SemanticUtils.getInstance().isLeftValueAsLocation()

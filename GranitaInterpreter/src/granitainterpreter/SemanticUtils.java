@@ -8,6 +8,7 @@ import granita.DataLayout.Context;
 import granita.DataLayout.ContextStack;
 import granita.Interpreter.DataLayout.Procedure;
 import granita.Interpreter.DataLayout.RE_Variable;
+import granita.SymbolTable.SymbolTableTree;
 import granita.Types.Type;
 import java.util.ArrayList;
 
@@ -24,6 +25,7 @@ public class SemanticUtils {
     private boolean leftValueAsLocation = false;
     private boolean insidePrint = false;
     private boolean insideRead = false;
+    private boolean usedAsArgument = false;
     private boolean mustMergeWithTemp = false;
     private ContextStack contextStack;
     private Context tmp;
@@ -97,6 +99,14 @@ public class SemanticUtils {
     public void setInsideRead(boolean insideRead) {
         this.insideRead = insideRead;
     }
+
+    public boolean isUsedAsArgument() {
+        return usedAsArgument;
+    }
+
+    public void setUsedAsArgument(boolean usedAsArgument) {
+        this.usedAsArgument = usedAsArgument;
+    }
     
     //<editor-fold defaultstate="collapsed" desc="Second version, Good to go">
     public void saveContext() {
@@ -168,7 +178,20 @@ public class SemanticUtils {
     }
     
     public int getContextId(String name) {
-        return currentContext().getContextId(name);
+        int ret = currentContext().getContextId(name);
+        if (ret == -1 && findInGlobal(name) != null) {
+            return 0;
+        }
+        return ret;
+    }
+    
+    public RE_Variable findInGlobal(String name) {
+        for (RE_Variable rE_Variable : global) {
+            if (rE_Variable.getName().equals(name)) {
+                return rE_Variable;
+            }
+        }
+        return null;
     }
     
     private ArrayList<Procedure> procedures = new ArrayList<Procedure>();

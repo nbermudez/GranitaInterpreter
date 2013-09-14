@@ -92,6 +92,7 @@ public class Interpreter {
     private static Context global;
     private static int procedureIndex = 0;
     private static Stack<Integer> variableIndex = new Stack<Integer>();
+    private static Result EAX;
     
     public static void setInitialEnvironment() {
         procedures = SemanticUtils.getInstance().getProcedures();
@@ -124,7 +125,11 @@ public class Interpreter {
     }
     
     public static Result getReturnValue() {
-        return currentContext().getVariableRE(0).getValue();
+        return EAX;
+    }
+    
+    public static void setReturnValue(Result value) {
+        EAX = value;
     }
     //</editor-fold> 
 }

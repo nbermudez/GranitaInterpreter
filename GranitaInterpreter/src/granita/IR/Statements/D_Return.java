@@ -43,7 +43,9 @@ public class D_Return extends D_Statement {
             Interpreter.returnWasReached(true);
         } else {
             Result ret = returnExpression.eval();
-            Interpreter.currentContext().setVariableInRE(Interpreter.currentContext().getContextId(), 0, ret);
+            Interpreter.setReturnValue(ret);
+            //int contextId = Interpreter.currentContext().getReturnValueContext();
+            //Interpreter.currentContext().setVariableInRE(contextId, 0, ret);
         }
     }
 }

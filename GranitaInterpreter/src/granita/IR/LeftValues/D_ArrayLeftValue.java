@@ -66,11 +66,17 @@ public class D_ArrayLeftValue extends D_LeftValue {
     public int getIndex() {
         return (Integer)this.arrayIndex.evaluate();
     }
+    
+    public int getArrayIndex() {
+        IntResult r = (IntResult)this.arrayIndex.eval();
+        
+        return r.getValue();
+    }
 
     @Override
     public Result eval() {
         granita.Interpreter.DataLayout.ArrayVariable var = 
-                (granita.Interpreter.DataLayout.ArrayVariable)Interpreter.currentContext().getVariableRE(contextPosition);
+                (granita.Interpreter.DataLayout.ArrayVariable)Interpreter.currentContext().findVariableInRE(contextId, contextPosition);
         int calculatedIndex = ((IntResult) arrayIndex.eval()).getValue();
         if (calculatedIndex >= var.getItems().length) {
             try {

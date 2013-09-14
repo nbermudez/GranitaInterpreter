@@ -23,6 +23,9 @@ public class ContextStack {
     public void push(Context context) {
         if (!stack.isEmpty() && !context.hasParent()) {
             context.setParent(stack.peek());
+            if (context.getReturnValueContext() == -1) {
+                context.setReturnValueContext(stack.peek().getReturnValueContext());
+            }
         }
         stack.push(context);
     }

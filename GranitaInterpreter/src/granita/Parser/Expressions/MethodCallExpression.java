@@ -54,7 +54,7 @@ public class MethodCallExpression extends Expression {
         int proc = SemanticUtils.getInstance().findProcedureIndex(id);
         Function f;
         if (val == null) {
-            ErrorHandler.handle("no such method '" + id + "': line " 
+            ErrorHandler.handle("no such method '" + id + "': line "
                     + this.getLine());
             return null;
         } else {
@@ -69,19 +69,23 @@ public class MethodCallExpression extends Expression {
                 ErrorHandler.handle("actual and formal argument list differ in length "
                         + ": line " + this.getLine());
             }
-            int min = arguments.size()<f.getParameters().size()?
-                    arguments.size():f.getParameters().size();
+            int min = arguments.size() < f.getParameters().size()
+                    ? arguments.size() : f.getParameters().size();
             ArrayList<D_Expression> d_args = new ArrayList<D_Expression>();
+            SemanticUtils.getInstance().setUsedAsArgument(true);
             for (int i = 0; i < min; i++) {
                 D_Expression ex = arguments.get(i).getIR();
-                Type ret = ex.getExpressionType();
-                Type o = f.getParameters().get(i).getType();
-                if (!o.equivalent(ret)) {
-                    ErrorHandler.handle("incompatible types in method call's arg " + i
-                            + ": line " + arguments.get(i).getLine());
+                if (ex != null) {
+                    Type ret = ex.getExpressionType();
+                    Type o = f.getParameters().get(i).getType();
+                    if (!o.equivalent(ret)) {
+                        ErrorHandler.handle("incompatible types in method call's arg " + i
+                                + ": line " + arguments.get(i).getLine());
+                    }
+                    d_args.add(ex);
                 }
-                d_args.add(ex);
             }
+            SemanticUtils.getInstance().setUsedAsArgument(false);
             return new D_MethodCallExpression(t, id, d_args, proc);
         }
     }

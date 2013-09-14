@@ -26,5 +26,10 @@ public class BoolVariable extends  RE_Variable {
     public BoolResult getValue() {
         return (BoolResult)super.getValue();
     }   
+
+    @Override
+    public RE_Variable getCopy() {
+        return new BoolVariable(name, getValue().getValue());
+    }
     
 }

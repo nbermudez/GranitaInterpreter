@@ -3,18 +3,29 @@ class GreatestCommonDivisor {
 	int b = 20;
 	bool x[10];
 	void main() {
-		int x, y, z;
-		x = a;
+		int w, y, z;
+		w = a;
 		y = b;
-		z = gcd(x, y);
+		z = gcd(w, y);
 
-		print z;
+		print "gcd (", w, ",", y, ")=", z, "\n";
+		w = 4;
+		for(1; w<10; w=w+1) {
+			read x[w];
+		}
+		w = 4;
+		for(1; w<10; w=w+1) {
+			print x[w] || true, "\n";
+		}
 	}
 
 	// Función que calcula el máximo común divisor
 	int gcd(int a, int b) {
-		print a[1];
-		if (b == 0) { return(a); }
-		else { return( gcd(b, a % b) ); }
+		if (b == 0) { 
+			return(a); 
+		}
+		else {
+			return gcd(b, a % b);
+		}
 	}
 }

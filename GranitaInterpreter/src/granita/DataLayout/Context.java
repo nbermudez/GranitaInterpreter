@@ -4,12 +4,17 @@
  */
 package granita.DataLayout;
 
+import granita.Interpreter.DataLayout.BoolVariable;
+import granita.Interpreter.DataLayout.IntVariable;
 import granita.Interpreter.DataLayout.RE_Variable;
 import granita.Interpreter.Results.Result;
 import granita.SymbolTable.SymbolTableEntry;
 import granita.SymbolTable.SymbolTableTree;
 import java.util.HashMap;
 import java.util.Set;
+import granita.Interpreter.Interpreter;
+import granita.Interpreter.Results.BoolResult;
+import granita.Interpreter.Results.IntResult;
 
 /**
  *
@@ -144,7 +149,7 @@ public class Context {
         //<editor-fold defaultstate="collapsed" desc="Nuevo">
         copy.initialize(re_variables.length);
         for (int i = 0; i < re_variables.length; i++) {
-            RE_Variable rE_Variable = re_variables[i];
+            RE_Variable rE_Variable = re_variables[i].getCopy();
             copy.add(i, rE_Variable);
         }
         //</editor-fold>
@@ -164,7 +169,7 @@ public class Context {
         //<editor-fold defaultstate="collapsed" desc="Nuevo">
         this.initialize(copy.re_variables.length);
         for (int i = 0; i < copy.re_variables.length; i++) {
-            RE_Variable rE_Variable = copy.re_variables[i];
+            RE_Variable rE_Variable = copy.re_variables[i].getCopy();
             this.add(i, rE_Variable);
         }
         //</editor-fold>
@@ -187,7 +192,7 @@ public class Context {
             return;
         }
         for (int i = 0; i < other.re_variables.length; i++) {
-            RE_Variable rE_Variable = other.re_variables[i];
+            RE_Variable rE_Variable = other.re_variables[i].getCopy();
             this.add(i, rE_Variable);
         }
     }
@@ -217,6 +222,21 @@ public class Context {
             parentContext.setVariableInRE(contextId, index, value);
         }
     }
+    
+    public void setArrayItemInRE(int contextId, int index, int arrayIndex, Result value) {
+        if (this.contextId == contextId) {
+            granita.Interpreter.DataLayout.ArrayVariable var = (granita.Interpreter.DataLayout.ArrayVariable)re_variables[index];
+            
+            RE_Variable item = var.getItem(arrayIndex);
+            if (item != null) {
+                item.setValue(value);
+            } else {
+                var.setItemValue(arrayIndex, value);
+            }
+        } else if (parentContext != null) {
+            parentContext.setArrayItemInRE(contextId, index, arrayIndex, value);
+        }
+    }
 
     public int getContextId() {
         return contextId;
@@ -243,4 +263,21 @@ public class Context {
             System.out.println(key + ", " + get(key).getType().getValue());
         }
     }
+    
+    private int returnValueContext = -1;
+
+    public int getReturnValueContext() {
+        return returnValueContext;
+    }
+
+    public void setReturnValueContext(int returnValueContext) {
+        this.returnValueContext = returnValueContext;
+    }
+
+    public void hasReturnValue(boolean value) {
+        if (value) {
+            returnValueContext = contextId;
+        }
+    }
+    
 }

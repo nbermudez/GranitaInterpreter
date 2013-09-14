@@ -74,7 +74,8 @@ public class D_Read extends D_Statement {
                 }
                 if (d_LeftValue instanceof D_ArrayLeftValue) {
                     D_ArrayLeftValue dd = (D_ArrayLeftValue) d_LeftValue;
-                    //Interpreter.currentContext().setRE(d_LeftValue.getContextPosition(), dd.getIndex(), r);
+                    int x = dd.getArrayIndex();
+                    Interpreter.currentContext().setArrayItemInRE(0, d_LeftValue.getContextPosition(), x, r);
                 } else {
                     Interpreter.currentContext().setVariableInRE(d_LeftValue.getContextId(), d_LeftValue.getContextPosition(), r);
                 }

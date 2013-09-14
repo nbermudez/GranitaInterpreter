@@ -5,6 +5,8 @@
 package granita.Parser.Expressions;
 
 import granita.IR.Expressions.D_Expression;
+import granita.IR.Expressions.D_UnaryMinus;
+import granita.IR.Expressions.D_UnaryNot;
 import granita.Types.IntType;
 import granita.Types.Type;
 import granitainterpreter.ErrorHandler;
@@ -36,7 +38,7 @@ public class UnaryMinus extends Expression {
         }
 
         if (tvalue instanceof IntType) {
-            return ret;
+            return new D_UnaryMinus(ret);
         } else {
             ErrorHandler.handle("Operator - cannot be applied to "
                     + tvalue.toString() + ": line " + line);

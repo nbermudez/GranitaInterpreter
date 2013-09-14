@@ -44,12 +44,9 @@ public class D_MethodCallExpression extends D_Expression {
         Function AR = f.getCopy();
         
         int i = 0;
-        //System.out.println("Llamada a " + methodName);
-        //System.out.println("Function " + AR.getBody().getContext());
         for (D_Expression arg : arguments) {
             Type t = AR.getParameters().get(i).getType();
             Object param = arg.evaluate();
-            //System.out.println("param: " + param);
             t.setValue(param);
             String varName = AR.getParameters().get(i).getVarName();
             Variable v = AR.getBody().getContext().find(varName);
@@ -58,34 +55,32 @@ public class D_MethodCallExpression extends D_Expression {
             i = i + 1;
         }
         D_Block toRun = AR.getBody().getCopy();
-        //Context t = new Context();
-        //t.copyFrom(toRun.getContext());
-        //toRun.setContext(t);
-        //Interpreter.registerContext(toRun.getContext());
-        //System.out.println("MC: " + methodName);
         toRun.execute();
         Object res = Interpreter.returnedValue();
         Interpreter.returnedValue(null);
-        //Interpreter.loadContext();
-        //Interpreter.unregisterContext();
         return res;
-        //Interpreter.getInstance().popFunction();
-        //Interpreter.getInstance().setReturnReached(false);
-        //return null;
     }
 
     @Override
     public Result eval() {
         Procedure proc = Interpreter.getProcedure(procedureIndex);
-        int i = 0;
+        D_Block toRun = proc.getBody().getCopy();
+        //Interpreter.registerContext(toRun.getContext());
+        
+        int i = 1;
         for (D_Expression arg : arguments) {
             Result param = arg.eval();
-            proc.getBody().getContext().setVariableInRE(proc.getBody().getContext().getContextId(), i, param);            
+            int contextId = proc.getBody().getContext().getContextId();
+            toRun.getContext().setVariableInRE(contextId, i, param);            
             i = i + 1;
         }
-        D_Block toRun = proc.getBody().getCopy();
-        toRun.execute();
         
-        return Interpreter.getReturnValue();
+        toRun.getContext().hasReturnValue(true);
+        toRun.exec();
+        
+        Result r = Interpreter.getReturnValue();
+        //Interpreter.unregisterContext();
+        
+        return r;
     }
 }

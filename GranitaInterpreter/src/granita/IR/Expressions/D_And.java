@@ -30,6 +30,10 @@ public class D_And extends D_BinaryExpression {
     @Override
     public Result eval() {
         BoolResult l = (BoolResult) left.eval();
+        if (!l.getValue()) {
+            return new BoolResult(Boolean.FALSE);
+        }
+        //no need to check if left side is already false
         BoolResult r = (BoolResult) right.eval();
         
         return new BoolResult(l.getValue() && r.getValue());

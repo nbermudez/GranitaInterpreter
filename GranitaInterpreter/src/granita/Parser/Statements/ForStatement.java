@@ -106,7 +106,7 @@ public class ForStatement extends Statement {
         }
         
         D_Expression terminate = termination.getIR();
-        if (!(terminate.getExpressionType() instanceof BoolType)) {
+        if (terminate != null && !(terminate.getExpressionType() instanceof BoolType)) {
             ErrorHandler.handle("for test expression must evaluate to bool: line "
                     + termination.getLine());
         }

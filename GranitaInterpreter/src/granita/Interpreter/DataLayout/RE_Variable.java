@@ -38,4 +38,6 @@ public abstract class RE_Variable {
     }  
     //</editor-fold>
     
+    
+    public abstract RE_Variable getCopy();
 }

@@ -6,6 +6,7 @@ package granita.IR.Expressions;
 
 import granita.Interpreter.Results.IntResult;
 import granita.Interpreter.Results.Result;
+import granita.Types.IntType;
 
 /**
  *
@@ -16,6 +17,7 @@ public class D_UnaryMinus extends D_Expression {
 
     public D_UnaryMinus(D_Expression value) {
         this.value = value;
+        this.expressionType = new IntType();
     }
     
     @Override

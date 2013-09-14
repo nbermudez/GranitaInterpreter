@@ -25,5 +25,10 @@ public class IntVariable extends RE_Variable {
     public IntResult getValue() {
         return (IntResult)super.getValue();
     }
+
+    @Override
+    public RE_Variable getCopy() {
+        return new IntVariable(name, this.getValue().getValue());
+    }
     
 }
