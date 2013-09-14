@@ -18,14 +18,6 @@ public class D_Div extends D_BinaryExpression {
     }
 
     @Override
-    public Object evaluate() {
-        Integer l = (Integer) left.evaluate();
-        Integer r = (Integer) right.evaluate();
-
-        return l / r;
-    }
-
-    @Override
     public Result eval() {
         IntResult l = (IntResult) left.eval();
         IntResult r = (IntResult) right.eval();

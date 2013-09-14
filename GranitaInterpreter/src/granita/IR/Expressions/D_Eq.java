@@ -8,7 +8,6 @@ import granita.Interpreter.Results.BoolResult;
 import granita.Interpreter.Results.IntResult;
 import granita.Interpreter.Results.Result;
 import granita.Types.BoolType;
-import granita.Types.IntType;
 import granita.Types.Type;
 
 /**
@@ -22,21 +21,6 @@ public class D_Eq extends D_BinaryExpression {
         super(left, right);
         this.sideType = sideType;
         this.expressionType = new BoolType();
-    }
-    
-    @Override
-    public Object evaluate() {
-        if (sideType instanceof IntType) {
-            Integer l = (Integer) left.evaluate();
-            Integer r = (Integer) right.evaluate();
-            return l.intValue() == r.intValue();
-        } else if (sideType instanceof BoolType){
-            Boolean l = (Boolean) left.evaluate();
-            Boolean r = (Boolean) right.evaluate();
-            return l.booleanValue() == r.booleanValue();
-        } else {
-            return null;
-        }
     }
     
     @Override

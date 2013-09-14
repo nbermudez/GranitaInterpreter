@@ -24,14 +24,6 @@ public class D_NotEq extends D_BinaryExpression {
     }
 
     @Override
-    public Object evaluate() {
-        Object l =  left.evaluate();
-        Object r = right.evaluate();
-        
-        return !l.equals(r);
-    }
-
-    @Override
     public Result eval() {
         Result l = left.eval();
         Result r = right.eval();

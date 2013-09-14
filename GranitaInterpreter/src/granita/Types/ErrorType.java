@@ -16,16 +16,6 @@ public class ErrorType extends Type{
     }
 
     @Override
-    public void setValue(Object value) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public Object getValue() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
     public String toString() {
         throw new UnsupportedOperationException("Not supported yet.");
     }

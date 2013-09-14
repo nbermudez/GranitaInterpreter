@@ -22,7 +22,5 @@ public abstract class D_Expression {
         this.expressionType = expressionType;
     }
     
-    public abstract Object evaluate();
-    
     public abstract Result eval();
 }

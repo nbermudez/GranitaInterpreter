@@ -19,14 +19,6 @@ public class D_LessThanEq extends D_BinaryExpression {
         super(left, right);
         this.expressionType = new BoolType();
     }
-
-    @Override
-    public Object evaluate() {
-        Integer l = (Integer) left.evaluate();
-        Integer r = (Integer) right.evaluate();
-        
-        return l <= r;
-    }
     
     @Override
     public Result eval() {

@@ -4,17 +4,12 @@
  */
 package granita.DataLayout;
 
-import granita.Interpreter.DataLayout.BoolVariable;
-import granita.Interpreter.DataLayout.IntVariable;
 import granita.Interpreter.DataLayout.RE_Variable;
 import granita.Interpreter.Results.Result;
 import granita.SymbolTable.SymbolTableEntry;
 import granita.SymbolTable.SymbolTableTree;
 import java.util.HashMap;
 import java.util.Set;
-import granita.Interpreter.Interpreter;
-import granita.Interpreter.Results.BoolResult;
-import granita.Interpreter.Results.IntResult;
 
 /**
  *
@@ -40,7 +35,18 @@ public class Context {
         this.variables = new HashMap<String, Variable>();
     }
     //</editor-fold>    
+    
+    //<editor-fold defaultstate="collapsed" desc="Shared">
+    public int getVariableIndex() {
+        int value = this.variableIndex;
+        this.variableIndex++;
+        return value;
+    }
 
+    public void setVariableIndexInitValue(int value) {
+        this.variableIndex = value;
+    }
+    
     public void initialize(int size) {
         this.size = size;
         this.re_variables = new RE_Variable[size];
@@ -57,29 +63,13 @@ public class Context {
     public void setParent(Context parent) {
         this.parentContext = parent;
     }
-
+    //</editor-fold>     
+    
+    //<editor-fold defaultstate="collapsed" desc="Semantic Analysis usage">
     public void add(String key, Variable value) {
         if (!this.variables.containsKey(key)) {
             this.variables.put(key, value);
         }
-    }
-
-    public void add(int key, RE_Variable value) {
-        this.re_variables[key] = value;
-    }
-
-    public void set(String key, Object value) {
-        if (this.variables.containsKey(key)) {
-            Variable v = this.variables.get(key);
-            v.type.setValue(value);
-        } else if (parentContext != null) {
-            parentContext.set(key, value);
-        }
-    }
-
-    public void set(String key, int index, Object value) {
-        ArrayVariable v = (ArrayVariable) SymbolTableTree.getInstance().getGlobal().getEntry(key);
-        v.items[index].setValue(value);
     }
 
     private Variable get(String key) {
@@ -116,25 +106,9 @@ public class Context {
     public Variable findLocally(String key) {
         return this.get(key);
     }
-
-    public int getVariableIndex() {
-        int value = this.variableIndex;
-        this.variableIndex++;
-        return value;
-    }
-
-    public void setVariableIndexInitValue(int value) {
-        this.variableIndex = value;
-    }
-
-    public int getSize() {
-        return this.size;
-    }
-
-    public void clear() {
-        this.variables.clear();
-    }
-
+    //</editor-fold>    
+    
+    //<editor-fold defaultstate="collapsed" desc="Copy utils">
     public void copyTo(Context copy) {
         copy.clear();
         Set<String> keys = this.variables.keySet();
@@ -196,48 +170,9 @@ public class Context {
             this.add(i, rE_Variable);
         }
     }
+    //</editor-fold>    
 
-    public void setRuntimeEnvironment(RE_Variable[] array) {
-        this.re_variables = array;
-    }
-    
-    public RE_Variable getVariableRE(int index) {
-        return this.re_variables[index];
-    }
-    
-    public RE_Variable findVariableInRE(int contextId, int index) {
-        if (this.contextId == contextId) {
-            return re_variables[index];
-        } else if (this.parentContext != null) {
-            return parentContext.findVariableInRE(contextId, index);
-        } else {
-            return null;
-        }
-    }
-    
-    public void setVariableInRE(int contextId, int index, Result value) {
-        if (this.contextId == contextId) {
-            re_variables[index].setValue(value);
-        } else if (this.parentContext != null) {
-            parentContext.setVariableInRE(contextId, index, value);
-        }
-    }
-    
-    public void setArrayItemInRE(int contextId, int index, int arrayIndex, Result value) {
-        if (this.contextId == contextId) {
-            granita.Interpreter.DataLayout.ArrayVariable var = (granita.Interpreter.DataLayout.ArrayVariable)re_variables[index];
-            
-            RE_Variable item = var.getItem(arrayIndex);
-            if (item != null) {
-                item.setValue(value);
-            } else {
-                var.setItemValue(arrayIndex, value);
-            }
-        } else if (parentContext != null) {
-            parentContext.setArrayItemInRE(contextId, index, arrayIndex, value);
-        }
-    }
-
+    //<editor-fold defaultstate="collapsed" desc="Context ID">
     public int getContextId() {
         return contextId;
     }
@@ -255,15 +190,11 @@ public class Context {
             return -1;
         }
     }
-
-    public void print() {
-        Set<String> keys = this.variables.keySet();
-
-        for (String key : keys) {
-            System.out.println(key + ", " + get(key).getType().getValue());
-        }
-    }
+    //</editor-fold>    
     
+    //<editor-fold defaultstate="collapsed" desc="Interpretation usage">
+    
+    //<editor-fold defaultstate="collapsed" desc="Return Value">
     private int returnValueContext = -1;
 
     public int getReturnValueContext() {
@@ -279,5 +210,64 @@ public class Context {
             returnValueContext = contextId;
         }
     }
+    //</editor-fold>    
     
+    //<editor-fold defaultstate="collapsed" desc="RE_Variable related">
+    public void add(int key, RE_Variable value) {
+        this.re_variables[key] = value;
+    }
+    
+    public void setRuntimeEnvironment(RE_Variable[] array) {
+        this.re_variables = array;
+    }
+    
+    public RE_Variable getVariableRE(int index) {
+        return this.re_variables[index];
+    }
+    
+    public void setVariableInRE(int contextId, int index, Result value) {
+        if (this.contextId == contextId) {
+            re_variables[index].setValue(value);
+        } else if (this.parentContext != null) {
+            parentContext.setVariableInRE(contextId, index, value);
+        }
+    }
+    
+    public RE_Variable findVariableInRE(int contextId, int index) {
+        if (this.contextId == contextId) {
+            return re_variables[index];
+        } else if (this.parentContext != null) {
+            return parentContext.findVariableInRE(contextId, index);
+        } else {
+            return null;
+        }
+    }
+    
+    public void setArrayItemInRE(int contextId, int index, int arrayIndex, Result value) {
+        if (this.contextId == contextId) {
+            granita.Interpreter.DataLayout.ArrayVariable var = (granita.Interpreter.DataLayout.ArrayVariable)re_variables[index];
+            
+            RE_Variable item = var.getItem(arrayIndex);
+            if (item != null) {
+                item.setValue(value);
+            } else {
+                var.setItemValue(arrayIndex, value);
+            }
+        } else if (parentContext != null) {
+            parentContext.setArrayItemInRE(contextId, index, arrayIndex, value);
+        }
+    }
+    //</editor-fold>
+    
+    //</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="Misc">
+    public int getSize() {
+        return this.size;
+    }
+
+    public void clear() {
+        this.variables.clear();
+    }
+    //</editor-fold>
 }

@@ -9,6 +9,5 @@ package granita.IR.Statements;
  * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
  */
 public abstract class D_Statement {
-    public abstract void execute();
     public abstract void exec();
 }

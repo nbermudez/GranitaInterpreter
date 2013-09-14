@@ -68,7 +68,7 @@ public class ParameterDeclaration extends Statement {
     
     public void register() {        
         Function f = (Function)SymbolTableTree.getInstance().lookupFunction(methodName);
-        SimpleVariable v = new SimpleVariable(type, null);
+        SimpleVariable v = new SimpleVariable(type, false);
         v.setInitialized(true);
         v.setVarName(name);
         f.getParameters().add(v);

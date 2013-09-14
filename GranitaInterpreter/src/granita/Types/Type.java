@@ -10,9 +10,6 @@ package granita.Types;
  */
 public abstract class Type {
     
-    public abstract boolean equivalent(Type t);
-    
-    public abstract void setValue(Object value);
-    public abstract Object getValue();
+    public abstract boolean equivalent(Type t);    
     public abstract Type getCopy();
 }

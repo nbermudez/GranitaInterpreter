@@ -8,7 +8,6 @@ import granita.DataLayout.Function;
 import granita.IR.Expressions.D_Expression;
 import granita.IR.Statements.D_MethodCall;
 import granita.IR.Statements.D_Statement;
-import granita.Interpreter.DataLayout.Procedure;
 import granita.Parser.Expressions.Expression;
 import granita.SymbolTable.SymbolTableEntry;
 import granita.SymbolTable.SymbolTableTree;
@@ -89,7 +88,7 @@ public class MethodCallStatement extends Statement {
                 }
                 dParams.add(dExp);
             }
-            return new D_MethodCall(id, dParams, proc);
+            return new D_MethodCall(dParams, proc);
         }
     }
 }

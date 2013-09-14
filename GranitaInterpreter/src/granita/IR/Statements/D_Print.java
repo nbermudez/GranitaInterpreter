@@ -17,13 +17,6 @@ public class D_Print extends D_Statement {
     public D_Print(ArrayList<D_Argument> arguments) {
         this.arguments = arguments;
     }
-    
-    @Override
-    public void execute() {
-        for (D_Argument argument : arguments) {
-            System.out.print(argument.evaluate());
-        }
-    }
 
     @Override
     public void exec() {

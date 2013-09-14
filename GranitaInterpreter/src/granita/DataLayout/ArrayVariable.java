@@ -43,11 +43,6 @@ public class ArrayVariable extends Variable {
     //</editor-fold>    
 
     @Override
-    public String toString() {
-        return "Array of Size " + size.getValue();
-    }
-
-    @Override
     public Variable getCopy() {
         ArrayVariable var = new ArrayVariable(type.getCopy(), size);
         var.setVarName(varName);

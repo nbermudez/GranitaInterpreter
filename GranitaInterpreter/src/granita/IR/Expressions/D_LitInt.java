@@ -14,22 +14,20 @@ import granita.Types.IntType;
  */
 public class D_LitInt extends D_Expression {
 
+    IntResult value;
+    
     public D_LitInt(int value) {
-        this.expressionType = new IntType(value);
+        this.expressionType = new IntType();
+        this.value = new IntResult(value);
     }
     
     public int getValue() {
-        return (Integer) this.expressionType.getValue();
-    }
-    
-    @Override
-    public Object evaluate() {
-        return this.expressionType.getValue();
+        return value.getValue();
     }
 
     @Override
     public Result eval() {
-        return new IntResult((Integer) this.expressionType.getValue());
+        return value;
     }
     
 }

@@ -12,10 +12,6 @@ import granita.Interpreter.Results.BoolResult;
  */
 public class BoolVariable extends  RE_Variable {
 
-    public BoolVariable(String name) {
-        super(name);
-    }
-
     public BoolVariable(String name, boolean value) {
         super(name);
         super.setValue(new BoolResult(value));

@@ -6,7 +6,6 @@ package granita.Parser.Expressions;
 
 import granita.IR.Expressions.D_Expression;
 import granita.IR.Expressions.D_UnaryMinus;
-import granita.IR.Expressions.D_UnaryNot;
 import granita.Types.IntType;
 import granita.Types.Type;
 import granitainterpreter.ErrorHandler;

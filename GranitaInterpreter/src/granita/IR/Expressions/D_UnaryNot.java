@@ -19,12 +19,6 @@ public class D_UnaryNot extends D_Expression{
         this.value = value;
         this.expressionType = new BoolType();
     }
-    
-    @Override
-    public Object evaluate() {
-        Boolean r = (Boolean) value.evaluate();
-        return !r;
-    }
 
     @Override
     public Result eval() {

@@ -101,7 +101,7 @@ public class InitializedFieldDeclarationStatement extends DeclarationStatement {
                     + "': line " + this.getLine());
         } else {
             D_Expression d = initValue.getIR();
-            node.addEntry(fieldName, new SimpleVariable(type, d));
+            node.addEntry(fieldName, new SimpleVariable(type, true));
             if (this.type instanceof BoolType) {
                 Boolean init = ((BoolResult)d.eval()).getValue();
                 SemanticUtils.getInstance().addVariableRE(new BoolVariable(fieldName, init));

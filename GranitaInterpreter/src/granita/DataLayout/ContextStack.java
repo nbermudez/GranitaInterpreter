@@ -47,8 +47,6 @@ public class ContextStack {
     public void saveContext() {
         Context top = peek();
         if (top != null) {
-            //System.out.println("Saving " + top);
-            //top.print();
             Context copy = new Context(null);
             top.copyTo(copy);
             savedContext.push(copy);
@@ -57,11 +55,9 @@ public class ContextStack {
 
     public void loadContext() {
         if (!savedContext.isEmpty()) {
-            Context top = savedContext.pop();
-            //System.out.println("Loading " + stack.peek());            
+            Context top = savedContext.pop();          
             if (top != null) {
                 top.copyTo(stack.peek());
-                //stack.peek().print();
             }
         }
     }

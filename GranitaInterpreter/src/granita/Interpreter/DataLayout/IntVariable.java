@@ -12,10 +12,6 @@ import granita.Interpreter.Results.IntResult;
  */
 public class IntVariable extends RE_Variable {
 
-    public IntVariable(String name) {
-        super(name);
-    }
-
     public IntVariable(String name, int value) {
         super(name);
         super.setValue(new IntResult(value));

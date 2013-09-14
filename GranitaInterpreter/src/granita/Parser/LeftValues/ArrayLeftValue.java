@@ -80,7 +80,8 @@ public class ArrayLeftValue extends LeftValue {
                         return null;
                     }
                 }
-                return new D_ArrayLeftValue(arrIndex, id, position, contextId);
+                Type t = ((ArrayVariable)value).getType();
+                return new D_ArrayLeftValue(t, arrIndex, id, position, contextId);
             }
         }
     }

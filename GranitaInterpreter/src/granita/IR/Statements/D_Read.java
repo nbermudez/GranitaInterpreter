@@ -30,34 +30,6 @@ public class D_Read extends D_Statement {
     }
 
     @Override
-    public void execute() {
-        Scanner scanner = new Scanner(System.in);
-        for (D_LeftValue d_LeftValue : variables) {
-            Type t = d_LeftValue.getExpressionType();
-            Object readData;
-            try {
-                if (t instanceof IntType) {
-                    readData = scanner.nextInt();
-                } else {
-                    readData = scanner.nextBoolean();
-                }
-                if (d_LeftValue instanceof D_ArrayLeftValue) {
-                    D_ArrayLeftValue dd = (D_ArrayLeftValue) d_LeftValue;
-                    Interpreter.currentContext().set(dd.getIdentifier(), dd.getIndex(), readData);
-                } else {
-                    Interpreter.currentContext().set(d_LeftValue.getIdentifier(), readData);
-                }
-            } catch (Exception ex) {
-                try {
-                    ErrorHandler.handleFatalError("incompatible types, expected " + t);
-                } catch (GranitaException ex1) {
-                    System.err.println("-_-");
-                }
-            }
-        }
-    }
-
-    @Override
     public void exec() {
         Scanner scanner = new Scanner(System.in);
         for (D_LeftValue d_LeftValue : variables) {

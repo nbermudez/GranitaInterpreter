@@ -23,7 +23,8 @@ public abstract class D_BinaryExpression extends D_Expression {
             this.expressionType = this.left.expressionType;
         }
     }
-
+    
+    //<editor-fold defaultstate="collapsed" desc="Getters & Setters">
     public D_Expression getLeft() {
         return left;
     }
@@ -39,6 +40,8 @@ public abstract class D_BinaryExpression extends D_Expression {
     public void setRight(D_Expression right) {
         this.right = right;
     }
+    //</editor-fold>    
     
+    @Override
     public abstract Result eval();
 }

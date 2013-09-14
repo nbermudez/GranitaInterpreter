@@ -14,18 +14,16 @@ import granita.Types.BoolType;
  */
 public class D_LitBool extends D_Expression {
     
-    public D_LitBool(boolean value) {
-        this.expressionType = new BoolType(value);
-    }
+    BoolResult value;
     
-    @Override
-    public Object evaluate() {
-        return this.expressionType.getValue();
+    public D_LitBool(boolean value) {
+        this.expressionType = new BoolType();
+        this.value = new BoolResult(value);
     }
 
     @Override
     public Result eval() {
-        return new BoolResult((Boolean)this.expressionType.getValue());
+        return value;
     }
     
 }

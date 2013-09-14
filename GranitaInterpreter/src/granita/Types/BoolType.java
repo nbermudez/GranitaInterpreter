@@ -10,23 +10,7 @@ package granita.Types;
  */
 public class BoolType extends Type{
     
-    Boolean value;
-
     public BoolType() {
-        this.value = false;
-    }
-
-    public BoolType(Boolean value) {
-        this.value = value;
-    }
-
-    @Override
-    public Boolean getValue() {
-        return value;
-    }
-
-    public void setValue(Boolean value) {
-        this.value = value;
     }
     
     @Override
@@ -44,14 +28,7 @@ public class BoolType extends Type{
     }
 
     @Override
-    public void setValue(Object value) {
-        if (value instanceof Boolean){
-            this.value = (Boolean) value;
-        }
-    }
-
-    @Override
     public Type getCopy() {
-        return new BoolType(value);
+        return new BoolType();
     }
 }

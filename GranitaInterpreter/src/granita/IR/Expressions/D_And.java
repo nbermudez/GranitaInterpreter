@@ -20,14 +20,6 @@ public class D_And extends D_BinaryExpression {
     }
 
     @Override
-    public Object evaluate() {
-        Boolean l = (Boolean) left.evaluate();
-        Boolean r = (Boolean) right.evaluate();
-        
-        return l && r;
-    }
-
-    @Override
     public Result eval() {
         BoolResult l = (BoolResult) left.eval();
         if (!l.getValue()) {

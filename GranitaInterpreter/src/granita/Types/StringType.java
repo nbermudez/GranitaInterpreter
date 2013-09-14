@@ -10,21 +10,6 @@ package granita.Types;
  */
 public class StringType extends Type {
     
-    String value;
-
-    public StringType(String value) {
-        this.value = value;
-    }
-
-    @Override
-    public String getValue() {
-        return value;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
-    }
-    
     @Override
     public boolean equivalent(Type t) {
         return t instanceof StringType;
@@ -36,15 +21,8 @@ public class StringType extends Type {
     }
 
     @Override
-    public void setValue(Object value) {
-        if (value instanceof String){
-            this.value = (String) value;
-        }
-    }
-
-    @Override
     public Type getCopy() {
-        return new StringType(value);
+        return new StringType();
     }
     
 }

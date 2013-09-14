@@ -4,8 +4,6 @@
  */
 package granita.Parser.FieldItems;
 
-import granitainterpreter.GranitaException;
-
 
 /**
  *

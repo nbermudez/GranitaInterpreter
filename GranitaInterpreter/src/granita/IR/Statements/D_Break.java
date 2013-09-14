@@ -13,11 +13,6 @@ import granita.Interpreter.Interpreter;
 public class D_Break extends D_Statement {
 
     @Override
-    public void execute() {
-        Interpreter.breakWasReached(true);
-    }
-
-    @Override
     public void exec() {
         Interpreter.breakWasReached(true);
     }

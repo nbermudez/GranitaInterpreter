@@ -64,21 +64,6 @@ public class D_Block extends D_Statement {
         
         return copy;
     }
-    
-    @Override
-    public void execute() {
-        Interpreter.saveContext();
-        Interpreter.registerContext(context);
-        for (D_Statement d_Statement : statements) {
-            if (Interpreter.returnReached()) {
-                break;
-            }
-            d_Statement.execute();
-        }
-        Interpreter.unregisterContext();
-        Interpreter.loadContext();
-        
-    }
 
     @Override
     public void exec() {

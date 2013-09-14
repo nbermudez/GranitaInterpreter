@@ -19,12 +19,6 @@ public class D_UnaryMinus extends D_Expression {
         this.value = value;
         this.expressionType = new IntType();
     }
-    
-    @Override
-    public Object evaluate() {
-        Integer r = (Integer) value.evaluate();
-        return -r;
-    }
 
     @Override
     public Result eval() {

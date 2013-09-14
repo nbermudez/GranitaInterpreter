@@ -18,14 +18,6 @@ public class D_Or extends D_BinaryExpression {
         super(left, right);
         this.expressionType = new BoolType();
     }
-
-    @Override
-    public Object evaluate() {
-        Boolean l = (Boolean) left.evaluate();
-        Boolean r = (Boolean) right.evaluate();
-        
-        return l || r;
-    }
     
     @Override
     public Result eval() {

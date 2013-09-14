@@ -17,11 +17,6 @@ public class D_Argument extends D_Expression {
     public D_Argument(D_Expression value) {
         this.value = value;
     }
-    
-    @Override
-    public Object evaluate() {
-        return value.evaluate();
-    }
 
     @Override
     public Result eval() {

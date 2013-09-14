@@ -23,27 +23,6 @@ public class D_While extends D_Statement {
     }
     
     @Override
-    public void execute() {
-        Interpreter.registerContext(block.getContext());
-        Boolean ret = (Boolean) expression.evaluate();
-        while (ret) {
-            for (D_Statement st : block.getStatements()) {
-                if (Interpreter.breakReached()) {
-                    Interpreter.breakWasReached(false);
-                    break;
-                } else if (Interpreter.continueReached()) {
-                    Interpreter.continueWasReached(false);
-                    continue;
-                } else {
-                    st.execute();
-                }
-            }
-            ret = (Boolean) expression.evaluate();
-        }
-        Interpreter.unregisterContext();
-    }
-    
-    @Override
     public void exec() {
         Interpreter.registerContext(block.getContext());
         BoolResult ret = (BoolResult) expression.eval();

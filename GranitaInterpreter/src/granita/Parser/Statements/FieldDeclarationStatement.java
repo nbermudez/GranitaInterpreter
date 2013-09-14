@@ -5,7 +5,6 @@
 package granita.Parser.Statements;
 
 import granita.DataLayout.ArrayVariable;
-import granita.DataLayout.Context;
 import granita.DataLayout.SimpleVariable;
 import granita.Interpreter.DataLayout.BoolVariable;
 import granita.Interpreter.DataLayout.IntVariable;
@@ -94,7 +93,7 @@ public class FieldDeclarationStatement extends DeclarationStatement {
                                 af.getSize().getValue()));
                     }
                 } else {
-                    node.addEntry(f.getFieldName(), new SimpleVariable(type, null));
+                    node.addEntry(f.getFieldName(), new SimpleVariable(type, false));
                     if (this.type instanceof BoolType) {
                         SemanticUtils.getInstance().addVariableRE(new BoolVariable(f.getFieldName(), false));
                     } else {

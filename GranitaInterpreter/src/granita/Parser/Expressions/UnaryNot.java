@@ -5,6 +5,7 @@
 package granita.Parser.Expressions;
 
 import granita.IR.Expressions.D_Expression;
+import granita.IR.Expressions.D_UnaryNot;
 import granita.Types.BoolType;
 import granita.Types.Type;
 import granitainterpreter.ErrorHandler;
@@ -36,7 +37,7 @@ public class UnaryNot extends Expression {
         }
 
         if (tvalue instanceof BoolType) {
-            return ret;
+            return new D_UnaryNot(ret);
         } else {
             ErrorHandler.handle("'not' cannot be applied to "
                     + tvalue.toString() + ": line " + line);

@@ -16,14 +16,6 @@ public class D_Rot extends D_BinaryExpression {
     public D_Rot(D_Expression left, D_Expression right) {
         super(left, right);
     }
-
-    @Override
-    public Object evaluate() {
-        Integer l = (Integer) left.evaluate();
-        Integer r = (Integer) right.evaluate();
-        
-        return Integer.rotateRight(l, r);
-    }
     
     @Override
     public Result eval() {

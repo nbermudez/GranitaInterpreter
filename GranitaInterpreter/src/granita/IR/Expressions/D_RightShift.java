@@ -16,14 +16,6 @@ public class D_RightShift extends D_BinaryExpression {
     public D_RightShift(D_Expression left, D_Expression right) {
         super(left, right);
     }
-
-    @Override
-    public Object evaluate() {
-        Integer l = (Integer) left.evaluate();
-        Integer r = (Integer) right.evaluate();
-
-        return l >> r;
-    }
     
     @Override
     public Result eval() {

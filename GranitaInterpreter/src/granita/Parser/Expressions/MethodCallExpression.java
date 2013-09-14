@@ -86,7 +86,7 @@ public class MethodCallExpression extends Expression {
                 }
             }
             SemanticUtils.getInstance().setUsedAsArgument(false);
-            return new D_MethodCallExpression(t, id, d_args, proc);
+            return new D_MethodCallExpression(t, d_args, proc);
         }
     }
 }

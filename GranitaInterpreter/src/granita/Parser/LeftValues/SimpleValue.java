@@ -4,15 +4,12 @@
  */
 package granita.Parser.LeftValues;
 
-import granita.IR.LeftValues.D_LeftValue;
-import granita.IR.LeftValues.D_SimpleValue;
 import granita.DataLayout.ArrayVariable;
 import granita.DataLayout.SimpleVariable;
 import granita.DataLayout.Variable;
-import granita.Interpreter.DataLayout.RE_Variable;
-import granita.Types.Type;
+import granita.IR.LeftValues.D_LeftValue;
+import granita.IR.LeftValues.D_SimpleValue;
 import granitainterpreter.ErrorHandler;
-import granitainterpreter.Interpreter;
 import granitainterpreter.SemanticUtils;
 
 /**

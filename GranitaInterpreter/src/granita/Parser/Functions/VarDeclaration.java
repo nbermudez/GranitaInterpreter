@@ -68,7 +68,7 @@ public class VarDeclaration extends Statement {
                 ErrorHandler.handle("already defined variable '" + key
                         + "': line " + this.getLine());
             } else {
-                context.add(key, new SimpleVariable(type, null));
+                context.add(key, new SimpleVariable(type, false));
                 if (this.type instanceof BoolType) {
                     context.add(context.getVariableIndex(), new BoolVariable(key, false));
                 } else {
