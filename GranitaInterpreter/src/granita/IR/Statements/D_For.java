@@ -15,13 +15,13 @@ import java.util.ArrayList;
 public class D_For extends D_Statement {
 
     //<editor-fold defaultstate="collapsed" desc="Instance Attributes">
-    ArrayList<D_Expression> initializations;
+    ArrayList<D_Statement> initializations;
     D_Expression termination;
     ArrayList<D_Statement> increments;
     D_Block block;
     //</editor-fold>    
 
-    public D_For(ArrayList<D_Expression> initializations, D_Expression termination,
+    public D_For(ArrayList<D_Statement> initializations, D_Expression termination,
             ArrayList<D_Statement> increments, D_Block block) {
         this.initializations = initializations;
         this.termination = termination;
@@ -31,8 +31,8 @@ public class D_For extends D_Statement {
     
     @Override
     public void exec() {
-        for (D_Expression expression : initializations) {
-            expression.eval();
+        for (D_Statement init : initializations) {
+            init.exec();
         }
         while (true) {
             BoolResult ret = (BoolResult) termination.eval();

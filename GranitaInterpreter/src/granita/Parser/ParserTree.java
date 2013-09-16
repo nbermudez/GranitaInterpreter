@@ -406,23 +406,27 @@ public class ParserTree {
             Statement re = new ReturnStatement(insideLoop, exp, line);
             return re;
         } else if (currentToken == Token.TK_KW_FOR) {
-            ArrayList<Expression> inits = new ArrayList<Expression>();
+            ArrayList<Statement> inits = new ArrayList<Statement>();
             ArrayList<Statement> incrs = new ArrayList<Statement>();
             Expression termination;
             insideLoop = true;
             currentToken = lexer.nextToken();
             match(Token.TK_LEFT_PARENTHESIS, "(");
-            inits.add(EXPR());
+            String id = currentToken.lexeme;
+            currentToken = lexer.nextToken();
+            inits.add(ASSIGN(id));
 
             while (currentToken == Token.TK_COLON) {
                 currentToken = lexer.nextToken();
-                inits.add(EXPR());
+                id = currentToken.lexeme;
+                currentToken = lexer.nextToken();
+                inits.add(ASSIGN(id));
             }
             match(Token.TK_SEMICOLON, ";");
             termination = EXPR();
             match(Token.TK_SEMICOLON, ";");
 
-            String id = currentToken.lexeme;
+            id = currentToken.lexeme;
             match(Token.TK_IDENTIFIER, "identifier");
 
             incrs.add(ASSIGN(id));
