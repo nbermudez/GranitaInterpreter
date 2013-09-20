@@ -24,9 +24,16 @@ public class ArrayVariable extends RE_Variable {
         this.type = type;
         if (type == RE_Variable.Type.BOOL_VARIABLE) {
             items = new BoolVariable[size];
+            for (int i = 0; i < items.length; i++) {
+                items[i] = new BoolVariable("", false);
+            }
         } else {
             items = new IntVariable[size];
+            for (int i = 0; i < items.length; i++) {
+                items[i] = new IntVariable("", 0);
+            }
         }
+
     }
 
     public RE_Variable[] getItems() {

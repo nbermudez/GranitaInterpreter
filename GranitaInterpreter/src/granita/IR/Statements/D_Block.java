@@ -67,7 +67,7 @@ public class D_Block extends D_Statement {
 
     @Override
     public void exec() {
-        Interpreter.saveContext();
+        //Interpreter.saveContext();
         Interpreter.registerContext(context);
         for (D_Statement d_Statement : statements) {
             if (Interpreter.returnReached()) {
@@ -76,7 +76,7 @@ public class D_Block extends D_Statement {
             d_Statement.exec();
         }
         Interpreter.unregisterContext();
-        Interpreter.loadContext();
+        //Interpreter.loadContext();
     }
     
 }

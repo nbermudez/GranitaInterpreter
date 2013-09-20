@@ -5,6 +5,7 @@
 package granita.IR.Statements;
 
 import granita.IR.Expressions.D_Expression;
+import granita.Interpreter.Interpreter;
 import granita.Interpreter.Results.BoolResult;
 import java.util.ArrayList;
 
@@ -28,7 +29,7 @@ public class D_For extends D_Statement {
         this.increments = increments;
         this.block = block;
     }
-    
+
     @Override
     public void exec() {
         for (D_Statement init : initializations) {
@@ -40,13 +41,17 @@ public class D_For extends D_Statement {
                 break;
             }
             for (D_Statement st : block.getStatements()) {
-                if (st instanceof D_Continue) {
-                    continue;
-                } else if (st instanceof D_Break) {
+                if (Interpreter.breakReached() || Interpreter.continueReached()) {
                     break;
                 } else {
                     st.exec();
                 }
+            }
+            if (Interpreter.breakReached()) {
+                Interpreter.breakWasReached(false);
+                break;
+            } else if (Interpreter.continueReached()) {
+                Interpreter.continueWasReached(false);
             }
             for (D_Statement st : increments) {
                 st.exec();

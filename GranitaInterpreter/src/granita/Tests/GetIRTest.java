@@ -21,7 +21,7 @@ public class GetIRTest {
     public static void main(String[] args){
         try {
             String path = "C:/Users/Alejandro/Documents/GitHub/GranitaInterpreter/test_programs/";
-            Lexer lexer = new Lexer(path + "program11.txt");
+            Lexer lexer = new Lexer(path + "program17.txt");
 
             ParserTree parser = new ParserTree(lexer);
             ArrayList<ClassStatement> trees = parser.parse();

@@ -28,15 +28,17 @@ public class D_While extends D_Statement {
         BoolResult ret = (BoolResult) expression.eval();
         while (ret.getValue()) {
             for (D_Statement st : block.getStatements()) {
-                if (Interpreter.breakReached()) {
-                    Interpreter.breakWasReached(false);
+                if (Interpreter.breakReached() || Interpreter.continueReached()) {
                     break;
-                } else if (Interpreter.continueReached()) {
-                    Interpreter.continueWasReached(false);
-                    continue;
                 } else {
                     st.exec();
                 }
+            }
+            if (Interpreter.breakReached()) {
+                Interpreter.breakWasReached(false);
+                break;
+            } else if (Interpreter.continueReached()) {
+                Interpreter.continueWasReached(false);
             }
             ret = (BoolResult) expression.eval();
         }

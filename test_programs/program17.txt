@@ -1,0 +1,72 @@
+class bublesort {
+	int valores[8];
+	
+	void fillValores() {
+		int i;
+		for(i=0; i < 8; i = i+1){
+			read valores[i];
+		}
+	}
+	
+	int incrementar1(int i) {
+		int tmp;
+		tmp = i + 1;
+		return tmp;
+	}
+	
+	void printValores() {
+		int i;
+		i = 0;
+		while(i < 8){
+			print "valores[", i, "] = ", valores[i], "\n";
+			i = incrementar1(i);
+		}
+	}
+	
+	bool isSorted() {
+		bool sorted;		
+		int i;
+		sorted = true;
+		for(i=0; i < 7; i = i+1){
+			if (valores[i]>valores[i+1]){
+				sorted = false;
+				break;
+			}
+		}
+		return sorted;
+	}
+	
+	void bubbleSort() {
+		int i, j, tmp;
+		for (i = 0; i < 8; i = i+1){
+			for (j = 0; j < 7; j = j + 1) {
+				if (valores[i]>valores[j]) {
+					tmp = valores[j];
+					valores[j] = valores[i];
+					valores[i] = tmp;
+				}
+			}
+		}
+	}
+	
+	void main() {
+		int iii;
+		iii = 0;
+		for(iii=3;iii<10;iii=iii+1){
+			print "iii: ", iii, "\n";
+			{
+				iii = iii + 1;
+			}
+		}
+		fillValores();
+		
+		printValores();
+		
+		if (!isSorted()) {
+			print "is not sorted! sorting...\n";
+			bubbleSort();
+		}	
+		
+		printValores();
+	}
+}

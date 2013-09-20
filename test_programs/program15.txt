@@ -5,7 +5,7 @@ class testScopes {
 		int i,x;
 		i = 0;
 		print "print usando ciclo for\n";
-		for (0,1,2; i< 10; i=i+1){
+		for (i=0; i< 10; i=i+1){
 			print arr[i], "\n";
 		}
 		i = 0;

@@ -93,7 +93,7 @@ public class Context {
     public int findInRE(String key) {
         for (int i = 0; i < re_variables.length; i++) {
             RE_Variable rE_Variable = re_variables[i];
-            if (rE_Variable.getName().equals(key)) {
+            if (rE_Variable != null && rE_Variable.getName().equals(key)) {
                 return i;
             }
         }

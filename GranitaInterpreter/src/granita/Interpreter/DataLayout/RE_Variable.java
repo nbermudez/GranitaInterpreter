@@ -4,6 +4,8 @@
  */
 package granita.Interpreter.DataLayout;
 
+import granita.Interpreter.Results.BoolResult;
+import granita.Interpreter.Results.IntResult;
 import granita.Interpreter.Results.Result;
 
 /**
@@ -34,7 +36,12 @@ public abstract class RE_Variable {
     }
 
     public void setValue(Result value) {
-        this.value = value;
+        if (value instanceof IntResult) {
+            this.value = new IntResult((Integer)value.getValue());
+        } else {
+            this.value = new BoolResult((Boolean)value.getValue());
+        }
+        //this.value = value;
     }  
     //</editor-fold>
     
