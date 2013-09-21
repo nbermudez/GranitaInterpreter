@@ -23,7 +23,7 @@ import java.util.ArrayList;
 
 /**
  *
- * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
+ * @author Néstor A. Bermúdez < nestor.bermudez@unitec.edu >
  */
 public class FieldDeclarationStatement extends DeclarationStatement {
 

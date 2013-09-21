@@ -85,6 +85,8 @@ class t {
 		//printAll(6);
 		print "fibonacci(5) = ", funct2(5), "\n";
 		print "------------------------------------\n";
+		fuck[1] = funct2(6);
+		print fuck[1], "\n";;
 		//read x;
 		//print "after read ", x, "\n";
 		//read fuck[0], fuck[1], fuck[0];

@@ -10,7 +10,7 @@ import granita.Semantic.Types.IntType;
 
 /**
  *
- * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
+ * @author Néstor A. Bermúdez < nestor.bermudez@unitec.edu >
  */
 public class D_UnaryMinus extends D_Expression {
     D_Expression value;

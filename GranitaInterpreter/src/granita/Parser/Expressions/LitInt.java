@@ -8,7 +8,7 @@ import granita.IR.Expressions.D_LitInt;
 
 /**
  *
- * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
+ * @author Néstor A. Bermúdez < nestor.bermudez@unitec.edu >
  */
 public class LitInt extends Expression {
     int value;

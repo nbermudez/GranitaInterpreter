@@ -6,7 +6,7 @@ package granita.Misc;
 
 /**
  *
- * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
+ * @author Néstor A. Bermúdez < nestor.bermudez@unitec.edu >
  */
 public class GranitaException extends Exception {
 

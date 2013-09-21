@@ -9,7 +9,7 @@ import granita.Semantic.Types.Type;
 
 /**
  *
- * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
+ * @author Néstor A. Bermúdez < nestor.bermudez@unitec.edu >
  */
 public class ArrayVariable extends Variable {
     D_LitInt size;

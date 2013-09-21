@@ -8,7 +8,7 @@ import granita.IR.Expressions.D_Expression;
 
 /**
  *
- * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
+ * @author Néstor A. Bermúdez < nestor.bermudez@unitec.edu >
  */
 public abstract class D_LeftValue extends D_Expression {
     String identifier;

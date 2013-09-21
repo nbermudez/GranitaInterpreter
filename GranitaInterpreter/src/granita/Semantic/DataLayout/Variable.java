@@ -9,7 +9,7 @@ import granita.Semantic.Types.Type;
 
 /**
  *
- * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
+ * @author Néstor A. Bermúdez < nestor.bermudez@unitec.edu >
  */
 public abstract class Variable extends SymbolTableEntry {
     protected String varName;

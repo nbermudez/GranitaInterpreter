@@ -14,7 +14,7 @@ import granita.Misc.ErrorHandler;
 
 /**
  *
- * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
+ * @author Néstor A. Bermúdez < nestor.bermudez@unitec.edu >
  */
 public class NotEq extends BinaryExpression {
 

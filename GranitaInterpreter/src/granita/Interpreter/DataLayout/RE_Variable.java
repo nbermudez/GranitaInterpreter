@@ -10,7 +10,7 @@ import granita.Interpreter.Results.Result;
 
 /**
  *
- * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
+ * @author Néstor A. Bermúdez < nestor.bermudez@unitec.edu >
  */
 public abstract class RE_Variable {
     public static enum Type { INT_VARIABLE, BOOL_VARIABLE }

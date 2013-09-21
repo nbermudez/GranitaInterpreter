@@ -8,15 +8,14 @@ import granita.IR.Expressions.D_Expression;
 import granita.IR.Statements.D_Block;
 import granita.IR.Statements.D_If;
 import granita.IR.Statements.D_Statement;
+import granita.Misc.ErrorHandler;
 import granita.Parser.Expressions.Expression;
 import granita.Semantic.Types.BoolType;
-import granita.Semantic.Types.Type;
-import granita.Misc.ErrorHandler;
-import granita.Misc.GranitaException;
+import granita.Semantics.SemanticUtils;
 
 /**
  *
- * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
+ * @author Néstor A. Bermúdez < nestor.bermudez@unitec.edu >
  */
 public class IfStatement extends Statement {
 
@@ -67,22 +66,6 @@ public class IfStatement extends Statement {
     }
 
     @Override
-    public Type hasReturn(Type methodType) throws GranitaException {
-        Type t1, t2 = null;
-        t1 = trueBlock.hasReturn(methodType);
-        if (falseBlock != null) {
-            t2 = falseBlock.hasReturn(methodType);
-        }
-        if (t2 == null) {
-            return null;
-        }
-        if (methodType.equivalent(t2)) {
-            return t1;
-        }
-        return t2;
-    }
-
-    @Override
     public D_Statement getIR() {
         checkForUnreachableStatement();
         
@@ -93,9 +76,14 @@ public class IfStatement extends Statement {
         }
         
         D_Statement tBlock = trueBlock.getIR();
+        boolean b1 = SemanticUtils.getInstance().isUnreachable();
+        SemanticUtils.getInstance().setUnreachable(false);
         if (tBlock != null && tBlock instanceof D_Block) {
             if (falseBlock != null) {
-                return new D_If(cond, (D_Block) tBlock, (D_Block) falseBlock.getIR());
+                D_Statement fBlock = falseBlock.getIR();
+                boolean b2 = SemanticUtils.getInstance().isUnreachable();
+                SemanticUtils.getInstance().setUnreachable(b1 && b2);
+                return new D_If(cond, (D_Block) tBlock, (D_Block) fBlock);
             }
             return new D_If(cond, (D_Block) tBlock);
         }

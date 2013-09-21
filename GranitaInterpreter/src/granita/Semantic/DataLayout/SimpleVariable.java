@@ -8,7 +8,7 @@ import granita.Semantic.Types.Type;
 
 /**
  *
- * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
+ * @author Néstor A. Bermúdez < nestor.bermudez@unitec.edu >
  */
 public class SimpleVariable extends Variable {
     

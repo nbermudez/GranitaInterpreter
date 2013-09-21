@@ -4,17 +4,16 @@
  */
 package granita.Semantics;
 
-import granita.Semantic.DataLayout.Context;
-import granita.Semantic.DataLayout.ContextStack;
 import granita.Interpreter.DataLayout.Procedure;
 import granita.Interpreter.DataLayout.RE_Variable;
-import granita.Semantic.SymbolTable.SymbolTableTree;
+import granita.Semantic.DataLayout.Context;
+import granita.Semantic.DataLayout.ContextStack;
 import granita.Semantic.Types.Type;
 import java.util.ArrayList;
 
 /**
  *
- * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
+ * @author Néstor A. Bermúdez < nestor.bermudez@unitec.edu >
  */
 public class SemanticUtils {
     //<editor-fold defaultstate="collapsed" desc="Instance Attributes">
@@ -27,6 +26,7 @@ public class SemanticUtils {
     private boolean insideRead = false;
     private boolean usedAsArgument = false;
     private boolean mustMergeWithTemp = false;
+    private boolean unreachable = false;
     private ContextStack contextStack;
     private Context tmp;
     //</editor-fold>    
@@ -106,6 +106,14 @@ public class SemanticUtils {
 
     public void setUsedAsArgument(boolean usedAsArgument) {
         this.usedAsArgument = usedAsArgument;
+    }
+
+    public boolean isUnreachable() {
+        return unreachable;
+    }
+
+    public void setUnreachable(boolean unreachable) {
+        this.unreachable = unreachable;
     }
     
     //<editor-fold defaultstate="collapsed" desc="Second version, Good to go">

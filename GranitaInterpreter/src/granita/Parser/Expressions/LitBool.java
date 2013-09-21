@@ -9,7 +9,7 @@ import granita.IR.Expressions.D_LitBool;
 
 /**
  *
- * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
+ * @author Néstor A. Bermúdez < nestor.bermudez@unitec.edu >
  */
 public class LitBool extends Expression {
     boolean value;

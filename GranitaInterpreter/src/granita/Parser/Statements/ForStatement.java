@@ -8,16 +8,14 @@ import granita.IR.Expressions.D_Expression;
 import granita.IR.Statements.D_Block;
 import granita.IR.Statements.D_For;
 import granita.IR.Statements.D_Statement;
+import granita.Misc.ErrorHandler;
 import granita.Parser.Expressions.Expression;
 import granita.Semantic.Types.BoolType;
-import granita.Semantic.Types.Type;
-import granita.Misc.ErrorHandler;
-import granita.Misc.GranitaException;
 import java.util.ArrayList;
 
 /**
  *
- * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
+ * @author Néstor A. Bermúdez < nestor.bermudez@unitec.edu >
  */
 public class ForStatement extends Statement {
 
@@ -66,11 +64,6 @@ public class ForStatement extends Statement {
         f += ")\n";
         f += block.toString();
         return f;
-    }
-
-    @Override
-    public Type hasReturn(Type methodType) throws GranitaException {
-        return block.hasReturn(methodType);
     }
 
     @Override

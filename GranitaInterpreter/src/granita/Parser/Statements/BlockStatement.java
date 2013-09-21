@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 /**
  *
- * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
+ * @author Néstor A. Bermúdez < nestor.bermudez@unitec.edu >
  */
 public class BlockStatement extends Statement {
     
@@ -71,14 +71,20 @@ public class BlockStatement extends Statement {
 
     @Override
     public void checkForUnreachableStatement() {
-        if (SemanticUtils.getInstance().isUnreachableStatement() == 1) {
-            int line2 = this.firstStatement().getLine();
-            if (line2 != this.getLine()){
-                ErrorHandler.handle("unreachable statement: line " 
-                    + line2);
+        int unreachable = SemanticUtils.getInstance().isUnreachableStatement();
+        if (unreachable == 1) {
+            Statement first = this.firstStatement();
+            if (first != this) {
+                ErrorHandler.handleWarning("unreachable statement: line " 
+                    + first.getLine());
             }
             
             SemanticUtils.getInstance().setUnreachableStatement();
+            SemanticUtils.getInstance().setUnreachable(true);
+        } else if (SemanticUtils.getInstance().isUnreachable() &&
+                SemanticUtils.getInstance().isUnreachableStatement() == 0) {
+            ErrorHandler.handleWarning("unreachable statement: line " + this.getLine());
+            SemanticUtils.getInstance().setUnreachable(false);
         }
     }
 
@@ -95,41 +101,6 @@ public class BlockStatement extends Statement {
             }
         }
         return this;
-    }
-
-    @Override
-    public Type hasReturn(Type methodType) throws GranitaException {
-        int unreachable = 0;
-        Type tt = null;
-        boolean simple = false;
-        for (Statement statement : statements) {
-            if (unreachable == 1 && !simple) {
-                int lineN = statement.getLine();
-                if (statement instanceof BlockStatement) {
-                    BlockStatement block = (BlockStatement) statement;
-                    block.setParentBlock(this);
-                    lineN = block.firstStatement().getLine();
-                    if (lineN != statement.getLine()) {
-                        ErrorHandler.handle("unreachable statement: line " + lineN);
-                    }
-                } else {
-                    ErrorHandler.handle("unreachable statement: line " + lineN);
-                }
-            }
-            Type t = statement.hasReturn(methodType);
-            if (t != null) {
-                tt = t;
-                unreachable += 1;
-            }
-            if (statement instanceof ReturnStatement
-                    || statement instanceof ContinueStatement
-                    || statement instanceof BreakStatement) {
-                simple = true;
-            } else {
-                simple = false;
-            }
-        }
-        return tt;
     }
 
     @Override

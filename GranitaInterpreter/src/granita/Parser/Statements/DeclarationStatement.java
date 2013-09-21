@@ -8,7 +8,7 @@ import granita.Misc.GranitaException;
 
 /**
  *
- * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
+ * @author Néstor A. Bermúdez < nestor.bermudez@unitec.edu >
  */
 public abstract class DeclarationStatement extends Statement {
 

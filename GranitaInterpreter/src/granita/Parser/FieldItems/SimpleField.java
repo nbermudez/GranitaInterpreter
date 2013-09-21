@@ -7,7 +7,7 @@ package granita.Parser.FieldItems;
 
 /**
  *
- * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
+ * @author Néstor A. Bermúdez < nestor.bermudez@unitec.edu >
  */
 public class SimpleField extends Field {
 

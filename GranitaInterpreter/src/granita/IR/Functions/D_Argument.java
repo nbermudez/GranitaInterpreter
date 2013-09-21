@@ -9,7 +9,7 @@ import granita.Interpreter.Results.Result;
 
 /**
  *
- * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
+ * @author Néstor A. Bermúdez < nestor.bermudez@unitec.edu >
  */
 public class D_Argument extends D_Expression {
     D_Expression value;

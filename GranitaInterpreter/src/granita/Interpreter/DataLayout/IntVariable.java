@@ -8,7 +8,7 @@ import granita.Interpreter.Results.IntResult;
 
 /**
  *
- * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
+ * @author Néstor A. Bermúdez < nestor.bermudez@unitec.edu >
  */
 public class IntVariable extends RE_Variable {
 

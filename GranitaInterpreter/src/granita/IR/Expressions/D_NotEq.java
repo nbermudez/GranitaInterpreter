@@ -12,7 +12,7 @@ import granita.Semantic.Types.Type;
 
 /**
  *
- * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
+ * @author Néstor A. Bermúdez < nestor.bermudez@unitec.edu >
  */
 public class D_NotEq extends D_BinaryExpression {
     Type sideType;

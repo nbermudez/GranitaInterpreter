@@ -10,7 +10,7 @@ import granita.Semantic.Types.Type;
 
 /**
  *
- * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
+ * @author Néstor A. Bermúdez < nestor.bermudez@unitec.edu >
  */
 public abstract class LeftValue extends Expression {
     public LeftValue(int line) {

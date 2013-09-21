@@ -7,17 +7,15 @@ package granita.Parser.Statements;
 import granita.IR.Expressions.D_Expression;
 import granita.IR.Statements.D_Return;
 import granita.IR.Statements.D_Statement;
+import granita.Misc.ErrorHandler;
 import granita.Parser.Expressions.Expression;
-import granita.Semantic.Types.ErrorType;
 import granita.Semantic.Types.Type;
 import granita.Semantic.Types.VoidType;
-import granita.Misc.ErrorHandler;
-import granita.Misc.GranitaException;
 import granita.Semantics.SemanticUtils;
 
 /**
  *
- * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
+ * @author Néstor A. Bermúdez < nestor.bermudez@unitec.edu >
  */
 public class ReturnStatement extends Statement {
 
@@ -53,25 +51,6 @@ public class ReturnStatement extends Statement {
     }
 
     @Override
-    public Type hasReturn(Type methodType) throws GranitaException {
-        if (returnExpression == null) {
-            return null;
-        }
-        if (returnType == null) {
-            //returnType = returnExpression.validateSemantics();
-        }
-        Type expectedType = SemanticUtils.getInstance().getExpectedReturnType();
-        if (expectedType != null
-                && !returnType.equivalent(new ErrorType())
-                && !expectedType.equivalent(returnType)) {
-            ErrorHandler.handle("return expression type must be "
-                    + expectedType + " but found " + returnType + ": line "
-                    + this.getLine());
-        }
-        return returnType;
-    }
-
-    @Override
     public D_Statement getIR() {
         checkForUnreachableStatement();
 
@@ -92,7 +71,8 @@ public class ReturnStatement extends Statement {
                 }
             }
         }
-        SemanticUtils.getInstance().setUnreachableStatement();
+        SemanticUtils.getInstance().setUnreachableStatement();        
+        SemanticUtils.getInstance().setUnreachable(true);
         return new D_Return(retExp);
     }
 }

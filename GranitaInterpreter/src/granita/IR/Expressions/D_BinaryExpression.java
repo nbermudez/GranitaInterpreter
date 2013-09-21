@@ -9,7 +9,7 @@ import granita.Semantic.Types.ErrorType;
 
 /**
  *
- * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
+ * @author Néstor A. Bermúdez < nestor.bermudez@unitec.edu >
  */
 public abstract class D_BinaryExpression extends D_Expression {
     D_Expression left, right;

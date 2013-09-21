@@ -8,7 +8,7 @@ import granita.Parser.Statements.ClassStatement;
 
 /**
  *
- * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
+ * @author Néstor A. Bermúdez < nestor.bermudez@unitec.edu >
  */
 public class IntermediateRepresentation {
     public static D_Program validateAndGenerate(ClassStatement st) {

@@ -12,7 +12,7 @@ import granita.Semantics.SemanticUtils;
 
 /**
  *
- * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
+ * @author Néstor A. Bermúdez < nestor.bermudez@unitec.edu >
  */
 public abstract class Statement implements Cloneable {
     int line;
@@ -35,11 +35,7 @@ public abstract class Statement implements Cloneable {
             SemanticUtils.getInstance().setUnreachableStatement();
         }
     }
-    
-    public Type hasReturn(Type methodType) throws GranitaException {
-        return null;
-    }
-    
+        
     public void execute() throws GranitaException {}
     
     public D_Statement getIR(){        
@@ -48,7 +44,13 @@ public abstract class Statement implements Cloneable {
     
     public void checkForUnreachableStatement() {
         if (SemanticUtils.getInstance().isUnreachableStatement() == 1) {
-            ErrorHandler.handle("unreachable statement: line " + this.getLine());
+            ErrorHandler.handleWarning("unreachable statement: line " + this.getLine());
+            SemanticUtils.getInstance().setUnreachableStatement();
+            SemanticUtils.getInstance().setUnreachable(true);
+        } else if (SemanticUtils.getInstance().isUnreachable() &&
+                SemanticUtils.getInstance().isUnreachableStatement() == 0) {
+            ErrorHandler.handleWarning("unreachable statement: line " + this.getLine());
+            SemanticUtils.getInstance().setUnreachable(true);
             SemanticUtils.getInstance().setUnreachableStatement();
         }
     }

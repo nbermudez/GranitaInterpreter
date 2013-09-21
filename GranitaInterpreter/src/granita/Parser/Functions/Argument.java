@@ -9,7 +9,7 @@ import granita.Parser.Expressions.Expression;
 
 /**
  *
- * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
+ * @author Néstor A. Bermúdez < nestor.bermudez@unitec.edu >
  */
 public class Argument extends Expression {
 

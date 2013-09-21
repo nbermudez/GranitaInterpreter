@@ -10,7 +10,7 @@ import granita.Interpreter.Results.BoolResult;
 
 /**
  *
- * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
+ * @author Néstor A. Bermúdez < nestor.bermudez@unitec.edu >
  */
 public class D_While extends D_Statement {
     

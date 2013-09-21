@@ -11,7 +11,7 @@ import granita.Semantics.SemanticUtils;
 
 /**
  *
- * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
+ * @author Néstor A. Bermúdez < nestor.bermudez@unitec.edu >
  */
 public class ContinueStatement extends Statement {
     boolean isInsideLoop;

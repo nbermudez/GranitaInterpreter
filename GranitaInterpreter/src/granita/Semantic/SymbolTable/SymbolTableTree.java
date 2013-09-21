@@ -6,7 +6,7 @@ package granita.Semantic.SymbolTable;
 
 /**
  *
- * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
+ * @author Néstor A. Bermúdez < nestor.bermudez@unitec.edu >
  */
 public class SymbolTableTree {
     private static SymbolTableTree instance = null;

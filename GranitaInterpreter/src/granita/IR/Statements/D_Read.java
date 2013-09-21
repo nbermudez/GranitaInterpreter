@@ -19,7 +19,7 @@ import java.util.Scanner;
 
 /**
  *
- * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
+ * @author Néstor A. Bermúdez < nestor.bermudez@unitec.edu >
  */
 public class D_Read extends D_Statement {
 

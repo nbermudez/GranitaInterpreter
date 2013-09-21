@@ -18,7 +18,7 @@ import granita.Semantics.SemanticUtils;
 
 /**
  *
- * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
+ * @author Néstor A. Bermúdez < nestor.bermudez@unitec.edu >
  */
 public class ParameterDeclaration extends Statement {
 

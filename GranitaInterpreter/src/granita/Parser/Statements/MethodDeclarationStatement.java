@@ -4,13 +4,15 @@
  */
 package granita.Parser.Statements;
 
-import granita.Semantic.DataLayout.Context;
-import granita.Semantic.DataLayout.Function;
 import granita.IR.Statements.D_Block;
 import granita.Interpreter.DataLayout.BoolVariable;
 import granita.Interpreter.DataLayout.IntVariable;
 import granita.Interpreter.DataLayout.Procedure;
+import granita.Misc.ErrorHandler;
+import granita.Misc.GranitaException;
 import granita.Parser.Functions.ParameterDeclaration;
+import granita.Semantic.DataLayout.Context;
+import granita.Semantic.DataLayout.Function;
 import granita.Semantic.SymbolTable.SymbolTableEntry;
 import granita.Semantic.SymbolTable.SymbolTableNode;
 import granita.Semantic.SymbolTable.SymbolTableTree;
@@ -18,14 +20,12 @@ import granita.Semantic.Types.ErrorType;
 import granita.Semantic.Types.IntType;
 import granita.Semantic.Types.Type;
 import granita.Semantic.Types.VoidType;
-import granita.Misc.ErrorHandler;
-import granita.Misc.GranitaException;
 import granita.Semantics.SemanticUtils;
 import java.util.ArrayList;
 
 /**
  *
- * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
+ * @author Néstor A. Bermúdez < nestor.bermudez@unitec.edu >
  */
 public class MethodDeclarationStatement extends DeclarationStatement {
 
@@ -162,6 +162,7 @@ public class MethodDeclarationStatement extends DeclarationStatement {
                 SemanticUtils.getInstance().setMustReturnExpression(true);
             }
             SemanticUtils.getInstance().setExpectedReturnType(type);
+            SemanticUtils.getInstance().setUnreachable(false);
             D_Block dBlock = block.getIR();
             f.setBody(dBlock);
             Procedure proc = SemanticUtils.getInstance().findProcedure(identifier);

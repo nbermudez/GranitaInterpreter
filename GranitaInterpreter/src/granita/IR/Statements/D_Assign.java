@@ -12,7 +12,7 @@ import granita.Interpreter.Results.Result;
 
 /**
  *
- * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
+ * @author Néstor A. Bermúdez < nestor.bermudez@unitec.edu >
  */
 public class D_Assign extends D_Statement {
     D_LeftValue lSide;

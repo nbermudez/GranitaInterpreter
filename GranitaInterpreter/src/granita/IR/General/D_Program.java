@@ -8,7 +8,7 @@ import granita.IR.Statements.D_Block;
 
 /**
  *
- * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
+ * @author Néstor A. Bermúdez < nestor.bermudez@unitec.edu >
  */
 public class D_Program {
     D_Block startPoint;

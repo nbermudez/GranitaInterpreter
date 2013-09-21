@@ -9,7 +9,7 @@ import granita.Interpreter.Results.BoolResult;
 
 /**
  *
- * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
+ * @author Néstor A. Bermúdez < nestor.bermudez@unitec.edu >
  */
 public class D_If extends D_Statement {
     D_Expression conditional;

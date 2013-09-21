@@ -8,7 +8,7 @@ import granita.Parser.Statements.Statement;
 
 /**
  *
- * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
+ * @author Néstor A. Bermúdez < nestor.bermudez@unitec.edu >
  */
 public abstract class Field extends Statement {
     String fieldName;

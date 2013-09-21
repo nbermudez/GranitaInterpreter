@@ -16,7 +16,7 @@ import granita.Misc.GranitaException;
 
 /**
  *
- * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
+ * @author Néstor A. Bermúdez < nestor.bermudez@unitec.edu >
  */
 public class WhileStatement extends Statement {
 
@@ -55,11 +55,6 @@ public class WhileStatement extends Statement {
         w += block.toString();
 
         return w;
-    }
-
-    @Override
-    public Type hasReturn(Type methodType) throws GranitaException {
-        return block.hasReturn(methodType);
     }
 
     @Override

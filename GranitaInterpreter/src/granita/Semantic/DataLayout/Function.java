@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 /**
  *
- * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
+ * @author Néstor A. Bermúdez < nestor.bermudez@unitec.edu >
  */
 public class Function extends SymbolTableEntry {
     //<editor-fold defaultstate="collapsed" desc="Instance Attributes">

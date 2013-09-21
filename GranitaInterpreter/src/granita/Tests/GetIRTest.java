@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 /**
  *
- * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
+ * @author Néstor A. Bermúdez < nestor.bermudez@unitec.edu >
  */
 public class GetIRTest {
     public static void main(String[] args){
@@ -29,6 +29,7 @@ public class GetIRTest {
                 //System.out.println(tree.toString());
                 D_Program program = IntermediateRepresentation.validateAndGenerate(tree);
                 if (ErrorHandler.isEmpty()) {
+                    ErrorHandler.printWarnings();
                     Interpreter.interpret(program);
                 } else {
                     ErrorHandler.printAll();

@@ -15,7 +15,7 @@ import granita.Misc.GranitaException;
 
 /**
  *
- * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
+ * @author Néstor A. Bermúdez < nestor.bermudez@unitec.edu >
  */
 public class D_ArrayLeftValue extends D_LeftValue {
     D_Expression arrayIndex;

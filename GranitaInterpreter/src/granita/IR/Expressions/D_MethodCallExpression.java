@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 /**
  *
- * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
+ * @author Néstor A. Bermúdez < nestor.bermudez@unitec.edu >
  */
 public class D_MethodCallExpression extends D_Expression {
     private ArrayList<D_Expression> arguments;

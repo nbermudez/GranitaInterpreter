@@ -6,15 +6,11 @@ package granita.Misc;
 
 import granita.Semantic.Types.ErrorType;
 import granita.Semantic.Types.Type;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
- * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
+ * @author Néstor A. Bermúdez < nestor.bermudez@unitec.edu >
  */
 public class ErrorHandler {
 
@@ -48,7 +44,7 @@ public class ErrorHandler {
     }
     
     public static void printWarnings() {
-        if (warnings != null) {
+        if (warnings != null && warnings.size() > 0) {
             System.err.println(warnings.size() + " warnings found: ");
             for (String string : warnings) {
                 System.err.println("\t" + string);

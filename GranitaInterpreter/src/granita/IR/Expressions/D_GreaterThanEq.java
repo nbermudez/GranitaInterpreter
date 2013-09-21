@@ -11,7 +11,7 @@ import granita.Semantic.Types.BoolType;
 
 /**
  *
- * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
+ * @author Néstor A. Bermúdez < nestor.bermudez@unitec.edu >
  */
 public class D_GreaterThanEq extends D_BinaryExpression {
 

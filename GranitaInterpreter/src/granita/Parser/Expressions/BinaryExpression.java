@@ -6,7 +6,7 @@ package granita.Parser.Expressions;
 
 /**
  *
- * @author Néstor A. Bermúdez <nestor.bermudez@unitec.edu>
+ * @author Néstor A. Bermúdez < nestor.bermudez@unitec.edu >
  */
 public abstract class BinaryExpression extends Expression {
     Expression left, right;
