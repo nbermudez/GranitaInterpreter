@@ -6,10 +6,10 @@ package granita.Parser.Expressions;
 
 import granita.IR.Expressions.D_Add;
 import granita.IR.Expressions.D_Expression;
+import granita.Misc.ErrorHandler;
 import granita.Semantic.Types.ErrorType;
 import granita.Semantic.Types.IntType;
 import granita.Semantic.Types.Type;
-import granita.Misc.ErrorHandler;
 
 /**
  *

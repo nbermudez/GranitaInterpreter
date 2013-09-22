@@ -4,12 +4,12 @@
  */
 package granita.Interpreter;
 
-import granita.Semantic.DataLayout.Context;
-import granita.Semantic.DataLayout.ContextStack;
 import granita.IR.General.D_Program;
 import granita.Interpreter.DataLayout.Procedure;
 import granita.Interpreter.DataLayout.RE_Variable;
 import granita.Interpreter.Results.Result;
+import granita.Semantic.DataLayout.Context;
+import granita.Semantic.DataLayout.ContextStack;
 import granita.Semantics.SemanticUtils;
 import java.util.Stack;
 

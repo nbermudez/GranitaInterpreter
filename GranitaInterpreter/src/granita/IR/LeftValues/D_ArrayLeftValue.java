@@ -9,9 +9,9 @@ import granita.Interpreter.DataLayout.ArrayVariable;
 import granita.Interpreter.Interpreter;
 import granita.Interpreter.Results.IntResult;
 import granita.Interpreter.Results.Result;
-import granita.Semantic.Types.Type;
 import granita.Misc.ErrorHandler;
 import granita.Misc.GranitaException;
+import granita.Semantic.Types.Type;
 
 /**
  *

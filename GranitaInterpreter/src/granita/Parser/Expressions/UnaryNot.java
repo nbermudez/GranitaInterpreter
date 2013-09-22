@@ -6,9 +6,9 @@ package granita.Parser.Expressions;
 
 import granita.IR.Expressions.D_Expression;
 import granita.IR.Expressions.D_UnaryNot;
+import granita.Misc.ErrorHandler;
 import granita.Semantic.Types.BoolType;
 import granita.Semantic.Types.Type;
-import granita.Misc.ErrorHandler;
 
 /**
  *

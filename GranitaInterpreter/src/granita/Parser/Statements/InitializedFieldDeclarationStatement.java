@@ -4,20 +4,20 @@
  */
 package granita.Parser.Statements;
 
-import granita.Semantic.DataLayout.SimpleVariable;
 import granita.IR.Expressions.D_Expression;
 import granita.Interpreter.DataLayout.BoolVariable;
 import granita.Interpreter.DataLayout.IntVariable;
 import granita.Interpreter.Results.BoolResult;
 import granita.Interpreter.Results.IntResult;
+import granita.Misc.ErrorHandler;
+import granita.Misc.GranitaException;
 import granita.Parser.Expressions.Expression;
+import granita.Semantic.DataLayout.SimpleVariable;
 import granita.Semantic.SymbolTable.SymbolTableEntry;
 import granita.Semantic.SymbolTable.SymbolTableNode;
 import granita.Semantic.SymbolTable.SymbolTableTree;
 import granita.Semantic.Types.BoolType;
 import granita.Semantic.Types.Type;
-import granita.Misc.ErrorHandler;
-import granita.Misc.GranitaException;
 import granita.Semantics.SemanticUtils;
 
 /**
@@ -45,27 +45,6 @@ public class InitializedFieldDeclarationStatement extends DeclarationStatement {
     @Override
     public String toString() {
         return type + " " + fieldName + " = " + initValue.toString();
-    }
-
-    @Override
-    public void validateSemantics() throws GranitaException {
-        /*SymbolTableNode node = SymbolTableTree.getInstance().getGlobal();
-         Type result = this.initValue.validateSemantics();
-
-         SymbolTableEntry v = node.findInThisTable(fieldName);
-         if (v != null) {
-         ErrorHandler.handle("already defined variable '" + fieldName
-         + "': line " + this.getLine());
-         }
-         if (!result.equivalent(type)) {
-         ErrorHandler.handle("incompatible types, required " + type.toString()
-         + " and found " + result.toString() + ": line " + initValue.getLine());
-         } else {
-         type.setValue(result.getValue());
-         if (v == null){
-         //node.addEntry(fieldName, new SimpleVariable(type, initValue.getIR()));
-         }
-         }*/
     }
 
     public Expression getInitValue() {

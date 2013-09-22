@@ -5,7 +5,6 @@
 package granita.Parser.Statements;
 
 import granita.IR.Statements.D_Statement;
-import granita.Semantic.Types.Type;
 import granita.Misc.ErrorHandler;
 import granita.Misc.GranitaException;
 import granita.Semantics.SemanticUtils;
@@ -27,13 +26,6 @@ public abstract class Statement implements Cloneable {
 
     public void setLine(int line) {
         this.line = line;
-    }    
-    
-    public void validateSemantics() throws GranitaException {
-        if (SemanticUtils.getInstance().isUnreachableStatement() == 1) {
-            ErrorHandler.handle("unreachable statement: line " + this.getLine());
-            SemanticUtils.getInstance().setUnreachableStatement();
-        }
     }
         
     public void execute() throws GranitaException {}
@@ -43,7 +35,8 @@ public abstract class Statement implements Cloneable {
     }
     
     public void checkForUnreachableStatement() {
-        if (SemanticUtils.getInstance().isUnreachableStatement() == 1) {
+        if (SemanticUtils.getInstance().isUnreachableStatement() == 1
+                &&!SemanticUtils.getInstance().isUnreachable()) {
             ErrorHandler.handleWarning("unreachable statement: line " + this.getLine());
             SemanticUtils.getInstance().setUnreachableStatement();
             SemanticUtils.getInstance().setUnreachable(true);

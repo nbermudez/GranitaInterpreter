@@ -4,13 +4,11 @@
  */
 package granita.Parser.Statements;
 
-import granita.Semantic.DataLayout.Context;
 import granita.IR.Statements.D_Block;
 import granita.IR.Statements.D_Statement;
-import granita.Parser.Functions.VarDeclaration;
-import granita.Semantic.Types.Type;
 import granita.Misc.ErrorHandler;
-import granita.Misc.GranitaException;
+import granita.Parser.Functions.VarDeclaration;
+import granita.Semantic.DataLayout.Context;
 import granita.Semantics.SemanticUtils;
 import java.util.ArrayList;
 
@@ -72,7 +70,7 @@ public class BlockStatement extends Statement {
     @Override
     public void checkForUnreachableStatement() {
         int unreachable = SemanticUtils.getInstance().isUnreachableStatement();
-        if (unreachable == 1) {
+        if (unreachable == 1 && !SemanticUtils.getInstance().isUnreachable()) {
             Statement first = this.firstStatement();
             if (first != this) {
                 ErrorHandler.handleWarning("unreachable statement: line " 

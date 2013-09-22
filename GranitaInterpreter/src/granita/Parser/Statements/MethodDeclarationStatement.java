@@ -164,6 +164,12 @@ public class MethodDeclarationStatement extends DeclarationStatement {
             SemanticUtils.getInstance().setExpectedReturnType(type);
             SemanticUtils.getInstance().setUnreachable(false);
             D_Block dBlock = block.getIR();
+            
+            if (!SemanticUtils.getInstance().isUnreachable() &&
+                    SemanticUtils.getInstance().mustReturnExpression()) {
+                ErrorHandler.handle("all paths must return a value in method '" 
+                        + identifier + "': line " + this.getLine());
+            }
             f.setBody(dBlock);
             Procedure proc = SemanticUtils.getInstance().findProcedure(identifier);
             proc.setBody(dBlock);
@@ -171,7 +177,7 @@ public class MethodDeclarationStatement extends DeclarationStatement {
         
         if (!this.getType().equivalent(new VoidType())) {
             SemanticUtils.getInstance().setExpectedReturnType(type);
-            //checkear aki por returns en todos los path :S
+            //checkear aki por returns en todos los path :S            
             SemanticUtils.getInstance().setExpectedReturnType(null);
         }
     }

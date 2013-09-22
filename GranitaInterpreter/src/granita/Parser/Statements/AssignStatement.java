@@ -8,11 +8,11 @@ import granita.IR.Expressions.D_Expression;
 import granita.IR.LeftValues.D_LeftValue;
 import granita.IR.Statements.D_Assign;
 import granita.IR.Statements.D_Statement;
+import granita.Misc.ErrorHandler;
 import granita.Parser.Expressions.Expression;
 import granita.Parser.LeftValues.LeftValue;
 import granita.Semantic.Types.ErrorType;
 import granita.Semantic.Types.Type;
-import granita.Misc.ErrorHandler;
 import granita.Semantics.SemanticUtils;
 
 /**

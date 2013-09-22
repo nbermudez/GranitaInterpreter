@@ -6,6 +6,8 @@ package granita.Parser;
 
 import granita.Lexer.Lexer;
 import granita.Lexer.Token;
+import granita.Misc.ErrorHandler;
+import granita.Misc.GranitaException;
 import granita.Parser.Expressions.Add;
 import granita.Parser.Expressions.And;
 import granita.Parser.Expressions.Div;
@@ -57,8 +59,6 @@ import granita.Semantic.Types.BoolType;
 import granita.Semantic.Types.IntType;
 import granita.Semantic.Types.Type;
 import granita.Semantic.Types.VoidType;
-import granita.Misc.ErrorHandler;
-import granita.Misc.GranitaException;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -444,6 +444,7 @@ public class ParserTree {
 
             return fo;
         } else if (currentToken == Token.TK_KW_WHILE) {
+            int line = lexer.lineNumber();
             insideLoop = true;
             currentToken = lexer.nextToken();
             match(Token.TK_LEFT_PARENTHESIS, "(");
@@ -452,7 +453,7 @@ public class ParserTree {
             BlockStatement block = BLOCK();
             insideLoop = false;
 
-            return new WhileStatement(condition, block, lexer.lineNumber());
+            return new WhileStatement(condition, block, line);
         } else if (currentToken == Token.TK_KW_IF) {
             currentToken = lexer.nextToken();
             int line = lexer.lineNumber();

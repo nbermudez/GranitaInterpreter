@@ -59,6 +59,11 @@ public class ReturnStatement extends Statement {
             ErrorHandler.handle("cannot return a value from method whose result"
                     + " type is void: line " + returnExpression.getLine());
         }
+        
+        if (SemanticUtils.getInstance().mustReturnExpression()
+                && returnExpression == null) {
+            ErrorHandler.handle("return value cannot be void: line " + this.getLine());
+        }
 
         D_Expression retExp = null;
         if (returnExpression != null) {

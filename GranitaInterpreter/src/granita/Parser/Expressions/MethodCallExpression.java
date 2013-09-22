@@ -4,13 +4,13 @@
  */
 package granita.Parser.Expressions;
 
-import granita.Semantic.DataLayout.Function;
 import granita.IR.Expressions.D_Expression;
 import granita.IR.Expressions.D_MethodCallExpression;
+import granita.Misc.ErrorHandler;
+import granita.Semantic.DataLayout.Function;
 import granita.Semantic.SymbolTable.SymbolTableEntry;
 import granita.Semantic.SymbolTable.SymbolTableTree;
 import granita.Semantic.Types.Type;
-import granita.Misc.ErrorHandler;
 import granita.Semantics.SemanticUtils;
 import java.util.ArrayList;
 
