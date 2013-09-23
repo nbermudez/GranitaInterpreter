@@ -1,0 +1,22 @@
+class arrayIndex {
+	int valores[15];
+	
+	void printArray(){
+		int i;
+		for(i = 0; i < 15; i = i + 1){
+			print valores[i], "\n";
+		}
+	}
+	
+	void main(){
+		print "escriba numero: ";
+		read valores[0];
+		print "escriba numero: ";
+		read valores[1];
+		print "escriba numero: ";
+		read valores[valores[0]+valores[1]];
+		
+		print "imprimiendo arreglo...\n";
+		printArray();
+	}
+}

@@ -88,6 +88,10 @@ public class Interpreter {
     public static Context currentContext() {
         return contextStack.peek();
     }
+    
+    public static Context globalContext() {
+        return global;
+    }
     //</editor-fold>
     
     //<editor-fold defaultstate="collapsed" desc="Procedures/Global variables">

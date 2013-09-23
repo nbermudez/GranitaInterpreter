@@ -27,8 +27,6 @@ public abstract class Statement implements Cloneable {
     public void setLine(int line) {
         this.line = line;
     }
-        
-    public void execute() throws GranitaException {}
     
     public D_Statement getIR(){        
         return null;

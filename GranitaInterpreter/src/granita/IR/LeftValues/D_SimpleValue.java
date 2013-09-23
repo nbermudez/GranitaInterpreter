@@ -28,7 +28,9 @@ public class D_SimpleValue extends D_LeftValue {
     @Override
     public Result eval() {
         RE_Variable var = Interpreter.currentContext().findVariableInRE(contextId, contextPosition);
-        
+        if (var == null) {
+            var = Interpreter.currentContext().findVariableInRE(contextId, contextPosition);
+        }
         return var.getValue();
     }
     

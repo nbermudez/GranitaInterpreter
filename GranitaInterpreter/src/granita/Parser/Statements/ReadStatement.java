@@ -8,7 +8,6 @@ import granita.IR.LeftValues.D_LeftValue;
 import granita.IR.Statements.D_Read;
 import granita.IR.Statements.D_Statement;
 import granita.Parser.LeftValues.LeftValue;
-import granita.Misc.GranitaException;
 import granita.Semantics.SemanticUtils;
 import java.util.ArrayList;
 
@@ -53,26 +52,6 @@ public class ReadStatement extends Statement {
     }
 
     @Override
-    public void execute() throws GranitaException {
-        /*Scanner scanner = new Scanner(System.in);
-        for (LeftValue leftValue : leftValues) {
-            Type t = leftValue.getLocation();
-            try {
-                if (t instanceof IntType) {
-                    Integer readValue = scanner.nextInt();
-                    t.setValue(readValue);
-                } else if (t instanceof BoolType) {
-                    Boolean boolValue = scanner.nextBoolean();
-                    t.setValue(boolValue);
-                }
-            } catch (Exception ex) {
-                ErrorHandler.handleFatalError("incompatible types, expected "+ t
-                        + ": line " + line);
-            }
-        }*/
-    }
-
-    @Override
     public D_Statement getIR() {
         checkForUnreachableStatement();
         
@@ -83,6 +62,7 @@ public class ReadStatement extends Statement {
             if (dLvalue != null) {
                 variables.add(dLvalue);
             }
+            lValue.initializeVariable();
         }
         SemanticUtils.getInstance().setInsideRead(false);
         

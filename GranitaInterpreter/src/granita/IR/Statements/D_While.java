@@ -24,10 +24,11 @@ public class D_While extends D_Statement {
     
     @Override
     public void exec() {
-        Interpreter.registerContext(block.getContext());
+        D_Block tmpBlock = block.getCopy();
+        Interpreter.registerContext(tmpBlock.getContext());
         BoolResult ret = (BoolResult) expression.eval();
         while (ret.getValue()) {
-            for (D_Statement st : block.getStatements()) {
+            for (D_Statement st : tmpBlock.getStatements()) {
                 if (Interpreter.breakReached() || Interpreter.continueReached()) {
                     break;
                 } else {

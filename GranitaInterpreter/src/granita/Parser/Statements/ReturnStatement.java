@@ -73,7 +73,12 @@ public class ReturnStatement extends Statement {
                 returnType = retExp.getExpressionType();
                 if (returnType instanceof VoidType) {
                     ErrorHandler.handle("return value cannot be void: line " + line);
+                } else if (!returnType.equivalent(SemanticUtils.getInstance().getExpectedReturnType())) {
+                    ErrorHandler.handle("expected return type " + 
+                            SemanticUtils.getInstance().getExpectedReturnType()
+                            + ": line " + line);
                 }
+                
             }
         }
         SemanticUtils.getInstance().setUnreachableStatement();        

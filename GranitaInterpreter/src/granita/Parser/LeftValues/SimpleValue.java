@@ -81,7 +81,7 @@ public class SimpleValue extends LeftValue {
                 return null;
             }
             if (!SemanticUtils.getInstance().isLeftValueAsLocation()
-                    && !val.isInitialized()) {
+                    && !val.isInitialized() && !SemanticUtils.getInstance().isInsideRead()) {
                 ErrorHandler.handle("variable '" + id + "' "
                         + "must be initialized before use: line "
                         + this.getLine());

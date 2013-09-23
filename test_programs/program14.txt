@@ -4,17 +4,17 @@ class GreatestCommonDivisor {
 	bool x[10];
 	void main() {
 		int w, y, z;
-		w = a;
-		y = b;
+		read w;
+		read y;
 		z = gcd(w, y);
 
 		print "gcd (", w, ",", y, ")=", z, "\n";
 		w = 4;
-		for(1; w<10; w=w+1) {
+		for(w=1; w<10; w=w+1) {
 			read x[w];
 		}
 		w = 4;
-		for(1; w<10; w=w+1) {
+		for(w = 1; w<10; w=w+1) {
 			print x[w] || true, "\n";
 		}
 	}

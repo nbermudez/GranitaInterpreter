@@ -38,6 +38,11 @@ public class D_ArrayLeftValue extends D_LeftValue {
         ArrayVariable var = 
                 (ArrayVariable)Interpreter.currentContext().findVariableInRE(contextId, contextPosition);
         int calculatedIndex = ((IntResult) arrayIndex.eval()).getValue();
+        if (var == null) {
+            var = 
+                (ArrayVariable)Interpreter.currentContext().findVariableInRE(contextId, contextPosition);
+        
+        }
         if (calculatedIndex >= var.getItems().length) {
             try {
                 ErrorHandler.handleFatalError("index out of bound in variable '"

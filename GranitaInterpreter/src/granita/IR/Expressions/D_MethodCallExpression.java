@@ -28,17 +28,20 @@ public class D_MethodCallExpression extends D_Expression {
     @Override
     public Result eval() {
         Procedure proc = Interpreter.getProcedure(procedureIndex);
-        D_Block toRun = proc.getBody().getCopy();
+        
         
         int i = 1;
         for (D_Expression arg : arguments) {
             Result param = arg.eval();
             int contextId = proc.getBody().getContext().getContextId();
-            toRun.getContext().setVariableInRE(contextId, i, param);            
+            //toRun.getContext().setVariableInRE(contextId, i, param);            
+            //i = i + 1;
+            proc.getBody().getContext().setVariableInRE(contextId, i, param);
             i = i + 1;
         }
-        
+        D_Block toRun = proc.getBody().getCopy();
         toRun.getContext().hasReturnValue(true);
+        toRun.getContext().setParent(Interpreter.globalContext());
         toRun.exec();
         
         Result r = Interpreter.getReturnValue();

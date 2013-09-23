@@ -34,6 +34,7 @@ public class D_MethodCall extends D_Statement {
             i = i + 1;
         }
         D_Block toRun = proc.getBody().getCopy();
+        toRun.getContext().setParent(Interpreter.globalContext());
         toRun.exec();
         Interpreter.returnWasReached(false);
     }
