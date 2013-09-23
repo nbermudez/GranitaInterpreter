@@ -60,6 +60,9 @@ class quicksort {
 	}
 	
 	void main() {
+		int tt;
+		tt = particionar;
+		tt = tt;
 		___();
 		quicksort(0, arraySize - 1);
 		print_array();

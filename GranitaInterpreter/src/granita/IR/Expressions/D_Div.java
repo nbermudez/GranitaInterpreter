@@ -6,7 +6,8 @@ package granita.IR.Expressions;
 
 import granita.Interpreter.Results.IntResult;
 import granita.Interpreter.Results.Result;
-
+import granita.Misc.ErrorHandler;
+import granita.Misc.GranitaException;
 /**
  *
  * @author Néstor A. Bermúdez < nestor.bermudez@unitec.edu >
@@ -21,6 +22,14 @@ public class D_Div extends D_BinaryExpression {
     public Result eval() {
         IntResult l = (IntResult) left.eval();
         IntResult r = (IntResult) right.eval();
+        
+        if (r.getValue() == 0) {
+            try {
+                ErrorHandler.handleFatalError("division by zero!");
+                return null;
+            } catch (GranitaException ex) {
+            }
+        }
         
         return new IntResult(l.getValue() / r.getValue());
     }

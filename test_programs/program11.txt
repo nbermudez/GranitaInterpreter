@@ -1,4 +1,5 @@
 class t {
+	//int noarray[0];
 	int fuck[10];
 	int xxxxx;
 	int funct2(int n){
@@ -53,6 +54,7 @@ class t {
 		x = funct2(3);
 		print "antes del while: ", x, "\n";
 		k = 3;
+		print k/0;
 		while(k<=10){
 			print k, "\n";
 			k = k+1;

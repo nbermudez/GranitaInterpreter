@@ -20,6 +20,11 @@ public class D_Mult extends D_BinaryExpression {
     @Override
     public Result eval() {
         IntResult l = (IntResult) left.eval();
+        
+        if (l.getValue() == 0) {
+            return new IntResult(0);
+        }
+        
         IntResult r = (IntResult) right.eval();
         
         return new IntResult(l.getValue() * r.getValue());

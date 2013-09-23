@@ -6,6 +6,8 @@ package granita.IR.Expressions;
 
 import granita.Interpreter.Results.IntResult;
 import granita.Interpreter.Results.Result;
+import granita.Misc.ErrorHandler;
+import granita.Misc.GranitaException;
 
 /**
  *
@@ -19,8 +21,16 @@ public class D_Mod extends D_BinaryExpression {
     
     @Override
     public Result eval() {
-        IntResult l = (IntResult) left.eval();
+        IntResult l = (IntResult) left.eval();        
         IntResult r = (IntResult) right.eval();
+        
+        if (r.getValue() == 0) {
+            try {
+                ErrorHandler.handleFatalError("division by zero caused by mod operation!");
+                return null;
+            } catch (GranitaException ex) {
+            }
+        }
         
         return new IntResult(l.getValue() % r.getValue());
     }

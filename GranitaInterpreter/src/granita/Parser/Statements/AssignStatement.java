@@ -69,7 +69,7 @@ public class AssignStatement extends Statement {
         D_LeftValue lValue = left.getIR();
         SemanticUtils.getInstance().setLeftValueAsLocation(false);
         D_Expression dValue = value.getIR();
-        left.initializeVariable();
+        
         
         if (lValue != null && dValue != null) {
             Type LHS = lValue.getExpressionType(), RHS = dValue.getExpressionType();
@@ -79,7 +79,9 @@ public class AssignStatement extends Statement {
                 ErrorHandler.handle("cannot assign " + RHS.toString() + " to "
                         + LHS.toString() + " variable: line " + value.getLine());
             }
+            left.initializeVariable();
         }
+        
         return new D_Assign(lValue, dValue);
     }
     

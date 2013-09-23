@@ -344,6 +344,10 @@ public class ParserTree {
         while (is_start_of_statement(currentToken)) {
             block.addStatement(STNT());
         }
+        while (currentToken == Token.TK_SEMICOLON) {
+            ErrorHandler.handleWarning("empty statement: line " + lexer.lineNumber());
+            currentToken = lexer.nextToken();
+        }
         match(Token.TK_RIGHT_CURLY_BRACKET, "}");
 
         return block;
